@@ -1,0 +1,1022 @@
+========================================================================= 
+Log Path: ./log/no2_IT0953A.log 
+Working Directory: /home/rmorelli/R/pulvirus/presentazione 
+User Name: rmorelli 
+R Version: 4.1.1 (2021-08-10) 
+Machine: annuario x86_64 
+Operating System: Linux 5.10.0-8-amd64 #1 SMP Debian 5.10.46-5 (2021-09-23) 
+Log Start Time: 2023-02-22 09:59:30 
+========================================================================= 
+
+Modelli NON backward:  
+
+Lunghezza w: 14 
+
+NOTE: Log Print Time:  2023-02-22 09:59:30 
+NOTE: Elapsed Time in seconds: 0.131998062133789 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 14 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(pblmin)
+
+Indice:  14 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(t2m), data = df)"       
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(tp), data = df)"        
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(ptp), data = df)"       
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(rh), data = df)"        
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m), data = df)"      
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(v10m), data = df)"      
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(wspeed), data = df)"    
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(wspeed_max), data = df)"
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pwspeed), data = df)"   
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(wdir), data = df)"      
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(sp), data = df)"        
+[12] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pbl00), data = df)"     
+[13] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pbl12), data = df)"     
+[14] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin), data = df)"    
+
+ [1] 1328.086 1322.260 1270.322 1397.897 1226.136 1056.795 1023.508 1248.838
+ [9] 1303.058 1275.691 1284.757 1062.094 1279.832  992.382
+
+Variabile scelta: pblmin - AIC 992.38 
+
+Variabili in AICS: 1 
+
+Modelli NON backward:  
+
+Lunghezza w: 13 
+
+NOTE: Log Print Time:  2023-02-22 09:59:33 
+NOTE: Elapsed Time in seconds: 2.34327292442322 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 13 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(pblmin) + s(u10m)
+
+Indice:  5 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(t2m), data = df)"       
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(tp), data = df)"        
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(ptp), data = df)"       
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(rh), data = df)"        
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m), data = df)"      
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(v10m), data = df)"      
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(wspeed), data = df)"    
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(wspeed_max), data = df)"
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(pwspeed), data = df)"   
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(wdir), data = df)"      
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(sp), data = df)"        
+[12] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(pbl00), data = df)"     
+[13] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(pbl12), data = df)"     
+
+ [1] 949.1332 993.3058 951.8144 974.0490 861.2633 931.5449 943.9227 955.7450
+ [9] 987.2265 909.3742 985.2373 955.7535 960.3061
+
+Variabile scelta: u10m - AIC 861.26 
+
+Variabili in AICS: 2 
+
+Gli aics 2 ----- 1 
+
+NOTE: Log Print Time:  2023-02-22 09:59:35 
+NOTE: Elapsed Time in seconds: 2.23347401618958 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 12 
+
+NOTE: Log Print Time:  2023-02-22 09:59:35 
+NOTE: Elapsed Time in seconds: 0.00132465362548828 
+
+modelli tra cui scegliere: 12 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed)
+
+Indice:  6 
+
+Dati backward:  wspeed - 840.426199797015 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m), data = df)"       
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(tp), data = df)"        
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(ptp), data = df)"       
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(rh), data = df)"        
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(v10m), data = df)"      
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed), data = df)"    
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed_max), data = df)"
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(pwspeed), data = df)"   
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wdir), data = df)"      
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(sp), data = df)"        
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(pbl00), data = df)"     
+[12] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(pbl12), data = df)"     
+
+ [1] 1141.3520 1178.2266 1138.3146 1219.0107  849.1719  840.4262 1109.9394
+ [8] 1165.4765 1044.7818 1161.4341  989.5487 1151.9301
+
+Scelgo il BACKWARD 
+
+Modelli NON backward:  
+
+Lunghezza w: 12 
+
+NOTE: Log Print Time:  2023-02-22 09:59:37 
+NOTE: Elapsed Time in seconds: 2.10771107673645 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 12 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m)
+
+Indice:  1 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m), data = df)"       
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(tp), data = df)"        
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(ptp), data = df)"       
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(rh), data = df)"        
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(v10m), data = df)"      
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(wspeed_max), data = df)"
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pwspeed), data = df)"   
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(wdir), data = df)"      
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(sp), data = df)"        
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pbl00), data = df)"     
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pbl12), data = df)"     
+[12] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin), data = df)"    
+
+ [1] 777.9254 822.9637 801.3855 794.1167 834.0358 827.7962 838.0785 829.1913
+ [9] 833.7886 802.0341 835.8272 779.8985
+
+Variabile scelta: t2m - AIC 777.93 
+
+Variabili in AICS: 3 
+
+Gli aics 3 ----- 2 
+
+NOTE: Log Print Time:  2023-02-22 09:59:40 
+NOTE: Elapsed Time in seconds: 2.59438943862915 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 11 
+
+NOTE: Log Print Time:  2023-02-22 09:59:40 
+NOTE: Elapsed Time in seconds: 0.00136280059814453 
+
+modelli tra cui scegliere: 11 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(t2m) + s(v10m)
+
+Indice:  4 
+
+Dati backward:  v10m - 787.096305804021 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(tp), data = df)"        
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(ptp), data = df)"       
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(rh), data = df)"        
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(v10m), data = df)"      
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(wspeed_max), data = df)"
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(pwspeed), data = df)"   
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(wdir), data = df)"      
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(sp), data = df)"        
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(pbl00), data = df)"     
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(pbl12), data = df)"     
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m) + s(pblmin), data = df)"    
+
+ [1] 1094.6491 1055.3275 1132.0597  787.0963 1026.6795 1099.0285  983.4248
+ [8] 1077.9953  934.8897 1054.2169  803.7250
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 11 
+
+NOTE: Log Print Time:  2023-02-22 09:59:42 
+NOTE: Elapsed Time in seconds: 2.2428138256073 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 11 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin)
+
+Indice:  11 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(tp), data = df)"        
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(ptp), data = df)"       
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh), data = df)"        
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(v10m), data = df)"      
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(wspeed_max), data = df)"
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pwspeed), data = df)"   
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(wdir), data = df)"      
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(sp), data = df)"        
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pbl00), data = df)"     
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12), data = df)"     
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin), data = df)"    
+
+ [1] 761.9911 741.7217 748.1727 773.9916 763.7767 776.4284 768.7164 770.1701
+ [9] 747.0394 768.2779 724.5306
+
+Variabile scelta: pblmin - AIC 724.53 
+
+Variabili in AICS: 4 
+
+Gli aics 4 ----- 3 
+
+NOTE: Log Print Time:  2023-02-22 09:59:45 
+NOTE: Elapsed Time in seconds: 2.80417370796204 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 10 
+
+NOTE: Log Print Time:  2023-02-22 09:59:45 
+NOTE: Elapsed Time in seconds: 0.00134038925170898 
+
+modelli tra cui scegliere: 10 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(pblmin) + s(rh)
+
+Indice:  3 
+
+Dati backward:  rh - 730.940553483487 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(tp), data = df)"        
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(ptp), data = df)"       
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(rh), data = df)"        
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(v10m), data = df)"      
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(wspeed_max), data = df)"
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(pwspeed), data = df)"   
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(wdir), data = df)"      
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(sp), data = df)"        
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(pbl00), data = df)"     
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(pblmin) + s(pbl12), data = df)"     
+
+ [1] 774.9362 756.8540 730.9406 770.0754 768.9149 780.1276 769.6744 781.2018
+ [9] 778.4227 777.5864
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 10 
+
+NOTE: Log Print Time:  2023-02-22 09:59:47 
+NOTE: Elapsed Time in seconds: 2.53857564926147 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 10 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh)
+
+Indice:  3 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(tp), data = df)"        
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(ptp), data = df)"       
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh), data = df)"        
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m), data = df)"      
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(wspeed_max), data = df)"
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(pwspeed), data = df)"   
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(wdir), data = df)"      
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(sp), data = df)"        
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(pbl00), data = df)"     
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(pbl12), data = df)"     
+
+ [1] 718.9652 701.4662 691.3811 719.2778 712.3143 722.7118 718.0450 724.6086
+ [9] 723.8592 717.6113
+
+Variabile scelta: rh - AIC 691.38 
+
+Variabili in AICS: 5 
+
+Gli aics 5 ----- 4 
+
+NOTE: Log Print Time:  2023-02-22 09:59:50 
+NOTE: Elapsed Time in seconds: 3.09690952301025 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 9 
+
+NOTE: Log Print Time:  2023-02-22 09:59:50 
+NOTE: Elapsed Time in seconds: 0.00140023231506348 
+
+modelli tra cui scegliere: 9 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(pbl00)
+
+Indice:  8 
+
+Dati backward:  pbl00 - 708.832571222848 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(tp), data = df)"        
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(ptp), data = df)"       
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(v10m), data = df)"      
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(wspeed_max), data = df)"
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(pwspeed), data = df)"   
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(wdir), data = df)"      
+[7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(sp), data = df)"        
+[8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(pbl00), data = df)"     
+[9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(rh) + s(pbl12), data = df)"     
+
+[1] 740.6091 719.3415 720.7157 734.1541 743.3289 722.8979 745.5696 708.8326
+[9] 722.5417
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 9 
+
+NOTE: Log Print Time:  2023-02-22 09:59:53 
+NOTE: Elapsed Time in seconds: 2.95384955406189 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 9 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m)
+
+Indice:  3 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(tp), data = df)"        
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(ptp), data = df)"       
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m), data = df)"      
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(wspeed_max), data = df)"
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pwspeed), data = df)"   
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(wdir), data = df)"      
+[7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(sp), data = df)"        
+[8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl00), data = df)"     
+[9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12), data = df)"     
+
+[1] 691.0842 674.4075 660.6329 680.3829 689.7863 670.7266 693.3668 688.4504
+[9] 671.2632
+
+Variabile scelta: v10m - AIC 660.63 
+
+Variabili in AICS: 6 
+
+Gli aics 6 ----- 5 
+
+NOTE: Log Print Time:  2023-02-22 09:59:57 
+NOTE: Elapsed Time in seconds: 3.41468262672424 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 8 
+
+NOTE: Log Print Time:  2023-02-22 09:59:57 
+NOTE: Elapsed Time in seconds: 0.00138711929321289 
+
+modelli tra cui scegliere: 8 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + 
+    s(ptp)
+
+Indice:  2 
+
+Dati backward:  ptp - 697.408245373727 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(tp), data = df)"        
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(ptp), data = df)"       
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(wspeed_max), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(pwspeed), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(wdir), data = df)"      
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(sp), data = df)"        
+[7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(pbl00), data = df)"     
+[8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(v10m) + s(pbl12), data = df)"     
+
+[1] 708.0763 697.4082 705.2972 717.3704 716.7185 716.9660 718.5142 710.5211
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh - v10m 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 8 
+
+NOTE: Log Print Time:  2023-02-22 10:00:00 
+NOTE: Elapsed Time in seconds: 3.44033694267273 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 8 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12)
+
+Indice:  8 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(tp), data = df)"        
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(ptp), data = df)"       
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pwspeed), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wdir), data = df)"      
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(sp), data = df)"        
+[7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl00), data = df)"     
+[8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12), data = df)"     
+
+[1] 658.9752 651.5285 645.5302 657.8666 658.7335 662.4915 656.3147 635.9638
+
+Variabile scelta: pbl12 - AIC 635.96 
+
+Variabili in AICS: 7 
+
+Gli aics 7 ----- 6 
+
+NOTE: Log Print Time:  2023-02-22 10:00:04 
+NOTE: Elapsed Time in seconds: 4.21876382827759 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 7 
+
+NOTE: Log Print Time:  2023-02-22 10:00:04 
+NOTE: Elapsed Time in seconds: 0.00135207176208496 
+
+modelli tra cui scegliere: 7 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(pbl12) + s(wdir)
+
+Indice:  5 
+
+Dati backward:  wdir - 643.128017149388 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(tp), data = df)"        
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(ptp), data = df)"       
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(wspeed_max), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(pwspeed), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(wdir), data = df)"      
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(sp), data = df)"        
+[7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(pbl12) + s(pbl00), data = df)"     
+
+[1] 672.1211 657.7779 659.1541 668.9070 643.1280 673.1775 667.0697
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh - v10m - pbl12 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 7 
+
+NOTE: Log Print Time:  2023-02-22 10:00:08 
+NOTE: Elapsed Time in seconds: 3.75163578987122 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 7 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max)
+
+Indice:  3 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(tp), data = df)"        
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(ptp), data = df)"       
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pwspeed), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wdir), data = df)"      
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(sp), data = df)"        
+[7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pbl00), data = df)"     
+
+[1] 634.9993 629.3299 621.1994 631.6251 630.8071 637.9414 628.7776
+
+Variabile scelta: wspeed_max - AIC 621.2 
+
+Variabili in AICS: 8 
+
+Gli aics 8 ----- 7 
+
+NOTE: Log Print Time:  2023-02-22 10:00:13 
+NOTE: Elapsed Time in seconds: 4.54871535301208 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 6 
+
+NOTE: Log Print Time:  2023-02-22 10:00:13 
+NOTE: Elapsed Time in seconds: 0.00140142440795898 
+
+modelli tra cui scegliere: 6 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(wspeed_max) + s(ptp)
+
+Indice:  2 
+
+Dati backward:  ptp - 636.661989804541 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max) + s(ptp), data = df)"    
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max) + s(pwspeed), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max) + s(wdir), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max) + s(sp), data = df)"     
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(wspeed_max) + s(pbl00), data = df)"  
+
+[1] 647.3863 636.6620 644.1038 644.4325 647.5029 641.1646
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh - v10m - pbl12 - wspeed_max 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 6 
+
+NOTE: Log Print Time:  2023-02-22 10:00:17 
+NOTE: Elapsed Time in seconds: 4.69898819923401 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 6 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00)
+
+Indice:  6 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(ptp), data = df)"    
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pwspeed), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(wdir), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(sp), data = df)"     
+[6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00), data = df)"  
+
+[1] 621.5312 615.2424 617.6532 616.7736 623.1194 614.3688
+
+Variabile scelta: pbl00 - AIC 614.37 
+
+Variabili in AICS: 9 
+
+Gli aics 9 ----- 8 
+
+NOTE: Log Print Time:  2023-02-22 10:00:23 
+NOTE: Elapsed Time in seconds: 5.96128416061401 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 5 
+
+NOTE: Log Print Time:  2023-02-22 10:00:23 
+NOTE: Elapsed Time in seconds: 0.0013129711151123 
+
+modelli tra cui scegliere: 5 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(pbl00) + s(wdir)
+
+Indice:  4 
+
+Dati backward:  wdir - 623.611458780028 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pbl00) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pbl00) + s(ptp), data = df)"    
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pbl00) + s(pwspeed), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pbl00) + s(wdir), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(pbl00) + s(sp), data = df)"     
+
+[1] 629.4205 624.0979 626.1233 623.6115 630.3009
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh - v10m - pbl12 - wspeed_max - pbl00 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 5 
+
+NOTE: Log Print Time:  2023-02-22 10:00:27 
+NOTE: Elapsed Time in seconds: 4.03726530075073 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 5 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir)
+
+Indice:  4 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(ptp), data = df)"    
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(pwspeed), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir), data = df)"   
+[5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(sp), data = df)"     
+
+[1] 615.7541 610.1923 612.4756 609.5039 615.1370
+
+Variabile scelta: wdir - AIC 609.5 
+
+Variabili in AICS: 10 
+
+Gli aics 10 ----- 9 
+
+NOTE: Log Print Time:  2023-02-22 10:00:34 
+NOTE: Elapsed Time in seconds: 6.4909553527832 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 4 
+
+NOTE: Log Print Time:  2023-02-22 10:00:34 
+NOTE: Elapsed Time in seconds: 0.00132155418395996 
+
+modelli tra cui scegliere: 4 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(wdir) + s(ptp)
+
+Indice:  2 
+
+Dati backward:  ptp - 611.133725918602 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(wdir) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(wdir) + s(ptp), data = df)"    
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(wdir) + s(pwspeed), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(wdir) + s(sp), data = df)"     
+
+[1] 617.7758 611.1337 614.4593 618.5591
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh - v10m - pbl12 - wspeed_max - pbl00 - wdir 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 4 
+
+NOTE: Log Print Time:  2023-02-22 10:00:39 
+NOTE: Elapsed Time in seconds: 4.90668344497681 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 4 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + 
+    s(ptp)
+
+Indice:  2 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(ptp), data = df)"    
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(pwspeed), data = df)"
+[4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(sp), data = df)"     
+
+[1] 611.4403 605.5741 609.5898 610.4941
+
+Variabile scelta: ptp - AIC 605.57 
+
+Variabili in AICS: 11 
+
+Gli aics 11 ----- 10 
+
+NOTE: Log Print Time:  2023-02-22 10:00:45 
+NOTE: Elapsed Time in seconds: 6.10986161231995 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 3 
+
+NOTE: Log Print Time:  2023-02-22 10:00:45 
+NOTE: Elapsed Time in seconds: 0.00139617919921875 
+
+modelli tra cui scegliere: 3 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(ptp) + 
+    s(pwspeed)
+
+Indice:  2 
+
+Dati backward:  pwspeed - 607.708947219903 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(ptp) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(ptp) + s(pwspeed), data = df)"
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(ptp) + s(sp), data = df)"     
+
+[1] 612.6522 607.7089 610.4944
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+Modello N: u10m - wspeed - t2m - pblmin - rh - v10m - pbl12 - wspeed_max - pbl00 - wdir - ptp 
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 3 
+
+NOTE: Log Print Time:  2023-02-22 10:00:50 
+NOTE: Elapsed Time in seconds: 5.0041446685791 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 3 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + 
+    s(ptp) + s(pwspeed)
+
+Indice:  2 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(ptp) + s(tp), data = df)"     
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(ptp) + s(pwspeed), data = df)"
+[3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(ptp) + s(sp), data = df)"     
+
+[1] 607.6237 604.7848 605.6701
+
+Variabile scelta: pwspeed - AIC 604.78 
+
+Variabili in AICS: 12 
+
+Gli aics 12 ----- 11 
+
+NOTE: Log Print Time:  2023-02-22 10:00:56 
+NOTE: Elapsed Time in seconds: 5.81318950653076 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Lunghezza w: 2 
+
+NOTE: Log Print Time:  2023-02-22 10:00:56 
+NOTE: Elapsed Time in seconds: 0.00130152702331543 
+
+modelli tra cui scegliere: 2 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + 
+    s(pwspeed) + s(sp)
+
+Indice:  2 
+
+Dati backward:  sp - 610.093587334637 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(pwspeed) + s(tp), data = df)"
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(pwspeed) + s(sp), data = df)"
+
+[1] 610.8599 610.0936
+
+Il backward non è migliore. 
+Verifica della correlazione per mod(N) 
+
+[1] "Modello N: u10m - wspeed - t2m - pblmin - rh - v10m - pbl12 - wspeed_max - pbl00 - wdir - ptp - pwspeed"
+
+Scelgo il modello N 
+
+Modelli NON backward:  
+
+Lunghezza w: 2 
+
+NOTE: Log Print Time:  2023-02-22 10:01:00 
+NOTE: Elapsed Time in seconds: 4.62589502334595 
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 2 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + 
+    s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + 
+    s(ptp) + s(pwspeed) + s(sp)
+
+Indice:  2 
+
+[1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(ptp) + s(pwspeed) + s(tp), data = df)"
+[2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + s(pbl12) + s(wspeed_max) + s(pbl00) + s(wdir) + s(ptp) + s(pwspeed) + s(sp), data = df)"
+
+[1] 607.2283 604.5900
+
+Variabile scelta: sp - AIC 604.59 
+
+Variabili in AICS: 13 
+
+Gli aics 13 ----- 12 
+
+NOTE: Log Print Time:  2023-02-22 10:01:05 
+NOTE: Elapsed Time in seconds: 4.41335344314575 
+
+Il modello N è migliore del precedente, verifica del backward 
+
+Modelli backward:  
+
+Fine per scelta MODELLO iniziale 
+
+# Correlation Matrix (pearson-method)
+
+Parameter1 | Parameter2 |         r |         95% CI | t(2920) |         p
+--------------------------------------------------------------------------
+pbl00      |        ptp |      0.31 | [ 0.28,  0.34] |   17.68 | < .001***
+pbl00      |    pwspeed |      0.59 | [ 0.56,  0.61] |   39.17 | < .001***
+pbl00      |       wdir | -1.54e-03 | [-0.04,  0.03] |   -0.08 | > .999   
+pbl12      |        ptp |     -0.09 | [-0.12, -0.05] |   -4.64 | < .001***
+pbl12      |    pwspeed |     -0.07 | [-0.10, -0.03] |   -3.63 | 0.005**  
+pbl12      |       wdir |      0.43 | [ 0.40,  0.46] |   25.44 | < .001***
+pbl12      | wspeed_max |      0.14 | [ 0.11,  0.18] |    7.76 | < .001***
+pblmin     |        ptp |      0.17 | [ 0.14,  0.21] |    9.50 | < .001***
+pblmin     |    pwspeed |      0.38 | [ 0.35,  0.41] |   22.38 | < .001***
+pblmin     |         rh |      0.01 | [-0.02,  0.05] |    0.70 | > .999   
+pblmin     |       v10m |      0.14 | [ 0.11,  0.18] |    7.92 | < .001***
+pblmin     |       wdir |     -0.06 | [-0.09, -0.02] |   -3.02 | 0.041*   
+pblmin     | wspeed_max |      0.27 | [ 0.24,  0.31] |   15.36 | < .001***
+ptp        |    pwspeed |      0.33 | [ 0.29,  0.36] |   18.65 | < .001***
+rh         |       v10m |      0.33 | [ 0.29,  0.36] |   18.62 | < .001***
+rh         |       wdir |     -0.25 | [-0.29, -0.22] |  -14.09 | < .001***
+rh         | wspeed_max |     -0.09 | [-0.12, -0.05] |   -4.74 | < .001***
+t2m        |       v10m |      0.19 | [ 0.16,  0.23] |   10.69 | < .001***
+t2m        |       wdir |      0.42 | [ 0.39,  0.45] |   25.32 | < .001***
+t2m        | wspeed_max |      0.01 | [-0.02,  0.05] |    0.77 | > .999   
+u10m       |       v10m |     -0.14 | [-0.18, -0.11] |   -7.91 | < .001***
+u10m       |       wdir |      0.59 | [ 0.56,  0.61] |   39.20 | < .001***
+u10m       |     wspeed |     -0.24 | [-0.28, -0.21] |  -13.65 | < .001***
+u10m       | wspeed_max |      0.04 | [ 0.01,  0.08] |    2.24 | 0.355    
+v10m       |       wdir |      0.07 | [ 0.04,  0.11] |    3.96 | 0.002**  
+v10m       | wspeed_max |      0.08 | [ 0.04,  0.11] |    4.14 | < .001***
+wspeed     | wspeed_max |      0.41 | [ 0.38,  0.44] |   24.01 | < .001***
+
+p-value adjustment method: Holm (1979)
+Observations: 2922
+
+[1] "s(u10m)"   "s(wspeed)" "s(t2m)"    "s(pblmin)" "s(rh)"     "s(v10m)"  
+[7] "s(pbl12)"  "s(ptp)"   
+
+
+Family: gaussian 
+Link function: log 
+
+Formula:
+value ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + 
+    s(u10m) + s(wspeed) + s(t2m) + s(pblmin) + s(rh) + s(v10m) + 
+    s(pbl12) + s(ptp)
+
+Parametric coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       3.245059   0.016768 193.527  < 2e-16 ***
+weekdaygiovedì    0.221460   0.020815  10.639  < 2e-16 ***
+weekdaylunedì     0.198068   0.021194   9.346  < 2e-16 ***
+weekdaymartedì    0.213241   0.020897  10.204  < 2e-16 ***
+weekdaymercoledì  0.225970   0.020782  10.873  < 2e-16 ***
+weekdaysabato     0.139530   0.021563   6.471 1.15e-10 ***
+weekdayvenerdì    0.240978   0.020754  11.611  < 2e-16 ***
+lockL3           -0.010346   0.079387  -0.130   0.8963    
+lockL4            0.040419   0.079374   0.509   0.6106    
+lockL5           -0.003427   0.080432  -0.043   0.9660    
+lockL6            0.215200   0.088115   2.442   0.0147 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Approximate significance of smooth terms:
+            edf Ref.df       F  p-value    
+s(mese)   9.326 10.000  31.231  < 2e-16 ***
+s(jd)     3.988  4.000 150.467  < 2e-16 ***
+s(u10m)   4.451  5.596  19.780  < 2e-16 ***
+s(wspeed) 1.000  1.000  15.960 6.63e-05 ***
+s(t2m)    6.311  7.489   4.931 1.25e-05 ***
+s(pblmin) 6.088  7.076  14.984  < 2e-16 ***
+s(rh)     5.124  6.223  13.892  < 2e-16 ***
+s(v10m)   6.279  7.318   8.602  < 2e-16 ***
+s(pbl12)  3.048  3.894  17.607  < 2e-16 ***
+s(ptp)    4.079  4.998   3.846  0.00179 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+R-sq.(adj) =   0.61   Deviance explained = 61.8%
+GCV = 91.172  Scale est. = 87.656    n = 2827
+
+========================================================================= 
+Log End Time: 2023-02-22 10:03:56 
+Log Elapsed Time: 0 00:00:04 
+========================================================================= 

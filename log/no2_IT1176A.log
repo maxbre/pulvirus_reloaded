@@ -1,0 +1,68 @@
+========================================================================= 
+Log Path: ./log/no2_IT1176A.log 
+Program Path: /home/rmorelli/R/pulvirus/presentazione/corso-05.R 
+Working Directory: /home/rmorelli/R/pulvirus/presentazione 
+User Name: rmorelli 
+R Version: 4.1.1 (2021-08-10) 
+Machine: annuario x86_64 
+Operating System: Linux 5.10.0-8-amd64 #1 SMP Debian 5.10.46-5 (2021-09-23) 
+Log Start Time: 2023-02-22 13:30:16 
+========================================================================= 
+
+# A tibble: 1 × 4
+  comune nome_stazione     st_x  st_y
+  <chr>  <chr>            <dbl> <dbl>
+1 Roma   L.GO PERESTRELLO  12.5  41.9
+
+NOTE: Data frame has 1 rows and 4 columns. 
+
+NOTE: Log Print Time:  2023-02-22 13:30:16 
+NOTE: Elapsed Time in seconds: 0.0372049808502197 
+
+Modelli NON backward:  
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 14 
+
+Modello migliore:  
+
+log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, 
+    k = 5) + s(pblmin)
+
+Indice:  14 
+
+ [1] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(t2m), data = df)"       
+ [2] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(tp), data = df)"        
+ [3] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(ptp), data = df)"       
+ [4] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(rh), data = df)"        
+ [5] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m), data = df)"      
+ [6] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(v10m), data = df)"      
+ [7] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(wspeed), data = df)"    
+ [8] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(wspeed_max), data = df)"
+ [9] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pwspeed), data = df)"   
+[10] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(wdir), data = df)"      
+[11] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(sp), data = df)"        
+[12] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pbl00), data = df)"     
+[13] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pbl12), data = df)"     
+[14] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin), data = df)"    
+
+ [1] 1011.7958  898.8876 1004.8812 1098.2894  960.6892  467.7172  459.2421  890.8494  981.6749  939.7422  844.2901  585.4108  969.8118  344.5157
+
+Variabile scelta: pblmin - AIC 344.52 
+
+Variabili in ICS: 1 
+
+Modelli NON backward:  
+
+---------- START: ################## 
+
+modelli tra cui scegliere: 13 
+
+Errore in bestMod(models, bic) : 
+  argomento "bic" assente, senza valore predefinito
+ 
+
+NOTE: Log Print Time:  2023-02-22 13:30:22 
+NOTE: Elapsed Time in seconds: 5.90589594841003 
+
