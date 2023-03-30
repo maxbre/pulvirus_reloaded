@@ -66,6 +66,8 @@ dfs2 %>%
 mod.res %>% 
   map(~ map_dbl(.x, AIC)) 
 
+mod.res %>% 
+  map(~ map_dbl(.x, BIC)) 
 
 ## applichiamo i modelli ####
 
