@@ -1,653 +1,2376 @@
 ========================================================================= 
 Log Path: validazione/log/pm10.log 
-Program Path: /home/rmorelli/R/pulvirus/presentazione/corso-06.R 
-Working Directory: /home/rmorelli/R/pulvirus/presentazione 
+Working Directory: /home/rmorelli/R/pulvirus_reloaded 
 User Name: rmorelli 
 R Version: 4.2.2 Patched (2022-11-10 r83330) 
 Machine: asiispra x86_64 
 Operating System: Linux 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) 
-Base Packages: stats graphics grDevices utils datasets methods base Other Packages: FSMUMI_1.0 Metrics_0.1.4 mgcViz_0.1.9 ggplot2_3.4.1 qgam_1.3.4 lubridate_1.9.2 datiMeteo_0.0.6 datiInquinanti_0.0.8 glue_1.6.2 stringr_1.5.0 readr_2.1.4 purrr_1.0.1 tidyselect_1.2.0 mgcv_1.8-42 nlme_3.1-162 logr_1.3.3 dplyr_1.1.1 correlation_0.8.3 
-Log Start Time: 2023-03-23 15:11:54 
+Base Packages: tools stats graphics grDevices utils datasets methods base Other Packages: tibble_3.2.1 readr_2.1.4 logr_1.3.3 stringr_1.5.0 FSMUMI_1.0 glue_1.6.2 Metrics_0.1.4 mgcViz_0.1.9 ggplot2_3.4.2 qgam_1.3.4 mgcv_1.8-42 nlme_3.1-162 lubridate_1.9.2 dplyr_1.1.2 datiMeteo_0.0.6 datiInquinanti_0.0.8 
+Log Start Time: 2023-05-15 12:31:16 
 ========================================================================= 
 
 pm10 
 
-NOTE: Log Print Time:  2023-03-23 15:11:54 
-NOTE: Elapsed Time: 0.000644922256469727 secs 
+NOTE: Log Print Time:  2023-05-15 12:31:16 
+NOTE: Elapsed Time: 0.00084996223449707 secs 
 
-IT0470A 1 
+IT0825A 1 
 
-IT0643A 2 
+run 1 
 
-IT1114A 3 
+run 2 
 
-IT1247A 4 
+run 3 
 
-IT1509A 5 
+run 4 
 
-IT1510A 6 
+run 5 
 
-IT1519A 7 
+run 6 
 
-IT1524A 8 
+run 7 
 
-IT1529A 9 
+run 8 
 
-IT1533A 10 
+run 9 
 
-IT1676A 11 
+run 10 
 
-IT1830A 12 
+run 11 
 
-IT1847A 13 
+run 12 
 
-IT1904A 14 
+run 13 
 
-IT1948A 15 
+run 14 
 
-IT1011A 16 
+run 15 
 
-IT1180A 17 
+run 16 
 
-IT1182A 18 
+run 17 
 
-IT1365A 19 
+run 18 
 
-IT1728A 20 
+run 19 
 
-IT1860A 21 
+run 20 
 
-IT1900A 22 
+run 21 
 
-IT1901A 23 
+run 22 
 
-IT2004A 24 
+run 23 
 
-IT2064A 25 
+run 24 
 
-IT2100A 26 
+run 25 
 
-IT2105A 27 
+run 26 
 
-IT2109A 28 
+run 27 
 
-IT2113A 29 
+run 28 
 
-IT2114A 30 
+run 29 
 
-IT0460A 31 
+run 30 
 
-IT0461A 32 
+IT0828A 2 
 
-IT1361A 33 
+run 1 
 
-IT1773A 34 
+run 2 
 
-IT1795A 35 
+run 3 
 
-IT1843A 36 
+run 4 
 
-IT2177A 37 
+run 5 
 
-IT0825A 38 
+run 6 
 
-IT0828A 39 
+run 7 
 
-IT0863A 40 
+run 8 
 
-IT0865A 41 
+run 9 
 
-IT0867A 42 
+run 10 
 
-IT0869A 43 
+run 11 
 
-IT0870A 44 
+run 12 
 
-IT0871A 45 
+run 13 
 
-IT0887A 46 
+run 14 
 
-IT0888A 47 
+run 15 
 
-IT0889A 48 
+run 16 
 
-IT0952A 49 
+run 17 
 
-IT0957A 50 
+run 18 
 
-IT0989A 51 
+run 19 
 
-IT0991A 52 
+run 20 
 
-IT0992A 53 
+run 21 
 
-IT1176A 54 
+run 22 
 
-IT1183A 55 
+run 23 
 
-IT1184A 56 
+run 24 
 
-IT1200A 57 
+run 25 
 
-IT1836A 58 
+run 26 
 
-IT1837A 59 
+run 27 
 
-IT1841A 60 
+run 28 
 
-IT2012A 61 
+run 29 
 
-IT2013A 62 
+run 30 
 
-IT2023A 63 
+IT0863A 3 
 
-IT2172A 64 
+run 1 
 
-IT2173A 65 
+run 2 
 
-IT2174A 66 
+run 3 
 
-IT2175A 67 
+run 4 
 
-IT2246A 68 
+run 5 
 
-IT2264A 69 
+run 6 
 
-IT1856A 70 
+run 7 
 
-IT1977A 71 
+run 8 
 
-IT1603A 72 
+run 9 
 
-IT1609A 73 
+run 10 
 
-IT1610A 74 
+run 11 
 
-IT1611A 75 
+run 12 
 
-IT1613A 76 
+run 13 
 
-IT1614A 77 
+run 14 
 
-IT1618A 78 
+run 15 
 
-IT1621A 79 
+run 16 
 
-IT1624A 80 
+run 17 
 
-IT1666A 81 
+run 18 
 
-IT1680A 82 
+run 19 
 
-IT1687A 83 
+run 20 
 
-IT1702A 84 
+run 21 
 
-IT1818A 85 
+run 22 
 
-IT1822A 86 
+run 23 
 
-IT1932A 87 
+run 24 
 
-IT2003A 88 
+run 25 
 
-IT2019A 89 
+run 26 
 
-IT2044A 90 
+run 27 
 
-IT2051A 91 
+run 28 
 
-IT2058A 92 
+run 29 
 
-IT2137A 93 
+run 30 
 
-IT2144A 94 
+IT0865A 4 
 
-IT2148A 95 
+run 1 
 
-IT2149A 96 
+run 2 
 
-IT2150A 97 
+run 3 
 
-IT2151A 98 
+run 4 
 
-IT1586A 99 
+run 5 
 
-IT1897A 100 
+run 6 
 
-IT2202A 101 
+run 7 
 
-IT2204A 102 
+run 8 
 
-IT2205A 103 
+run 9 
 
-IT1938A 104 
+run 10 
 
-IT1940A 105 
+run 11 
 
-IT1989A 106 
+run 12 
 
-IT2031A 107 
+run 13 
 
-IT2086A 108 
+run 14 
 
-IT2087A 109 
+run 15 
 
-IT2090A 110 
+run 16 
 
-IT2091A 111 
+run 17 
 
-IT2092A 112 
+run 18 
 
-IT2093A 113 
+run 19 
 
-IT2110A 114 
+run 20 
 
-IT2112A 115 
+run 21 
 
-IT1346A 116 
+run 22 
 
-IT1888A 117 
+run 23 
 
-IT0988A 118 
+run 24 
 
-IT2233A 119 
+run 25 
 
-IT1243A 120 
+run 26 
 
-IT1269A 121 
+run 27 
 
-IT1277A 122 
+run 28 
 
-IT1278A 123 
+run 29 
 
-IT1309A 124 
+run 30 
 
-IT1347A 125 
+IT0867A 5 
 
-IT1375A 126 
+run 1 
 
-IT1377A 127 
+run 2 
 
-IT1378A 128 
+run 3 
 
-IT1383A 129 
+run 4 
 
-IT1397A 130 
+run 5 
 
-IT1427A 131 
+run 6 
 
-IT1576A 132 
+run 7 
 
-IT1993A 133 
+run 8 
 
-IT1994A 134 
+run 9 
 
-IT1998A 135 
+run 10 
 
-IT2005A 136 
+run 11 
 
-IT2008A 137 
+run 12 
 
-IT2009A 138 
+run 13 
 
-IT2010A 139 
+run 14 
 
-IT2040A 140 
+run 15 
 
-IT2059A 141 
+run 16 
 
-IT2060A 142 
+run 17 
 
-IT0594A 143 
+run 18 
 
-IT0705A 144 
+run 19 
 
-IT0706A 145 
+run 20 
 
-IT0707A 146 
+run 21 
 
-IT0709A 147 
+run 22 
 
-IT0740A 148 
+run 23 
 
-IT0771A 149 
+run 24 
 
-IT0777A 150 
+run 25 
 
-IT0778A 151 
+run 26 
 
-IT0839A 152 
+run 27 
 
-IT0840A 153 
+run 28 
 
-IT0846A 154 
+run 29 
 
-IT0906A 155 
+run 30 
 
-IT0908A 156 
+IT0869A 6 
 
-IT0912A 157 
+run 1 
 
-IT0997A 158 
+run 2 
 
-IT1010A 159 
+run 3 
 
-IT1016A 160 
+run 4 
 
-IT1034A 161 
+run 5 
 
-IT1104A 162 
+run 6 
 
-IT1153A 163 
+run 7 
 
-IT1190A 164 
+run 8 
 
-IT1286A 165 
+run 9 
 
-IT1287A 166 
+run 10 
 
-IT1294A 167 
+run 11 
 
-IT1385A 168 
+run 12 
 
-IT1388A 169 
+run 13 
 
-IT1392A 170 
+run 14 
 
-IT1459A 171 
+run 15 
 
-IT1463A 172 
+run 16 
 
-IT1464A 173 
+run 17 
 
-IT1588A 174 
+run 18 
 
-IT1646A 175 
+run 19 
 
-IT1650A 176 
+run 20 
 
-IT1692A 177 
+run 21 
 
-IT1735A 178 
+run 22 
 
-IT1737A 179 
+run 23 
 
-IT1743A 180 
+run 24 
 
-IT1865A 181 
+run 25 
 
-IT1868A 182 
+run 26 
 
-IT1869A 183 
+run 27 
 
-IT1873A 184 
+run 28 
 
-IT1874A 185 
+run 29 
 
-IT1876A 186 
+run 30 
 
-IT1964A 187 
+IT0870A 7 
 
-IT1965A 188 
+run 1 
 
-IT1967A 189 
+run 2 
 
-IT2007A 190 
+run 3 
 
-IT2062A 191 
+run 4 
 
-IT2063A 192 
+run 5 
 
-IT1191A 193 
+run 6 
 
-IT0499A 194 
+run 7 
 
-IT0507A 195 
+run 8 
 
-IT0508A 196 
+run 9 
 
-IT1334A 197 
+run 10 
 
-IT1335A 198 
+run 11 
 
-IT0591A 199 
+run 12 
 
-IT0703A 200 
+run 13 
 
-IT0753A 201 
+run 14 
 
-IT1037A 202 
+run 15 
 
-IT1859A 203 
+run 16 
 
-IT0448A 204 
+run 17 
 
-IT0663A 205 
+run 18 
 
-IT0963A 206 
+run 19 
 
-IT1177A 207 
+run 20 
 
-IT1213A 208 
+run 21 
 
-IT1214A 209 
+run 22 
 
-IT1215A 210 
+run 23 
 
-IT1328A 211 
+run 24 
 
-IT1336A 212 
+run 25 
 
-IT1340A 213 
+run 26 
 
-IT1453A 214 
+run 27 
 
-IT1590A 215 
+run 28 
 
-IT1594A 216 
+run 29 
 
-IT1596A 217 
+run 30 
 
-IT1619A 218 
+IT0871A 8 
 
-IT1790A 219 
+run 1 
 
-IT1848A 220 
+run 2 
 
-IT1871A 221 
+run 3 
 
-IT1880A 222 
+run 4 
 
-IT1936A 223 
+run 5 
 
-IT2072A 224 
+run 6 
 
-IT2231A 225 
+run 7 
 
-IT2243A 226 
+run 8 
 
-IT1090A 227 
+run 9 
 
-IT1112A 228 
+run 10 
 
-IT1166A 229 
+run 11 
 
-IT1168A 230 
+run 12 
 
-IT1259A 231 
+run 13 
 
-IT2115A 232 
+run 14 
 
-IT2133A 233 
+run 15 
 
-IT2140A 234 
+run 16 
 
-IT2152A 235 
+run 17 
 
-IT2169A 236 
+run 18 
 
-IT2170A 237 
+run 19 
 
-IT2182A 238 
+run 20 
 
-IT2200A 239 
+run 21 
 
-IT1026A 240 
+run 22 
 
-IT1144A 241 
+run 23 
 
-IT1456A 242 
+run 24 
 
-IT1457A 243 
+run 25 
 
-IT1536A 244 
+run 26 
 
-IT1661A 245 
+run 27 
 
-IT1886A 246 
+run 28 
 
-IT1943A 247 
+run 29 
 
-IT2038A 248 
+run 30 
 
-IT2155A 249 
+IT0884A 9 
 
-IT0187A 250 
+run 1 
 
-IT0544A 251 
+run 2 
 
-IT0721A 252 
+run 3 
 
-IT0755A 253 
+run 4 
 
-IT0804A 254 
+run 5 
 
-IT0892A 255 
+run 6 
 
-IT0895A 256 
+run 7 
 
-IT0903A 257 
+run 8 
 
-IT1043A 258 
+run 9 
 
-IT1044A 259 
+run 10 
 
-IT1048A 260 
+run 11 
 
-IT1105A 261 
+run 12 
 
-IT1159A 262 
+run 13 
 
-IT1163A 263 
+run 14 
 
-IT1179A 264 
+run 15 
 
-IT1204A 265 
+run 16 
 
-IT1451A 266 
+run 17 
 
-IT1670A 267 
+run 18 
 
-IT1672A 268 
+run 19 
 
-IT1771A 269 
+run 20 
 
-IT1908A 270 
+run 21 
 
-IT1910A 271 
+run 22 
 
-IT1911A 272 
+run 23 
 
-IT1914A 273 
+run 24 
 
-IT1916A 274 
+run 25 
 
-IT1918A 275 
+run 26 
 
-IT1920A 276 
+run 27 
 
-IT1921A 277 
+run 28 
 
-IT1923A 278 
+run 29 
 
-IT1928A 279 
+run 30 
 
-IT1975A 280 
+IT0885A 10 
 
-IT2027A 281 
+run 1 
 
-IT2074A 282 
+run 2 
 
-IT2075A 283 
+run 3 
 
-IT2097A 284 
+run 4 
 
-IT2156A 285 
+run 5 
 
-IT2158A 286 
+run 6 
 
-IT2209A 287 
+run 7 
 
-IT0063A 288 
+run 8 
 
-IT0832A 289 
+run 9 
 
-IT0860A 290 
+run 10 
 
-IT0861A 291 
+run 11 
 
-IT0862A 292 
+run 12 
 
-IT0945A 293 
+run 13 
 
-IT0948A 294 
+run 14 
 
-IT0950A 295 
+run 15 
 
-IT1001A 296 
+run 16 
 
-IT1071A 297 
+run 17 
 
-IT1110A 298 
+run 18 
 
-IT1149A 299 
+run 19 
 
-IT1186A 300 
+run 20 
 
-IT1409A 301 
+run 21 
 
-IT1551A 302 
+run 22 
 
-IT1553A 303 
+run 23 
 
-IT1557A 304 
+run 24 
 
-IT1560A 305 
+run 25 
 
-IT1592A 306 
+run 26 
 
-IT1593A 307 
+run 27 
 
-IT1654A 308 
+run 28 
 
-IT1681A 309 
+run 29 
 
-IT2032A 310 
+run 30 
 
-IT2153A 311 
+IT0887A 11 
 
-IT2154A 312 
+run 1 
 
-IT2183A 313 
+run 2 
 
-IT2184A 314 
+run 3 
 
-IT2240A 315 
+run 4 
 
-IT2241A 316 
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0888A 12 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0889A 13 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0952A 14 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0953A 15 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0957A 16 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0989A 17 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0991A 18 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT0992A 19 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1176A 20 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1183A 21 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1184A 22 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1200A 23 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1834A 24 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1835A 25 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1836A 26 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1837A 27 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1841A 28 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT1906A 29 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2012A 30 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2013A 31 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2023A 32 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2172A 33 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2173A 34 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2174A 35 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2175A 36 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2246A 37 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
+
+IT2264A 38 
+
+run 1 
+
+run 2 
+
+run 3 
+
+run 4 
+
+run 5 
+
+run 6 
+
+run 7 
+
+run 8 
+
+run 9 
+
+run 10 
+
+run 11 
+
+run 12 
+
+run 13 
+
+run 14 
+
+run 15 
+
+run 16 
+
+run 17 
+
+run 18 
+
+run 19 
+
+run 20 
+
+run 21 
+
+run 22 
+
+run 23 
+
+run 24 
+
+run 25 
+
+run 26 
+
+run 27 
+
+run 28 
+
+run 29 
+
+run 30 
 
 ========================================================================= 
-Log End Time: 2023-03-23 15:30:23 
-Log Elapsed Time: 0 00:18:28 
+Log End Time: 2023-05-15 16:01:22 
+Log Elapsed Time: 0 03:30:05 
 ========================================================================= 
