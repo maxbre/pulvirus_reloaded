@@ -1,0 +1,640 @@
+---
+title: |
+    | Progetto Pulvirus
+    | Attività 1.4: Applicazione Modelli GAM 
+author: |
+  | Mariacarmela Cusano, Alessandra Gaeta, Giuseppe Gandolfo, Alessandra Galosi, 
+  | Gianluca Leone, Raffaele Morelli, Fabiana Scotto
+header-includes: 
+  \usepackage{graphicx}
+  \usepackage{float}
+  \floatplacement{figure}{H}
+output:
+  html_document: 
+    number_sections: true
+    fig_caption: yes
+    css: relazione_styles.css
+    toc: yes
+    toc_depth: 2
+  pdf_document: 
+    number_sections: true
+    toc: yes
+    toc_depth: 2
+  word_document:
+    number_sections: true
+    fig_caption: yes
+    toc: yes
+    toc_depth: 2
+date: "`r Sys.time()`"
+---
+
+\pagebreak
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.path = "images/")
+source('report_functions.R')
+```
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabella}
+\renewcommand{\contentsname}{Indice}
+
+\pagebreak
+
+# Introduzione
+
+Nella presente relazione, redatta come rendicontazione di una parte delle linee di attività 1.4 del progetto Pulvirus, si cerca di valutare l’effetto delle misure restrittive attuate durante il periodo di lockdown del 2020, a seguito della pandemia di COVID 19, sui livelli di alcuni inquinanti (NO~2~, PM~10~, PM~2.5~, O~3~, CO) rilevati nelle stazioni di monitoraggio della qualità dell’aria in Italia. 
+
+A tale scopo sono stati utilizzati i modelli statistici additivi generalizzati (GAM) che consentono di normalizzare a livello meteorologico le serie storiche pluriennali delle concentrazioni degli inquinanti in atmosfera e di valutare il contributo nel tempo di specifiche variabili esplicative. 
+
+\pagebreak
+
+# Dati
+
+## Dati di qualità dell’aria
+
+I dati di qualità dell’aria utilizzati nel presente studio sono relativi ai principali inquinanti misurati nelle stazioni di monitoraggio distribuite sul territorio italiano nel periodo di osservazione che va dal 01/01/2013 al 31/12/2020. Le informazioni utilizzate sono state estratte dal database nazionale InfoARIA nel quale vengono raccolti e archiviati dati e metadati di qualità dell’aria trasmessi dalle ARPA/APPA, secondo quanto previsto dalla Direttiva 2008/50/CE, dal D.Lgs 155/2010 di recepimento e dalla Decisione 2011/850/CE. Ogni ARPA/APPA applica un rigoroso protocollo basato su successivi livelli di validazione, prima di pervenire alla pubblicazione del dato finale. Gli inquinanti presi in considerazione sono stati NO~2~, PM~10~, PM~2.5~, O~3~ e CO. Le stazioni sono state distinte in Fondo urbano e suburbano, Traffico, Rurale e Industriale. 
+
+Nel rispetto dei criteri di aggregazione dei dati previsti dall’Allegato VII e XI al D.Lgs. 155/2010 sono stati elaborati valori medi giornalieri a partire dalle serie con almeno il 75% di dati orari validi (18 dati orari su 24); lo stesso criterio è stato adottato per l’elaborazione dei valori medi settimanali e mensili a partire dalle serie di dati giornalieri. Soltanto per l'ozono è stato considerato il valore massimo giornaliero sulle 24 ore. Le osservazioni con valori negativi o pari a zero sono state convenzionalmente sostituite con un valore pari a 0.2 µg/m^3^. Un anno è stato considerato valido se contiene tutte le stagioni valide (almeno due mesi validi per stagione); per il 2020 sono state considerate valide le serie con tutti i mesi validati. Nel periodo di osservazione 2013-2020, una serie è stata considerata valida se lunga almeno 5 anni. Sui dataset validati così ottenuti non sono state applicate procedure di filtrazione degli outliers.
+
+Sono state considerate più di 1000 serie di dati validi, divise per inquinante e distribuite nelle varie regioni; la maggior disponibilità ha riguardato il nord, in particolare Lombardia (189) ed Emilia Romagna (137) ma anche Toscana (93) e Veneto (98) mentre al centro, sud e isole il Lazio e la Sardegna presentano rispettivamente 123 e 98 serie valide. Per PM~10~ e NO~2~ sono state utilizzate circa 350 serie; in linea con la natura dell’inquinante, la cui valutazione rispetta gli obiettivi ambientali previsti dalla normativa e per cui è prevista la riduzione dei siti fissi di campionamento, la minor disponibilità di dati ha riguardato il CO. Le serie di dati validi per inquinante e regione sono riportate in Tabella 1.
+
+Per le serie di dati validi, con periodo di mediazione settimanale o mensile, sono state elaborate statistiche descrittive e grafici. I principali risultati sono riportati in un’applicazione che ne consente la visualizzazione interattiva sia da mappa che da tabella. Le informazioni riportate sono:
+
+* metadati della stazione: nome, coordinate, quota, tipologia di stazione;
+* statistiche descrittive delle serie dei valori medi mensili anno per anno: sono stati calcolati media, 5°, 25°, 50°, 75°, 90.4° e 95° percentile, minimo e massimo; 
+* andamenti delle serie di dati, sia settimanali che mensili, relativi a ciascun anno;
+* *box plot*, diagrammi polari e pollution rose delle serie dei valori medi mensili.
+
+L’applicazione è disponibile al link: https://www.pulvirus.it/dashboard.
+
+\pagebreak
+
+```{r}
+df_sval[is.na(df_sval)] <- 0
+
+df_sval %>% 
+  select(-c(1, 3, 10)) %>% 
+  group_by(regione) %>% 
+  summarise_all(list(sum)) %>% adorn_totals() %>% 
+  kable(format = 'markdown', 
+        col.names = c("Regione", "PM~10~",	"PM~2.5~",	"CO",	"NOx",	"NO~2~",	"O~3~",	"Tot"),
+        caption = 'Serie di dati validi per regione e inquinante')
+```
+
+\pagebreak
+
+## Dati meteorologici
+
+I dati meteorologici impiegati nella presente analisi fanno parte del dataset ERA5 generato dal servizio Copernicus sui cambiamenti climatici. Questo dataset si riferisce a dati spaziali di rianalisi di condizioni meteorologiche orarie. Tutte le variabili hanno una risoluzione orizzontale pari 0.1° x 0.1°, tranne l’altezza dello strato limite planetario che invece ha una risoluzione pari a 0.25° x 0.25°.
+Ad ogni stazione appartenente alla rete di monitoraggio della qualità dell’aria in Italia è stato associato il punto del grigliato di ERA5 più vicino. I dati orari di queste variabili sono stati aggregati su base giornaliera e coprono un arco temporale che va dal 01/01/2013 al 31/12/2021.
+
+
+```{r, results='asis'}
+here_lines <- '|Variabile | Descrizione | Unità di misura |
+|---|---|---|
+|t2m| temperatura media dell’aria a 2 metri d’altezza sulla superficie terrestre | °C (gradi Centigradi)|
+|tmin2m | temperatura minima dell’aria a 2 metri d’altezza sulla superficie terrestre | °C (gradi Centigradi) |
+| tmax2m | temperatura massima dell’aria a 2 metri d’altezza sulla superficie terrestre | °C (gradi Centigradi) |
+| rh | umidità relativa percentuale dell’aria sulla superficie terrestre | % |
+| tp | precipitazione cumulata sulla superficie terrestre | mm (millimetri) |
+| ptp | precipitazione cumulata sulla superficie terrestre | mm (millimetri) |
+| u10m | componente orizzontale verso Est del vento a 10 metri d’altezza sulla superficie terrestre | m/s (metri al secondo) |
+| 10m | componente orizzontale verso Nord del vento a 10 metri d’altezza sulla superficie terrestre m/s (metri al secondo) |
+| wspeed | Intensità della velocità orizzontale del vento a 10 metri d’altezza sulla superficie terrestre | m/s (metri al secondo) |
+| pwspeed | Intensità della velocità orizzontale del vento a 10 metri d’altezza sulla superficie terrestre | m/s (metri al secondo) |
+| wdir | direzione di provenienza del vento orizzontale a 10 metri d’altezza sulla superficie terrestre, espressa in settori di prevalenza di direzione (i settori sono espressi con numeri da 1 a 8, in base alla suddivisione angolare del piano in 8 quadranti da 45°, contati in senso orario dal Nord) | adimensionale |
+| sp | pressione dell’aria sulla superficie terrestre | hPa (ettoPascal) |
+| nirradiance irradianza solare netta che raggiunge un piano orizzontale sulla superficie terrestre | W/mq (Watt su metri quadri) |
+| pbl00 | altezza dello strato limite planetario alle ore 00 | km (kilometri) |
+| pbl12 | altezza dello strato limite planetario alle ore 12 | km (kilometri) |
+| pblmin | altezza minima dello strato limite planetario | km (kilometri) |
+| pblmax | altezza massima dello strato limite planetario | km (kilometri) |'
+
+kable(cat(here_lines), format = 'markdown', caption = 'Variabili meteo - dati giornalieri')
+```
+
+Nel dataset finale utilizzato per l’implementazione del modello GAM, sono state inserite alcune variabili a lag -1 (giorno precedente) per cercare di cogliere almeno in parte l’eventuale effetto delle condizioni meteorologiche del giorno precedente sui livelli degli inquinanti. Tali variabili sono: ptp, wspeed, pblmax e pblmin. 
+
+\pagebreak
+
+# Metodi
+
+## Modelli GAM
+
+
+### Introduzione utilizzo modelli GAM in letteratura con riferimento alla relazione 1.2
+
+I modelli statistici additivi generalizzati (Generalised Additive Models, GAM), adoperando funzioni di lisciamento ("smoothing"), consentono di valutare interazioni di tipo non lineare tra le covariate e la variabile risposta anche nel caso, molto frequente, in cui non ci sia una conoscenza a priori del tipo di legame funzionale. 
+
+La forma funzionale standard del modello GAM è così definita (Wood, 2017):
+
+<p style="text-align: center;">
+* $g(\mu_i) = A_i + \sum f_j(x_{ji})$
+* $y_i \sim EF(\mu_i)$
+</p>
+
+con 
+
+* $y_i$ = variabile risposta
+* $\mu_i = E(y_i)$ valore atteso di $y_i$
+* $y_i \sim EF(\mu_i, |psi)$ = distribuzione esponenziale di $y_i$
+* $A_i\gamma$ = $i_{th}$ riga della matrice dei parametri del modello con il suo corrispondente vettore
+* $f_j(x_{ji})$ = funzione di smoothing per le j covariate
+
+L’utilizzo delle funzioni di smoothing nei modelli GAM ha mostrato ottime potenzialità nell’analisi dei sistemi ecologici complessi (Zuur et alii, 2009 e Zuur, 2012).
+
+Questi modelli statistici, sulla base di quanto presente nella letteratura scientifica (Barmpadimos et al. 2012, Carslaw et al 2007, Ordóñez et al 2020), possono essere utilizzati per normalizzare a livello meteorologico le serie storiche pluriennali delle concentrazioni degli inquinanti in atmosfera, rilevate dalla rete di monitoraggio. Per l’analisi di dettaglio della letteratura scientifica in materia si rimanda alla relazione sull’attività 1.2 nell’ambito del progetto Pulvirus.
+
+In linea con quanto premesso, nel presente studio si cerca di valutare l’effetto delle misure restrittive attuate durante il periodo di lockdown, a causa dell’inizio della pandemia per il COVID 19, sui livelli di concentrazione di alcuni inquinanti (NO~2~, pm~10~, PM~25~, O~3~, CO) rilevati nelle stazioni di monitoraggio della qualità dell’aria (cfr. § Dati di qualità dell’aria). Pertanto la variabile risposta (logaritmo della concentrazione dell’inquinante, come spesso rilevato in letteratura) è stata ricostruita mediante il suddetto modello GAM in funzione delle variabili esplicative meteorologiche e temporali, prendendo come riferimento di massima lo studio di Hua et al. 2021. L’implementazione del modello è stata realizzata attraverso il pacchetto mgcv di R.
+
+## Descrizione generale modello
+
+Per l’impostazione del modello è stato preso come riferimento lo studio di Hua et al. 2021, in cui il modello utilizzato comprendeva variabili multi-temporali, per caratterizzare la variazione delle emissioni, e parametri meteorologici per rappresentare la relazione tra la meteorologia e la variabile risposta. In particolare, le variabili temporali includevano tendenze interannuali, cicli stagionali, variazioni infrasettimanali, periodi di lockdown (Pre-lockdown, ogni mese da febbraio a giugno 2020) e variazioni intragiornaliere; i fattori meteorologici includevano l’umidità relativa (RH), altezza dello strato limite (BLH), velocità del vento (U, V),  temperatura dell'aria a 2 m sopra la superficie (T2M), temperatura del punto di rugiada (D2M), pressione superficiale (SP) e precipitazione (P).
+
+La selezione del tipo di funzione per le componenti interannuale, stagionale, settimanale, giornaliera e meteorologica è stata effettuata sulla base di quanto riportato in alcuni studi precedenti (*Zhou* et al., 2012; de Foy, 2018; de Foy et al., 2019); per la variabile interannuale è stato utilizzato un andamento lineare per rappresentare la variazione delle concentrazioni degli inquinanti atmosferici, principalmente influenzato dalle politiche di controllo di lungo termine; il termine stagionale utilizzava una funzione spline per cercare di cogliere gli effetti residui della stagionalità ulteriori rispetto a quelli  spiegati dalle variabili esplicative meteorologiche; le variabili categoriali per le componenti settimanale e giornaliera erano principalmente legate ai comportamenti delle persone. 
+La ragione della scelta di una variabile lockdown categoriale mensile applicata nello studio Hua et al. 2021, risiede nella capacità di questa di riprodurre idoneamente l'improvvisa attuazione di rigide misure di controllo all'inizio della pandemia di COVID-19. 
+
+Il modello utilizzato nello studio è descritto dalla seguente equazione:
+
+$log(Concs + offset) = \alpha_{yr} + s(t_{month}) + \sum_{n=1}^{5}\alpha_{wkdn}t_{wkdn} + \sum_{n=1}^{6}\alpha_{ldk}t_{ldk} + \sum_{n=1}^{3}\sum_{n=1}^{24}\alpha_{hri,h}t_{thr,h} + s_{2}(BLH) + s_{3}(U,V) + s_{4}(Optimized Input) + \alpha_{baseline} + \epsilon$ 
+
+Dove:
+
+* Concs sono le serie temporali delle concentrazioni degli inquinanti PM~2.5~ o NO~2~, nel sito oggetto di studio (area di Beijing), da gennaio a giugno nel periodo 2015-2020. 
+* $\alpha$ sono i coefficienti di regressione,
+* $\alpha_{baseline}$ è una costante derivata dal modello ed è utilizzata per rappresentare le concentrazioni medie dopo aver tenuto conto degli impatti di tutti i fattori nel modello. 
+* s() sono le funzioni smooth utilizzate per caratterizzare gli impatti non lineari delle variazioni stagionali e dei parametri meteorologici sulla qualità dell'aria. 
+* t indica il termine temporale, (l'anno, il mese, il giorno della settimana, il lockdown e ogni ora del giorno).
+* $t_{yr}$ è il numero continuo di giorni dal 1° gennaio 2015 al 30 giugno 2020
+* $t_{month}$ rappresenta il mese da gennaio a giugno di ogni anno. 
+* $t_{wk}$ denota le variabili fittizie classificate nei giorni della settimana (n = 1), nei fine settimana (n = 2) e nei giorni festivi (n valori sono compresi tra 3 e 5). 
+
+Partendo dallo studio sopra descritto è stato impostato il modello utilizzato nel presente studio come di seguito riportato:
+
+$log(Concs) = s_{0}(t_{yr}, k = n) + s_{1}(t_{month}, bs='cc', k = 12) + \sum_{n=1}^{7}\alpha_{wkdn}t_{wkdn} + \sum_{n=1}^{5}\alpha_{ldk}t_{ldk} + s_{2}(Vm) + \alpha_{baseline} + \epsilon$ 
+
+* $n$ = lunghezza della serie in anni
+* $Vm$ = variabili meteo
+
+In questo caso il termine interannuale è stato implementato tramite una funzione thin plate spline con un numero di nodi (k) pari al numero di anni di cui era costituita la serie dati della variabile risposta (da un minimo di 5 ad un massimo di 8 anni). Tale impostazione, con un numero di nodi relativamente basso, consente di contenere il serpeggiamento della spline e al contempo di non imporre a priori la linearità nelle variazioni interannuali. Per cercare di cogliere gli effetti residui della stagionalità, rispetto a quelli catturati dalle variabili meteorologiche è stata imposta una funzione di smoothing di tipo cubic ciclic spline rispetto alla variabile mese (tmonth) con un numero di nodi pari al numero dei mesi. 
+
+La variabile categoriale relativa al *lockdown* può assumere 5 valori: 4 riguardano i mesi, da marzo a giugno 2020, il quinto è associato al restante periodo. In tal modo si cerca di cogliere il contributo a livello mensile relativo ai due mesi di lockdown severo (marzo e aprile 2020) e ai due mesi (maggio e giugno) in cui è stato attuato un graduale allentamento delle misure di distanziamento sociale.
+
+Per la variabile temporale tyr si è scelto di far partire dal 1/1/2013 il conteggio del numero progressivo e continuo di giorni fino al termine del periodo considerato (31/12/2020). La variabile categoriale per la settimana è stata impostata in modo tale da prevedere un valore per ogni giorno della settimana.
+
+Le variabili esplicative meteorologiche invece non sono state imposte a priori ma selezionate, in maniera specifica per ogni modello (cioè per ogni stazione di misura e per ogni inquinante), con la procedura automatizzata descritta nel successivo paragrafo.
+
+Per valutare l’influenza, su base mensile, della variabile esplicativa Lockdown sui livelli stimati degli inquinanti, è stato calcolato l’effetto percentuale relativo (P), attraverso la seguente equazione (de Foy et al. 2019; Hua et al., 2021):
+
+<p style="text-align: center;">
+$P=(e^{\alpha} - 1)$ x 100%
+</p>
+
+dove $\alpha = ln(effetto)$ 
+
+Il valore di P può essere interpretato come cambiamento percentuale della concentrazione dell’inquinante in relazione al livello di baseline. 
+
+## Descrizione procedura di selezione variabili meteorologiche
+
+La selezione delle variabili esplicative significative avviene mediante una procedura ciclica in 7 step basata in gran parte su quella descritta nel lavoro di Barmpadimos et al. La procedura sceglie le variabili significative sulla base dell’Akaike Information Criterion (AIC) attraverso un processo complesso che include sia passi forward che backward. Viene poi calcolato l’indice di correlazione di Pearson per verificare la collinearità tra le variabili esplicative. Si continua ad aggiungere variabili fino a quando l’AIC continua a diminuire. 
+
+
+Di seguito i passi della procedura in sintesi:
+
+1) Il modello GAM al primo passo comprende tutte le variabili temporali.
+2) Selezione della prima variabile meteorologica esplicativa: tra le n disponibili si sceglie la variabile che minimizza l’AIC del modello.
+3) Si aggiunge una nuova variabile esplicativa: tra tutte si sceglie quella che minimizza l'AIC.
+4) Passo *backward*: si fa rigirare il modello GAM sostituendo alla variabile scelta al passo 2) tutte le variabili prese una alla volta (fase *backward*). Si confronta l’AIC dei nuovi modelli con quello del passo 3), si sceglie quindi quello con AIC più basso.
+5) Test di collinearità: se l’indice di correlazione di Pearson tra la covariata selezionata nell’ultimo passo e una tra le covariate selezionate nei passi di selezione precedenti è superiore a 0.7 in valore assoluto si elimina l’ultima covariata selezionata.
+6) Si ripetono i passi da 3) a 5) fino a quando l’AIC continua a diminuire.
+7) Alla fine del processo si escludono le eventuali variabili metereologiche che risultano non significative (*p-value* > 0.01).
+
+Nella figura sottostante si riporta la schematizzazione della procedura mediante un diagramma di flusso che ne descrive i principali passaggi concettuali.
+
+![Algoritmo di selezione delle variabili](/home/gleone/R/pulvirus/analisi/GAM/images/Figura1.png)
+
+
+### Procedura per la validazione e per la valutazione delle prestazioni del modello
+
+Il modello è sviluppato utilizzando l’80% delle osservazioni disponibili (training dataset) scelte in maniera casuale. Il restante 20% del dataset è stato utilizzato per la fase di validazione: il modello sviluppato sul dataset di training è stato impiegato in fase previsionale per stimare le concentrazioni giornaliere sul dataset di validazione. Quali indicatori di confronto per la validazione del modello sono stati presi come riferimento i seguenti indici:
+
+* Coefficiente di determinazione aggiustato- (RSQ o R^2). 
+* Root Mean Sqare Error (RMSE)(Simon et al., 2012): 
+
+<p style="text-align: center;">
+$RMSE = \sqrt{\sum_{i=1}^{n}\frac{(P_i-O_i)^2}{n}}$
+</p>
+
+
+Con:
+
+ $P_i$: concentrazione prevista dal modello per l’osservazione i
+ $O_i$: concentrazione osservata (misurata)
+ n: numero di osservazioni
+
+Il diagramma di flusso del processo di validazione è rappresentato nella figura.
+
+![Diagramma del processo di validazione](/home/gleone/R/pulvirus/analisi/GAM/images/Figura2.png)
+
+
+Per valutare le prestazioni del modello GAM sono stati calcolati i seguenti indici statistici: 
+
+* Factor of 2 (FAC2)
+     FAC2 = frazione dei dati che rispetta la condizione 0.5 < $C_p/C_o$ < 2.0
+    
+Con:
+<p style="text-align: center;">
+  $C_p$ = Concentrazione prevista dal modello 
+  $C_o$ = Concentrazione osservata (misurata)
+</p>
+
+
+Sulla base delle precedenti definizioni il FAC2 può essere scritto:
+
+<p style="text-align: center;">
+$FAC2 = \frac{n_{validate}}{n}$
+</p>
+
+Con: 
+
+  n = numero totale osservazioni contenute nel dataset di test
+  $n_{validate}$ = numero dei casi che rispettano la condizione (1)
+  
+
+* _Fractional Bias_
+
+<p style="text-align: center;">
+$FB=2(\frac{\overline{C}_0-\overline{C}_p}{\overline{C}_o+\overline{C}_p})$
+</p>
+
+Con:
+
+<p style="text-align: center;">
+  $C_p$ = Concentrazione prevista dal modello 
+  $C_o$ = Concentrazione osservata (misurata)
+</p>
+
+
+Il fractional bias (FB) può variare dunque fra +2 and -2.
+
+
+* _Normalized Mean Square Error_
+
+Questo indice evidenzia la dispersione nel set di dati, dunque piccoli valori di NMSE sono indice di una migliore performance del modello:
+
+<p style="text-align: center;">
+$NMSE=\frac{\overline{(C_0-C_p)}^2}{\overline{C}_o+\overline{C}_p}$
+</p>
+
+
+Con:
+
+<p style="text-align: center;">
+  $C_p$ = Concentrazione prevista dal modello 
+  $C_o$ = Concentrazione osservata (misurata)
+</p>
+
+
+Un modello ideale avrebbe R e FAC2 pari a 1.0, e FB e NMSE pari a 0.0; naturalmente a causa dell'influenza dei processi atmosferici casuali, non esiste un modello perfetto nella modellazione della qualità dell'aria. Per determinare l’affidabilità di un modello è invece possibile usare i seguenti criteri suggeriti da Kumar et al. 1993:
+
+* NMSE $\le$ 0.5
+* |FB| $\le$ 0.5
+* FAC2 $\ge$ 0.80
+
+
+\pagebreak
+
+# Analisi dei risultati
+
+Le informazioni di dettaglio relative ai singoli modelli sono disponibili al link: https://www.pulvirus.it/dashboard.
+L’applicativo sviluppato consente di visualizzare in relazione ai risultati dei singoli modelli GAM le seguenti informazioni:
+
+* La forma funzionale del modello.
+* Le variabili selezionate e la loro significatività.
+* L’indice di determinazione.
+* I principali grafici per la verifica degli assunti di base del modello.
+    
+## Validazione e valutazione delle prestazioni dei modelli
+
+I singoli modelli superano la fase di validazione solo se vengono verificati i seguenti criteri:
+
+*  $RSQ_{20}$/$RSQ_{80}$ è compreso tra 0.8 e 1.2
+*  $RMSE_{20}$/$RMSE_{80}$ è compreso tra 0.5 e 1.5
+
+Con:
+
+* $RSQ_{20}$: RSQ del dataset di test
+* $RSQ_{80}$: RSQ del dataset di training
+* $RMSE_{20}$: RMSE del dataset di test
+* $RMSE_{80}$: RMSE del dataset di training
+
+A valle della fase di validazione sono stati utilizzati gli indici e i criteri presentati nel precedente capitolo per valutare le prestazioni dei modelli implementati:
+
+* NMSE $\le$ 0.5
+* |FB| $\le$ 0.5
+* FAC2 $\ge$ 0.80
+
+
+Si è ritenuto opportuno inoltre aggiungere un’ulteriore condizione di accettabilità dei modelli di seguito riportata:
+
+* $RSQ_{80}$ $>$ 0.5
+
+La valutazione del contributo mensile delle misure di distanziamento durante la fase di lockdown è stata effettuata solo per quei modelli che hanno superato tutti i criteri di validazione e di valutazione delle performance sopra esposti.
+
+Nelle figure e nelle tabelle seguenti si riportano i principali indici di statistica descrittiva relativi ai modelli implementati, a monte e valle del processo di validazione e valutazione delle prestazioni. Tali informazioni indicano chiaramente come i modelli sviluppati per l’NO~2~ e l’O~3~ abbiano prestazioni nettamente migliori rispetto a quelli inerenti agli altri inquinanti.    
+
+\pagebreak
+
+### NO~2~
+
+```{r, fig.width=6, fig.height=3, fig.cap='Indici di prestazione - NO~2~'}
+getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE")) 
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione, serie valide - NO~2~"}
+getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"), val = TRUE)
+```
+
+\pagebreak
+
+### PM~2.5~
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione - PM~2.5~"}
+getbxplt("pm25", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione, serie valide - PM~2.5~"}
+getbxplt("pm25", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"), val = TRUE)
+```
+
+\pagebreak
+
+### PM~10~
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione - PM~10~"}
+getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione, serie valide - PM~10~"}
+getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"), val = TRUE)
+```
+
+\pagebreak
+
+### O~3~
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione - O~3~"}
+getbxplt("o3", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione, serie valide - O~3~"}
+getbxplt("o3", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"), val = TRUE)
+```
+
+\pagebreak
+
+### CO
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione - CO"}
+getbxplt("co", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Indici di prestazione, serie valide - CO"}
+getbxplt("co", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"), val = TRUE)
+```
+
+
+\pagebreak
+
+## Valutazione dell'incertezza 
+
+Per valutare l'incertezza relativa alla variabile lockdown il modello GAM, per ogni sito e per ogni inquinante,  è stato fatto girare con 30 diversi training dataset ottenuti dall'estrazione casuale dell'80% delle osservazioni disponibili. Si è poi proceduto a calcolare la deviazione standard dei 4 mesi. Nelle figure sottostanti sono riportati i risultati di tale analisi. 
+
+```{r, fig.width=4, fig.height=3, fig.cap="Distribuzione della SD per la variabile lockdown per tutti i modelli - NO~2~"}
+bootstrapmodelli("no2")
+```
+
+```{r,  fig.width=4, fig.height=3, fig.cap="Distribuzione della SD per la variabile lockdown per tutti i modelli - PM~2.5~"}
+bootstrapmodelli("pm25")
+```
+
+```{r,  fig.width=4, fig.height=3, fig.cap="Distribuzione della SD per la variabile lockdown per tutti i modelli - PM~10~"}
+bootstrapmodelli("pm10")
+```
+
+```{r,  fig.width=4, fig.height=3, fig.cap="Distribuzione della SD per la variabile lockdown per tutti i modelli - O~3~"}
+bootstrapmodelli("o3")
+```
+
+```{r,  fig.width=4, fig.height=3, fig.cap="Distribuzione della SD per la variabile lockdown per tutti i modelli - CO"}
+bootstrapmodelli("co")
+```
+
+## Presentazione e analisi dei risultati 
+
+I risultati sono presentati sinteticamente per singolo inquinante avvalendosi di commenti testuali, mappe e grafici. I risultati di dettaglio per i singoli modelli sono disponibili al seguente indirizzo web: https://www.pulvirus.it/dashboard.
+
+### Risultati NO~2~
+
+* _**Andamento nel tempo**_: i risultati modellistici mostrano una significativa diminuzione dei livelli di NO2 su tutto il territorio italiano come effetto del lockdown nei mesi di marzo e aprile 2020.In questi due mesi la riduzione della concentrazione mediata su tutte le stazioni, disaggregate per tipo, oscilla da un minimo di 0.50 µg/m^3^ nelle stazioni rurali ad un massimo di 11.49 µg/m^3^ nelle stazioni di tipo traffico.  A maggio 2020 si rileva ancora un contributo significativamente negativo, concentrato però
+prevalentemente nelle stazioni di tipo traffico (riduzione media su tutte le stazioni di 6.96 µg/m^3^) e nelle stazioni di fondo urbane e suburbane (riduzione media su tutte le stazioni pari a 2.63 µg/m^3^). Nel mese di giugno dello stesso anno il contributo diventa non significativo per quasi tutti i siti di studio. Si rileva anzi un inizio di inversione di tendenza per le stazioni di tipo rurale nel nord del Paese.
+* _**Andamento nello spazio**_: gli effetti sulle concentrazioni mensili di NO~2~ appaiono abbastanza ben distribuiti sul territorio nazionale.
+* _**Tipo di stazione**_: i risultati evidenziano un rilevante contributo negativo alle concentrazioni di NO~2~ per le stazioni di tipo traffico e un quasi altrettanto significativo decremento per le stazioni di fondo urbane e suburbane. Nei siti di tipo rurale si registra invece un quadro generale di non significatività dei contributi mensili; anzi nel mese di giugno si evidenzia una situazione di modesto incremento del contributo ai livelli di NO~2~ nel settentrione. Per i siti di tipo industriale, ad eccezione del mese di aprile in cui si rileva un significativo contributo negativo, è evidente una situazione molto variabile da sito a sito. 
+
+
+\pagebreak
+
+```{r,  fig.width=8, fig.height=5, fig.cap="Contributo alla riduzione della concentrazione di NO~2~"}
+contributoLock("no2")
+```
+
+Nelle tabelle seguenti sono riportati gli indicatori statistici di base relativi al contributo del lockdown aggregati
+per tipo di stazione e per mese.
+
+```{r}
+riassumi("no2", "Fondo urbano/suburbano")
+riassumi("no2", "Industriale")
+riassumi("no2", "Rurale")
+riassumi("no2", "Traffico")
+```
+
+\pagebreak
+
+```{r mappe_no2, echo=FALSE, fig.align="center", fig.width=8, fig.height=11, message=FALSE,  warning=FALSE, fig.cap="Contributo per mese"}
+mappe("no2")
+```
+
+
+\pagebreak
+
+
+```{r mappe_no2_tipo, echo=FALSE, fig.align="center", fig.width=8, fig.height=11, message=FALSE,  warning=FALSE, fig.cap="Contributo per tipologia di stazione"}
+mappe("no2", TRUE)
+```
+
+\pagebreak
+
+
+### Risultati PM~2.5~
+
+
+Per questo inquinante su tutto il territorio nazionale i risultati evidenziano un quadro generale di non significatività dei contributi alle concentrazioni dei quattro mesi considerati. Soltanto nel mese di marzo si rileva un contributo negativo significativo alle concentrazioni di PM~2.5~ nelle aree urbane della Lombardia nord occidentale (Bergamo, Como, Lecco, Milano e Varese).
+
+
+
+```{r,  fig.width=8, fig.height=5, fig.cap="Contributo alla riduzione della concentrazione di PM~25~"}
+contributoLock("pm25")
+```
+
+Nelle tabelle seguenti sono riportati gli indicatori statistici di base relativi al contributo del lockdown aggregati
+per tipo di stazione e per mese.
+
+```{r}
+riassumi("pm25", "Fondo urbano/suburbano")
+riassumi("pm25", "Industriale")
+riassumi("pm25", "Rurale")
+riassumi("pm25", "Traffico")
+```
+
+\pagebreak
+
+
+```{r mappe_pm25, echo=FALSE, message=FALSE, fig.align="center", fig.width=8, fig.height=11, warning=FALSE,  fig.cap="Contributo PM~2.5~"}
+mappe("pm25", FALSE)
+```
+
+
+\pagebreak
+
+
+### Risultati PM~10~
+
+
+Per questo inquinante, analogamente al PM~2.5~, su tutto il territorio nazionale i risultati evidenziano un quadro generale di non significatività dei contributi del lockdown alle concentrazioni dei quattro mesi considerati. Soltanto nel mese di aprile si rileva un contributo negativo significativo alle concentrazioni di PM~10~ nei siti urbani/traffico dell’area metropolitana di Roma.
+
+
+
+```{r,  fig.width=8, fig.height=5, fig.cap="Contributo alla riduzione della concentrazione di PM~10~"}
+contributoLock("pm10")
+```
+
+Nelle tabelle seguenti sono riportati gli indicatori statistici di base relativi al contributo del lockdown aggregati
+per tipo di stazione e per mese.
+
+```{r}
+riassumi("pm10", "Fondo urbano/suburbano")
+riassumi("pm10", "Industriale")
+riassumi("pm10", "Rurale")
+riassumi("pm10", "Traffico")
+```
+
+\pagebreak
+
+```{r mappe_pm10,  fig.align="center", fig.width=8, fig.height=11, fig.cap="Contributo PM~10~"}
+mappe("pm10", FALSE)
+```
+
+\pagebreak
+
+### Risultati O~3~
+
+* _**Andamento nel tempo**_: risultati modellistici mostrano una generale mancanza di significatività nel contributo del mese di marzo ai livelli di O~3~ su tutto il territorio italiano. Aprile 2020 invece evidenzia un contributo positivo localizzato prevalentemente nell’area settentrionale del Paese, che per le stazioni di fondo urbane e suburbane raggiunge un valore medio pari a 2.97 µg/m^3^. A maggio, ma ancor di più a giugno 2020, in uno scenario comunque di contributo non significativo, si rileva invece una certa
+tendenza ad un contributo mensile negativo per tutti i tipi di stazioni.
+* _**Andamento nello spazio**_: Ad eccezione del mese di aprile, come evidenziato al punto precedente, non si rilevano significative differenze a livello di distribuzione territoriale dei contributi mensili.
+* _**Tipo di stazione**_: Non si evidenziano significative differenze tra i siti di fondo siano essi ubicati in contesti urbani/suburbani o rurali. 
+
+
+```{r,  fig.width=8, fig.height=5, fig.cap="Contributo alla riduzione della concentrazione di O~3~"}
+contributoLock("o3")
+```
+
+Nelle tabelle seguenti sono riportati gli indicatori statistici di base relativi al contributo del lockdown aggregati per tipo di stazione e per mese.
+
+```{r}
+riassumi("o3", "Fondo urbano/suburbano")
+riassumi("o3", "Industriale")
+riassumi("o3", "Rurale")
+riassumi("o3", "Traffico")
+```
+
+
+\pagebreak
+
+
+```{r mappe_o3,  fig.align="center", fig.width=8, fig.height=11, fig.cap="Contributo O~3~"}
+mappe("o3", FALSE)
+```
+
+\pagebreak
+
+
+```{r mappe_o3_tipo, echo=FALSE, fig.align="center", fig.width=8, fig.height=11, message=FALSE,  warning=FALSE, fig.cap="Contributo per tipologia di stazione"}
+mappe("o3", TRUE)
+```
+
+\pagebreak
+
+
+### Risultati CO
+
+Per questo inquinante su tutto il territorio nazionale i risultati evidenziano un quadro generale di non significatività dei contributi alle concentrazioni dei quattro mesi considerati. Limitatamente ad alcune aree geografiche di qualche Regione (Lombardia, Emilia - Romagna, Toscana, Lazio e Puglia) si rileva una tendenza ad un contributo negativo alle concentrazioni di CO.
+
+
+```{r,  fig.width=8, fig.height=5, fig.cap="Contributo alla riduzione della concentrazione di CO"}
+contributoLock("co")
+```
+
+Nelle tabelle seguenti sono riportati gli indicatori statistici di base relativi al contributo del lockdown aggregati per tipo di stazione e per mese.
+
+```{r}
+riassumi("co", "Fondo urbano/suburbano")
+riassumi("co", "Industriale")
+riassumi("co", "Rurale")
+riassumi("co", "Traffico")
+```
+
+
+\pagebreak
+
+
+```{r mappe_co,  fig.align="center", fig.width=8, fig.height=11, fig.cap="Contributo O~3~"}
+mappe("co", FALSE)
+```
+
+\pagebreak
+
+
+# Bibliografia 
+
+Barmpadimos, I., Hueglin, C., Keller, J., Henne, S., & Pr, A. S. H. (2011). *Influence of meteorology on PM~10~ trends and variability in Switzerland from 1991 to 2008.* Atmospheric Chemistry and Physics, 11,1813–1835. https://doi.org/10.5194/acp-11-1813-2011.
+
+Carslaw, D. C., & Carslaw, N. (2007). *Detecting and characterising small changes in urban nitrogen dioxide concentrations*. Atmospheric Environment, 41(22), 4723–4733.  https://doi.org/10.1016/j.atmosenv.2007.03.034
+
+Carslaw, D. C., Beevers, S. D., & Tate, J. E. (2007). *Modelling and assessing trends in traffic-related emissions using a generalised additive modelling approach.* Atmospheric Environment, 41, 5289–5299. https://doi.org/10.1016/j.atmosenv.2007.02.032.
+
+Chang,J.C., and Hanna, S.R. (2004). *Air quality model performance evaluation.* Meteorology and Atmospheric Physics, 87, 167–196. https://doi.org/10.1007/s00703-003-0070-7
+
+De Foy, B. (2018). *City-level variations in NOx emissions derived from hourly monitoring data in Chicago.* Atmospheric Environment, 176, 128 – 139. https://doi.org/10.1016/j. atmosenv.2017.12.028.
+
+De Foy, B. (2019). *Changes in speciated PM~25~ concentrations in Fresno, California, due to NOx reductions and variations in diurnal emission profiles by day of week.* Elem. Sci. Anth., 7(45), https://doi.org/10.1525/elementa.384 (accessed on 27/12/2021).
+
+Hanna, S. R. (1989). *Confidence limits for air quality model evaluations, as estimated by bootstrap and jackknife resampling methods.* Atmospheric Environment, 23, 1385–1398.
+
+Hanna, S. R. (1993). *Uncertainties in air quality model predictions.* Boundary-Layer Meteorology, 62 , 3–20.
+
+Hua, J.; Zhang, Y.; de Foy, B.; Shang, J.; Schauer, J.J.; Mei, X.; Sulaymon, I.D.; Han, T. (2021). *Quantitative estimation of meteorological impacts and the COVID-19 lockdown reductions on NO~2~ and PM~2.5~ over the Beijing area using Generalized Additive Models (GAM).* Journal of Environmental Management, 291:112676.
+
+Kumar, A., Luo, J., and Bennett, G. (1993). *Statistical Evaluation of Lower Flammability Distance (LFD) using Four Hazardous Release Models.* Process Safety Progress, 12(1), 1-11. https://doi.org/10.1002/prs.680120103
+
+Ordóñez, C., Garrido-Perez, J. M., & García-Herrera, R. (2020). *Early spring near-surface ozone in Europe during the COVID-19 shutdown: Meteorological effects outweigh emission changes.* Science of the Total Environment, 747(December 2019). https://doi.org/10.1016/j.scitotenv.2020.141322
+
+Simon, H., Baker, K.R., and Phillips, S. (2012). *Compilation and interpretation of photochemical model performance statistics published between 2006 and 2012.* Atmospheric Environment, 61, 124–139. 
+
+Wood, S.N. (2017), *Generalized Additive Models: An Introduction with R (second edition).* Chapman & Hall Book, ISBN 978-1-4987-2833-1.
+
+Zhou, Y., Brunner, D., Hueglin, C., Henne, S., Staehelin, J. (2012). *Changes in OMI tropospheric NO2 columns over Europe from 2004 to 2009 and the influence of meteorological variability.* Atmos. Environ. 46, 482 – 495. https://doi.org/10.1016/j. atmosenv.2011.09.024.
+
+Zuur, A.F., Ieno, E.N., Walker, N., Saveliev, A.A., Smith, G.M. (2009). *Mixed Effects Models and Extensions in Ecology with R.* Springer, ISBN 978-0-387-87457-9.
+
+Zuur, A.F. (2012). *Beginner's Guide to Generalized Additive Models with R.* Highland Statistics Ltd, ISBN 978-0-957-17412-2. 
+
