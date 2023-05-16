@@ -1,15 +1,15 @@
 library(dplyr)
-# library(glue)
+library(glue)
 library(logr)
 library(mgcv)
 library(readr)
 library(modelr)
 library(tidyverse)
 
-setwd("~/R/pulvirus/presentazione")
+setwd("~/R/pulvirus_reloaded")
 
 ## importazione dati ####
-file.dati <- list.files(path = "~/R/pulvirus/presentazione/dati-lazio/per-stazione/valide", full.names = TRUE, pattern = "*.csv")
+file.dati <- list.files(path = "~/R/pulvirus_reloaded/dati-lazio/per-stazione/valide", full.names = TRUE, pattern = "*.csv")
 
 file.dati %>%
   purrr::map(function(file_name){ 
@@ -23,15 +23,7 @@ names(dfs) <- basename(file.dati) %>% str_remove(pattern = ".csv")
 
 # costruire le stringhe dei modelli
 # scegliere il modello migliore
-# predisporre il modello backward
 
-enframe(c("x0", "x1", "x2", "x3", "x4"))
-edfs <- enframe(dfs)
-
-edfs %>% 
-  mutate(
-    smry = map2_chr(name, value, ~ stringr::str_c(.x, ": ", .y[1]))
-  )
 
 ## costruiamo i modelli ####
 
@@ -44,126 +36,161 @@ w <- c0 %>% imap_chr(~glue::glue("gam(value ~ s({.x}), data = df)"))
 w <- c0 %>% map(~glue::glue("gam(value ~ s({.x}))"))
 
 w <- lapply(c0, function(x) paste0("gam(value ~ s(", x, "), data = df)"))
+w
 
-
+rm(vars, c0)
 ## con le variabili meteo ####
 
 v_meteo <- names(datiMeteo::dati_meteo)[4:21]
+
 w <- v_meteo %>% 
   imap_chr(~ glue::glue("gam(value ~ s({.x}), data = df)"))
+w
 
 # scegliamo un sottoinsieme di 4 stazioni
-readRDS("~/R/pulvirus/presentazione/valide.RDS") %>% 
+readRDS("~/R/pulvirus_reloaded/valide.RDS") %>% 
   tail(n = 4) -> valide 
+valide
 
-dfs2 <- dfs[names(dfs) %in% valide] 
+dfs <- dfs[names(dfs) %in% valide] 
+length(dfs)
 
-dfs2 %>% 
+# applichiamo tutti modelli per ogni elemento della lista
+dfs %>% 
   map(\(df) {
     map(w, \(y) eval(parse(text = y)))
   }) -> mod.res
 
+# calcoliamo l'indice di Akaike sui risultati
 mod.res %>% 
   map(~ map_dbl(.x, AIC)) 
 
+# il BIC
 mod.res %>% 
   map(~ map_dbl(.x, BIC)) 
 
-## applichiamo i modelli ####
 
+## applichiamo i modelli adeguati ####
+
+# modelli N = 1 ####
 # aggiungiamo trasformata logaritmica e julian day
-w <- v_meteo %>% imap_chr(~ glue::glue("gam(value ~ s(jd) + s({.x}), gamma = 1.4, family = gaussian(link = log), data = df)"))
+m1 <- v_meteo %>% 
+  imap_chr(~ glue::glue("gam(value ~ s(jd) + s({.x}), gamma = 1.4, family = gaussian(link = log), data = df)"))
+enframe(m1)
 
-dfs2 %>% 
+
+# andiamo ad applicare i modelli
+dfs %>% 
   map(\(df) {
-    map(w, \(y) eval(parse(text = y)))
-  }) -> mod.res
+    map(m1, \(y) eval(parse(text = y)))
+  }) -> mod1.res
 
 # AIC dei modelli
-mod.res %>% 
+mod1.res %>% 
   map(~ map_dbl(.x, AIC))
 
 # summary del GAM (mgcv)
-mod.res %>% 
+mod1.res %>% 
   map(~ map(.x, summary.gam)) 
-
 
 ## variabile più performante? ####
 
-map(mod.res, ~ map_dbl(.x, AIC)) %>% 
-  map_dbl(\(aic) which.min(aic) ) -> mins
+# estraggo gli indici dei modelli migliori per le stazioni
+map(mod1.res, ~ map_dbl(.x, AIC)) %>% 
+  map_dbl(\(aic) which.min(aic) ) -> mins1
 
-v_meteo[mins] %>% as.data.frame() %>% setNames(c("variabile"))
-v1 <- v_meteo[mins]
+m1[mins1]
 
-# metodo alternativo 
+# guardiamo dentro l'oggetto che ci restituisce mgcv e intercettiamo l'ultima 
+# variabile entrata nel modello migliore oltre al julian day
+mod1.res[["IT2173A"]][[17]][["var.summary"]]
+
+#  .fun  function
 ex_fun <- function(arg1, arg2){
-  arg1[[arg2]][["var.summary"]][2] %>% names()
+  arg1[[arg2]][["var.summary"]] %>% names() %>% last()
 }
-v1 <- map2(mod.res, mins, ex_fun) %>% unlist(use.names = FALSE) 
+
+map2(mod1.res, mins1, ex_fun) %>% unlist(use.names = FALSE) 
+
+# utilizziamo una lista
+v1 <- map2(mod1.res, mins1, ex_fun) 
+
+map2(mod1.res, mins1, ex_fun) 
 
 
-## nuovi modelli N > 1 ####
+## modelli N = 2 ####
+
+# - eliminiamo dalle variabili meteo quella entrata nel modello, dobbiamo farlo 
+# per ciascuna stazione separatamente
+# - dobbiamo tenere traccia delle variabili scelte per stazione
+
+v_fixed <- data.frame()
 
 v1 %>% 
   map(function(v) {
-    res <- v_meteo[!v_meteo %in% v] # eliminiamo dalle variabili quella entrata nel modello
+    res <- v_meteo[!v_meteo %in% v] 
   })
 
-# le stringhe dei modelli bivariati
-v1 %>% 
-  map(function(v) {
-    res <- v_meteo[!v_meteo %in% v]
-    stringi::stri_join("s(", rep(v, length(res)), ") + s(", res, ")")
-  }) -> vv1 
+v_fixed <- rbind(v_fixed, v1) %>% as.data.frame()
 
-# i modelli bivariati
-m2 <- map(vv1, ~ glue::glue("gam(value ~ {.x}, gamma = 1.4, family = gaussian(link = log), data = df)"))
-
-# cosa dovremmo fare adesso ? ####
-
-# caso base
-m2[[1]]
-dfs2[[1]]
-
-df <- dfs2[[1]]
-imap(m2[[1]], ~eval(parse(text = .x)))
-
-imap(m2[[1]], ~eval(parse(text = .x))) %>% 
-  map(\(mod) {
-    summary(mod)
-    # AIC(mod)
+# This is useful if you need to compute on both the value and the position of an element ####
+{
+  imap(dfs2, \(x, idx) {
+    paste0(idx, ": ", nrow(x))
   })
+  
+  imap(dfs2, \(x, idx) {
+    paste0("Indice: ", idx, ": Numerosità ", nrow(x))
+  })
+  
+  # non funziona
+  imap(dfs2, \(x, idx) {
+    paste0("Indice: ", idx, ": modelli ", m1[[idx]])
+  })
+  
+  # perché ho bisogno di indici
+  names(m1)
+  
+  ## modelli per tutte le stazioni (sui dataframe) ####
+  names(m2) <- names(dfs2)
+  
+  # questo funziona
+  imap(dfs2, \(x, idx) {
+    paste0("Indice: ", idx, ": modelli ", m1[[idx]])
+  })
+  
+  imap(dfs2, \(x, idx) {
+    paste0("EU code: ", idx, ": modelli ", m2[[idx]])
+  })
+}
 
-imap(dfs2, \(x, idx) {
-  paste0(idx, ": ", nrow(x))
+imap(v_fixed, \(x, idx) {
+  # paste0(x, ":", idx)
+  res <- v_meteo[!v_meteo %in% v_fixed[[idx]] ]
+  
+  a <- stringi::stri_join("s(", v_fixed[[idx]], ")", collapse = " + ")
+  
+  stringi::stri_join(a, " + s(", res, ")")
+  
 })
 
-imap(dfs2, \(x, idx) {
-  paste0("Indice: ", idx, ": Numerosità ", nrow(x))
-})
+# parte fissa modelli N=2 ####
+imap(v_fixed, \(x, idx) {
+  # paste0(x, ":", idx)
+  res <- v_meteo[!v_meteo %in% v_fixed[[idx]] ]
+  
+  a <- stringi::stri_join("s(", v_fixed[[idx]], ")", collapse = " + ")
+  
+  stringi::stri_join(a, " + s(", res, ")")
+  
+}) -> vv2
 
-# non funziona
-imap(dfs2, \(x, idx) {
-  paste0("Indice: ", idx, ": modelli ", w2[[idx]])
-})
+m2 <- map(vv2, ~ glue::glue("gam(value ~ s(jd) + {.x}, gamma = 1.4, family = gaussian(link = log), data = dfs[[idx]])"))
 
-
-## modelli per tutte le stazioni (sui dataframe) ####
-names(m2) <- names(dfs2)
-
-# questo funziona
-imap(dfs2, \(x, idx) {
-  paste0("Indice: ", idx, ": modelli ", m2[[idx]])
-})
-
-imap(dfs2, \(x, idx) {
-  paste0("EU code: ", idx, ": modelli ", m2[[idx]])
-})
-
-imap(dfs2, \(x, idx) {
+imap(dfs, \(x, idx) {
   imap(m2[[idx]], ~eval(parse(text = .x)))
 }) -> mod2.res
+
 
 ## modello bivariato più performante ####
 
@@ -171,65 +198,71 @@ mod2.res %>%
   map(~ map_dbl(.x, AIC)) %>% 
   map_dbl(\(aic) which.min(aic) ) -> mins2
 
-v_meteo[mins2] %>% as.data.frame() %>% setNames(c("variabile"))
-
-ex_fun <- function(arg1, arg2){
-  arg1[arg2]
-}
-
-map2_dfr(m2, mins2, ex_fun)
-
+# di nuovo eleganti
 # mod2.res[["IT2173A"]][[14]][["var.summary"]]
 ex_fun <- function(arg1, arg2){
-  arg1[[arg2]][["var.summary"]][2] %>% names()
+  arg1[[arg2]][["var.summary"]] %>% names() %>% last()
 }
-map2(mod2.res, mins2, ex_fun) %>% unlist(use.names = FALSE)
 
+v2 <- map2(mod2.res, mins2, ex_fun)
+v2
 
+# aggiorniamo ####
+v_fixed <- rbind(v_fixed, v2) %>% as.data.frame()
 
-## con l'approccio "classico" ####
-models <- list(list(), list())
-for (d in seq_along(dfs2)) {
-  cat(d, "<== \n")
+imap(v_fixed, \(x, idx) {
+  # paste0(x, ":", idx)
+  v_meteo[!v_meteo %in% v_fixed[[idx]] ]
+})
+
+imap(v_fixed, \(x, idx) {
+  # paste0(x, ":", idx)
+  res <- v_meteo[!v_meteo %in% v_fixed[[idx]] ]
   
-  for (m in seq_along(w2[[d]])) {
-    cat("\t", m, "<--", w2[[d]][[m]]  , "\n")
-    
-    df <- dfs2[[d]]
-    models[[d]][[m]] <-  map(w2[[d]][[m]], \(y) eval(parse(text = y)))
-    
-  }
+  a <- stringi::stri_join("s(", v_fixed[[idx]], ")", collapse = " + ")
+  
+  stringi::stri_join(a, " + s(", res, ")")
+
+})
+
+# le stringhe dei modelli N = 3 per ogni stazione saranno quindi
+imap(v_fixed, \(x, idx) {
+  # paste0(x, ":", idx)
+  res <- v_meteo[!v_meteo %in% v_fixed[[idx]] ]
+  
+  a <- stringi::stri_join("s(", v_fixed[[idx]], ")", collapse = " + ")
+  
+  stringi::stri_join(a, " + s(", res, ")")
+  
+}) -> vv3
+
+m3 <- map(vv3, ~ glue::glue("gam(value ~ s(jd) + {.x}, gamma = 1.4, family = gaussian(link = log), data = dfs[[idx]])"))
+
+# modelli N=3 ####
+imap(dfs, \(x, idx) {
+  imap(m3[[idx]], ~eval(parse(text = .x)))
+}) -> mod3.res
+
+mod3.res %>% 
+  map(~ map_dbl(.x, AIC)) 
+
+# variabile più performante N=3 ####
+map(mod3.res, ~ map_dbl(.x, AIC)) %>% 
+  map_dbl(\(aic) which.min(aic) ) -> mins3
+
+# mod1.res[["IT2173A"]][[17]][["var.summary"]]
+#  .fun  function
+ex_fun <- function(arg1, arg2){
+  arg1[[arg2]][["var.summary"]] %>% names() %>% last()
 }
 
-# for(eu_code in stazioni_valide$station_eu_code) {
-#   # apro il file di log
-#   f_log <- file.path(glue::glue("tmp/{eu_code}.log"))
-#   lf <- log_open(f_log)
-#   
-#   df <- read_csv(glue("dati-lazio/per-stazione/{eu_code}.csv"))
-#   # cappa <- length(unique(dfSub$reporting_year))
-#   
-#   # inizializzo le liste che popolerà la funzione "sceltaVar"
-#   AICS <- list()
-#   v_dead <- c()
-#   RUN <- 0
-#   
-#   # il set di variabili iniziali che voglio includere variabili da inizializzare ad ogni tornata
-#   v_meteo <- c("t2m", "tmin2m", "tmax2m", "tp", "ptp", "rh", "u10m", "v10m",
-#             "sp", "nirradiance", "ppblmin", "ppblmax", "pblmin", "pblmax", "wspeed_max")
-#   
-#   assign("AICS", AICS, envir = .GlobalEnv)
-#   assign("v_dead", v_dead, envir = .GlobalEnv)
-#   # assign("dfSub", dfSub, envir = .GlobalEnv)
-#   assign("v_meteo", v_meteo, envir = .GlobalEnv)
-#   # assign("cappa", cappa, envir = .GlobalEnv)
-#   
-#   log_print(sprintf("Stazione: %s", eu_code), hide_notes = TRUE)
-#   
-#   # sceltaVar(cappa)
-#   
-#   log_print("Salvataggio dati")
-#   # saveRData(eu_code, pltnt, cod_reg, out_dir)
-#   
-#   log_close()
-# }
+map2(mod3.res, mins3, ex_fun) %>% 
+  unlist(use.names = FALSE)
+
+# utilizziamo una lista
+v3 <- map2(mod3.res, mins3, ex_fun) 
+
+map2(mod3.res, mins3, ex_fun) 
+
+# aggiorniamo ####
+v_fixed <- rbind(v_fixed, v3) %>% as.data.frame()

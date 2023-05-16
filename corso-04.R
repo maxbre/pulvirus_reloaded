@@ -1,30 +1,28 @@
-## dobbiamo operare per stazione in modo ricorsivo ####
+# init ####
 
-# costruire modelli
-# scegliere il migliore
-# verificare il backward
-
-## init ####
-
-setwd("~/R/pulvirus/presentazione")
-
-# dati preliminari input
-library(correlation)
-library(dplyr)
-library(logr)
-library(mgcv)
-library(purrr)
-library(readr)
-library(stringr)
-
-library(datiInquinanti)
+{
+  library(correlation)
+  library(dplyr)
+  library(logr)
+  library(mgcv)
+  library(purrr)
+  library(readr)
+  library(stringr)
+  
+  library(datiInquinanti)
+  library(datiMeteo)
+  
+  setwd("~/R/pulvirus_reloaded")
+  rm(list = ls())
+}
 
 eu_code <- "IT0828A"
-pltnt <- "no2"
+pltnt <- "pm10"
 
 assign("eu_code", eu_code, envir = .GlobalEnv)
 assign("pltnt", pltnt, envir = .GlobalEnv)
 
+# EX trasformare in una function la preparazione del dataframe ####
 {
   get(pltnt) %>% 
     filter(station_eu_code == eu_code, reporting_year >= 2016) %>% 
@@ -53,7 +51,9 @@ select(df, all_of(v_meteo)) %>%
   correlation() %>% 
   filter(r >= 0.7) %>% 
   select(Parameter2) %>% 
-  unique() %>% unlist() %>% as.character() -> v_elevata_correlazione
+  unique() %>% 
+  unlist() %>% 
+  as.character() -> v_elevata_correlazione
 
 assign("v_elevata_correlazione", v_elevata_correlazione, envir = .GlobalEnv)
 
@@ -76,7 +76,6 @@ lf <- log_open(fn)
 log_print(datiInquinanti::stazioniAria %>% filter(station_eu_code == eu_code) %>% select(comune, nome_stazione, st_x, st_y))
 
 sceltaVar()
-
 
 ## Modello finale ####
 get(pltnt) %>%

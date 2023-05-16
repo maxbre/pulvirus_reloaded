@@ -12,7 +12,8 @@ library(RPostgreSQL)
 library(writexl)
 
 
-setwd("~/R/pulvirus/presentazione")
+setwd("~/R/pulvirus_reloaded")
+
 
 ## list.files ####
 list.files(path = ".", pattern = "*.csv")
@@ -36,11 +37,11 @@ tryCatch({
   read_csv(file.dati[1])
 },
 error = function(cond) {
-  print("Ops...")
+  print("Attenzione...")
 })
 
 # f <- read_csv(file.dati[1])
-f <- read_csv(file.dati[1], locale = locale(encoding = "ISO-8859-1"))
+f <- read_csv(file.dati[1], locale = locale(encoding = "ISO-8859-1"), show_col_types = FALSE)
 
 head(f, n = 1)
 
@@ -286,4 +287,5 @@ dfs %>%
   map(\(df) {
     if( nrow(na.omit(df)) > 0 )
       lm(value ~ jd + t2m + pblmax + wspeed + rh, data = df)
-  }) 
+  })
+

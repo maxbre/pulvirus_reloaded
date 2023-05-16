@@ -1,33 +1,40 @@
-## dobbiamo operare per stazione in modo ricorsivo ####
 
-# costruire modelli
-# scegliere il migliore
-# verificare il backward
+# init ####
+{
+  library(correlation)
+  library(dplyr)
+  library(logr)
+  library(mgcv)
+  library(purrr)
+  library(readr)
+  library(stringr)
+  
+  library(datiInquinanti)
+  library(datiMeteo)
+  
+  setwd("~/R/pulvirus_reloaded")
+  rm(list = ls())
+}
 
-## init ####
 
-setwd("~/R/pulvirus/presentazione")
+args <- commandArgs(trailingOnly = TRUE)
 
-# dati preliminari input
-library(correlation)
-library(dplyr)
-library(logr)
-library(mgcv)
-library(tidyselect)
-library(purrr)
-library(readr)
-library(stringr)
 
-library(datiInquinanti)
+if(is.na(args[1])) {
+  pltnt <- "pm25"
+  eu_code <- "IT1176A"
+}else{
+  pltnt <- args[1]
+  eu_code <- args[2]
+}
 
-eu_code <- "IT1176A"
-pltnt <- "no2"
 
 assign("bic", TRUE, envir = .GlobalEnv)
 
 assign("eu_code", eu_code, envir = .GlobalEnv)
 assign("pltnt", pltnt, envir = .GlobalEnv)
 
+# dati ####
 {
   get(pltnt) %>% 
     filter(station_eu_code == eu_code, reporting_year >= 2016) %>% 
@@ -68,6 +75,7 @@ v_cappa <- length(unique(df$reporting_year))
 assign("ICS", list(), envir = .GlobalEnv)
 assign("v_dead", c(), envir = .GlobalEnv)
 
+# funzionni ####
 {
   source("f_buildMods_par.R")
   source("f_bestMod_par.R")
@@ -141,13 +149,13 @@ log_close()
 
 
 ## check modello ####
-mod_viz <- mgcViz::getViz(mod_B)
-mod_viz$model %>% select( names(mod_viz$var.summary) ) %>% correlation() %>% cor_lower()
+# mod_viz <- mgcViz::getViz(mod_B)
+# mod_viz$model %>% select( names(mod_viz$var.summary) ) %>% correlation() %>% cor_lower()
+# 
+# assign("mod_viz", mod_viz, envir = .GlobalEnv)
+# 
+# mgcViz::check.gamViz(mod_viz)
+# mgcViz::plot.gamViz(mod_viz)
 
-assign("mod_viz", mod_viz, envir = .GlobalEnv)
-
-mgcViz::check.gamViz(mod_viz)
-mgcViz::plot.gamViz(mod_viz)
-
-save.image(file = glue::glue("rdatas/{pltnt}_{eu_code}_{criterio}_all.RData"))
+save.image(file = glue::glue("rdatas/{pltnt}_{eu_code}_all.RData"))
 

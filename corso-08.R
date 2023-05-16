@@ -1,3 +1,4 @@
+# grafici contributo lockdown ####
 {
   library(readr)
   library(ggplot2)
@@ -6,7 +7,8 @@
   library(dplyr)
   library(glue)
   
-  setwd("~/R/pulvirus/presentazione/contributo")
+  setwd("~/R/pulvirus_reloaded")
+  rm(list = ls())
 }
 
 datiInquinanti::stazioniAria %>%
@@ -38,27 +40,38 @@ theme_pulvirus <- function() {
 
 pltnt <- "no2"
 
-df <- read_csv(glue("contributi_lock_{pltnt}.csv"))
+df <- read_csv(glue("contributo/contributo_lock_{pltnt}.csv"))
 
 names(df)[1:4] <- c("Marzo", "Aprile", "Maggio", "Giugno")
 
 ifelse(
   pltnt == "no2", frml <- expression(paste("Contributo lockdown - concentrazione NO"["2"])),
   ifelse(
-    pltnt == "pm10", frml <- expression(paste("Contributo lockdown - concentrazione PM"["10"]))
+    pltnt == "pm10", frml <- expression(paste("Contributo lockdown - concentrazione PM"["10"])),
+    ifelse(
+      pltnt == "nox", frml <- expression(paste("Contributo lockdown - concentrazione NO"["x"]))
+    )
   )
 )
 
-inner_join(df, stazioni, by = c("station_eu_code")) %>% 
-  select(c(station_eu_code, tipo_s, "Marzo", "Aprile", "Maggio", "Giugno")) %>% 
-  melt(id.vars = c("station_eu_code", "tipo_s")) %>% 
+
+inner_join(df, stazioni, by = c("station_eu_code") ) %>%
+  select( c(station_eu_code, tipo_s, "Marzo", "Aprile", "Maggio", "Giugno") ) %>%
+  melt( id.vars = c("station_eu_code", "tipo_s") ) %>%
   ggplot(aes(value, group = variable, fill = variable)) +
-  geom_histogram(bins = 80, alpha = 0.5) +
+  geom_histogram(bins = 20, alpha = 0.5) +
   scale_fill_brewer(palette = "RdYlGn") +
-  scale_x_continuous(breaks = seq(-1, 1, by = 0.25)) +
-  facet_wrap(vars(tipo_s)) + 
+  # scale_x_continuous(breaks = seq(-1, 1, by = 0.5)) +
+  scale_y_continuous(breaks = seq(0, 50, by = 2)) +
+  facet_wrap(vars(tipo_s)) +
   ggtitle(frml) +
   theme_pulvirus()
 
-ggsave(glue("graf_{pltnt}.png"), width = 8)
+
+melt(df) %>% ggplot(aes(y = value, fill = variable)) + 
+  geom_histogram(binwidth = 0.2) + 
+  coord_flip() + 
+  facet_grid(~variable) + 
+  theme_pulvirus() +
+  theme(legend.position  = "none")
 

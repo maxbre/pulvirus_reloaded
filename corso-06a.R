@@ -1,4 +1,4 @@
-# validazione ####
+# incertezza ####
 
 # init ####
 {
@@ -14,6 +14,9 @@
   library(stringr)
   library(tools)
   library(logr)
+  library(readr)
+  library(tibble)
+  
   setwd("~/R/pulvirus_reloaded")
   rm(list = ls())
 }
@@ -24,7 +27,7 @@ outdir <- "~/R/pulvirus_reloaded/validazione/"
 args <- commandArgs(trailingOnly = TRUE)
 
 if(is.na(args[1])) {
-  pltnt <- "o3"
+  pltnt <- "pm25"
 }else{
   pltnt <- args[1]
 }
@@ -34,6 +37,19 @@ rdatas <- list.files(path = glue("./rdatas"),
                      recursive = TRUE,
                      full.names = TRUE)
 
+# filtro sulle sole stazioni che hanno superato il processo di validazione ####
+{
+  df <- read_delim(glue::glue("validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+  df[(df[["FAC2"]] >= 0.8 & 
+        df[["rsq_80"]] >= 0.5 &
+        between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
+        between( df[["rmse_20"]] / df[["rmse_80"]], 0.5, 1.5) & 
+        df[["FB"]] <= 0.5 & 
+        df[["NMSE"]] <= 0.5),] %>% select(station_eu_code) -> s_valide
+
+}
+
 my_list <- list()
 my_list_tdf <- list()
 my_mat <- matrix()
@@ -41,16 +57,15 @@ my_mat <- matrix()
 lf <- log_open(glue::glue("validazione/{pltnt}.log"))
 
 log_print((pltnt))
-set.seed(1974)
 
 run <- 1
 for (i in rdatas) {
   load(i)
- 
-    str_split(i, pattern = "_") %>% 
+  
+  str_split(i, pattern = "_") %>% 
     unlist() %>% 
     grep(pattern = "IT") -> code_idx 
-
+  
   eu_code <- file_path_sans_ext(  str_split(basename(i), "_")[[1]][code_idx] )
   
   log_print(sprintf("%s %d", eu_code, run), hide_notes = TRUE)
@@ -83,6 +98,7 @@ for (i in rdatas) {
       select(-c(coordx, coordy, altitude, altitudedem)) -> df
   }
   
+  
   if(nrow(df) == 0) {
     cat("stazione senza dati nel file", eu_code)
     log_print(sprintf("no data %s", eu_code), hide_notes = TRUE)
@@ -98,80 +114,68 @@ for (i in rdatas) {
     
     next
   }  
+
+  vars <- sort( c("lockL3", "lockL4", "lockL5", "lockL6") )
+  dfapp <- data.frame(vars)
   
-  d <- floor(nrow(dfc) * 0.8)
-  s <- sample(dfc$jd, size = d) 
-  
-  # dataset ####
-  pdf <- dfc[which( !(dfc$jd %in% s)),] # predict
-  tdf <- dfc %>% filter(jd %in% s) # training
-  
-  # addestriamo il modello sul DF di training
-  gam_tdf <- gam(formula.gam(mod_B), data = tdf, family = family(mod_B))
-  
-  # applichiamo al DF di predict
-  gam_pdf <- predict.gam(gam_tdf, newdata = pdf)
-  
-  # confrontiamo adesso i valori predetti e gli "osservati" sull'80%
-  # Factor of 2 ####
-  {  
-    tmpdf <- cbind(exp(as.numeric(gam_pdf)), pdf$value) %>% 
-      as.data.frame() %>%  
-      setNames(c("pred", "obs"))
+  # run per l'incertezza ####
+  for (k in 1:30) {
+    log_print( paste("run ", k, collapse = " "), hide_notes = TRUE )
     
-    n <- length(pdf$value)
-    tmpdf %>% 
-      mutate(flag = ifelse(between(pred/obs, 0.5, 2), pred/obs, 0) ) %>% 
-      filter(flag > 0) %>% 
-      nrow() -> nvalidate
+    d <- floor(nrow(dfc) * 0.8)
+    s <- sample(dfc$jd, size = d) 
+    
+    # dataset ####
+    pdf <- dfc[which( !(dfc$jd %in% s)),] # predict
+    tdf <- dfc %>% filter(jd %in% s) # training
+    
+    # addestriamo il modello sul DF di training
+    gam_tdf <- gam(formula.gam(mod_B), data = tdf, family = family(mod_B))
+    
+    # applichiamo al DF di predict
+    gam_pdf <- predict.gam(gam_tdf, newdata = pdf)
+    
+    # calcolo contributo assoluto ####
+    b <- anova.gam(gam_tdf)
+    
+    intercetta <- b$p.table[1,]
+    
+    b$p.table %>%
+      as.data.frame() %>%
+      setNames(c("stima", "stderr", "tvalue", "pvalue") ) %>%
+      filter(pvalue < 0.01) %>%
+      tail(n = 4) %>%
+      mutate(Concentrazione = (exp(stima + (stderr^2 /2) ) - 1 ) * exp(intercetta[1] + intercetta[2]^2 /2 ) ) %>%
+      select(Concentrazione) %>%
+      rownames_to_column %>%
+      filter(str_detect(rowname, "^lockL")) %>% setNames(c("vars", "concentrazione")) -> tmp
+    
+    df1 <- left_join(dfapp, tmp, by = "vars") %>% 
+      select(concentrazione)
+    
+    # assign(names(models[[1]]), df1)
+    
+    dfapp <- cbind(dfapp, df1)
+    
+    colnames(dfapp)[ncol(dfapp)] <- k
   }
   
-  # Fractional BIAS  ####
-  compute.fb(tmpdf$pred, tmpdf$obs) -> fb
-  
-  # Normalized Mean Square Error  ####
-  {  
-    nmse <- tmpdf %>% 
-      mutate(num = (obs - pred)^2, den = obs*pred) %>% 
-      summarise(sum(num)/sum(den))
-    
-    rsq <- function (x, y) cor(x, y) ^ 2
-    
-    rsq(pdf$value, as.numeric(gam_pdf))
-    rsq(gam_tdf$y, gam_tdf$fitted.values)
-  }
+  my_list[[eu_code]] <- dfapp
   
   # paste(deparse(formula.gam(mod_B)), collapse = "")
-  my_list[[eu_code]] <- c(rmse(pdf$value, exp(as.numeric(gam_pdf))),  # 20%
-                          rmse(gam_tdf$y, gam_tdf$fitted.values), # 80%
-                          mse(pdf$value, exp(as.numeric(gam_pdf))), # 20%
-                          mse(gam_tdf$y, gam_tdf$fitted.values), # 80%
-                          rsq(pdf$value, exp(as.numeric(gam_pdf))), # 20%
-                          rsq(gam_tdf$y, gam_tdf$fitted.values), # 80%
-                          nvalidate/n, # FAC2
-                          fb, # Fractional BIAS
-                          nmse # Normalized Mean Square Error
-  )
+  
   run <- run + 1
 }
 
 log_close()
 
 
-my_mat <- do.call(rbind, my_list)
-my_df <- data.frame(id = names(my_list), my_mat)
+# my_mat <- do.call(rbind, my_list)
+# my_df <- data.frame(id = names(my_list), my_mat)
+save( my_list, file = glue("incertezza/ic_{pltnt}.RData") )
+log_close()
 
-colnames(my_df) <- c("station_eu_code", "rmse_20", "rmse_80", "mse_20", "mse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE")
+# colnames(my_df) <- c("station_eu_code", "rmse_20", "rmse_80", "mse_20", "mse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE")
 
-sapply(my_df, function(x) { as.vector(x) }) %>% 
-  write.table(file = glue::glue("{outdir}/validazione_{pltnt}.csv"), sep = ";", row.names = FALSE)
-
-# Criteri di validazione modelli ####
-# Rsq(80) > 0.5
-# 0.8 <= (Rsq20 /Rsq80) <= 1.2
-# 0.5 <= (RMSE20 /RMSE80) <= 1.5
-# NMSE <= 0.5
-# FB <= 0.5
-# FA2 >= 0.80
-
-
+# sapply(my_df, function(x) { as.vector(x) }) %>% 
+# write.table(file = glue::glue("{outdir}/validazione_{pltnt}.csv"), sep = ";", row.names = FALSE)

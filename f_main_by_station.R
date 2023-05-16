@@ -168,7 +168,8 @@ log_close()
 
 datiInquinanti::stazioniAria %>% 
   filter(station_eu_code == eu_code) %>% 
-  select(region_id) %>% as.numeric() -> cod_reg
+  select(region_id) %>% 
+  as.numeric() -> cod_reg
 
 dir.create(glue("rdatas/{cod_reg}/{pltnt}"), showWarnings = FALSE, recursive = TRUE, mode = "0777")
 

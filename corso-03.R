@@ -1,22 +1,23 @@
-## dobbiamo operare per stazione in modo ricorsivo ####
+## dobbiamo operare per stazione in modo ricorsivo 
 
 # costruire modelli
 # scegliere il migliore
 # verificare il backward
+# tenere traccia delle variabili scelte, delle restanti e delle eliminate
 
 ## init ####
-
-# dati preliminari input
-library(readr)
-library(dplyr)
-library(logr)
-library(purrr)
-library(mgcv)
-library(stringr)
-library(correlation)
-
-
-
+{
+  library(readr)
+  library(dplyr)
+  library(logr)
+  library(purrr)
+  library(mgcv)
+  library(stringr)
+  library(correlation)
+  library(datiInquinanti)
+  library(datiMeteo)
+  setwd("~/R/pulvirus_reloaded")
+}
 
 ## function: buildMods ####
 
@@ -114,7 +115,7 @@ sceltaVar <- function(cappa) {
   
   w <- buildMods() # costruisce le stringhe dei modelli
   if(is.null(w)) {
-    return("Ciaoooo")
+    return("Nessun modello da costruire")
   }
     
   log_print(sprintf("---------- START: %s", N), hide_notes = TRUE)
@@ -161,8 +162,9 @@ sceltaVar <- function(cappa) {
     aicBack <- bestMod(models)  # AIC del backward
     log_print(sprintf("Dati backward:  %s - %s", last(aicBack[[2]]), aicBack[[1]] ), hide_notes = TRUE)
     
-    log_print(unlist(w), hide_notes = TRUE)
-    log_print(unlist(aicBack[[3]]), hide_notes = TRUE)
+    # log_print(unlist(w), hide_notes = TRUE)
+    # log_print(t(aicBack[[3]]), hide_notes = TRUE)
+    log_print( cbind(unlist(w), unlist(aicBack[[3]])), hide_notes = TRUE )
     
     if(is.null(aicBack)) {
       return(NA)
@@ -201,7 +203,7 @@ sceltaVar <- function(cappa) {
     }
     
     # se siamo qui...
-    log_print("Il backward non è migliore. \nVerifica della correlazione per mod(N)", hide_notes = TRUE)
+    log_print("Il backward non è migliore. Verifica della correlazione per mod(N)", hide_notes = TRUE)
     log_print(sprintf("Modell N: %s", paste(names(AICS), collapse = " - " ) ), hide_notes = TRUE)
     
     # sono qui perché il modello backward non migliora quindi controllo la correlazione del modello N
@@ -254,11 +256,12 @@ sceltaVar <- function(cappa) {
 
 ## Test A -> Z #####
 
-eu_code <- "IT0761A"
-pltnt <- "no2"
+datiInquinanti::stazioniAria %>% filter(station_eu_code == "IT0470A")
 
-library(datiInquinanti)
+eu_code <- "IT0470A"
+pltnt <- "pm10"
 
+# dati sull'inquinante ####
 get(pltnt) %>% 
   filter(station_eu_code == eu_code, reporting_year >= 2016) %>% 
   inner_join(datiMeteo::dati_meteo, by = c("station_eu_code", "date") ) %>%  
@@ -279,6 +282,7 @@ get(pltnt) %>%
 
 v_meteo <- names(datiMeteo::dati_meteo)[4:21]
 
+# correlazione variabili ####
 select(df, all_of(v_meteo)) %>% 
   correlation() %>% 
   filter(r >= 0.9) %>% 
@@ -288,6 +292,7 @@ select(df, all_of(v_meteo)) %>%
 # v_meteo <- names(datiMeteo::dati_meteo)[4:21]
 v_meteo <- v_meteo[!v_meteo %in% c(elevata_correlazione)]
 
+# variabili di ambiente ####
 assign("v_meteo", v_meteo, envir = .GlobalEnv)
 assign("v_cappa", length(unique(df$reporting_year)))
 
@@ -298,12 +303,12 @@ assign("N", 0, envir = .GlobalEnv)
 fn <- file.path("stazione.log")
 lf <- log_open(fn)
 
-
+# funzione ricorsiva ####
 sceltaVar()
 
-# log_close()
+log_close()
 
-## Modello finale ####
+# Modello finale ####
 
 get(pltnt) %>%
   filter(station_eu_code == eu_code) %>%
@@ -324,8 +329,7 @@ get(pltnt) %>%
   ) -> df
 
 
-## check correlazione ####
-
+## correlazione ####
 
 # select(df, all_of(v_meteo)) %>% correlation() %>% filter(r >= 0.7)
 df %>% select( names(AICS) ) %>% correlation() %>% cor_lower() %>% log_print()
@@ -341,14 +345,15 @@ summary(mod) %>% log_print()
 v_sign <- summary(mod)$s.table %>% 
   as.data.frame() %>% 
   filter(`p-value` < 0.01) %>% 
-  rownames() %>% tail(n = -2) %>% log_print()
+  rownames() %>% tail(n = -2) 
+
+log_print(v_sign)
 
 mod_fin <- paste(v_sign, collapse = " + ")
 mod <- eval(parse(text = glue::glue("gam(value ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k={v_cappa}) + {mod_fin}, gamma=1.4, family=gaussian(link=log), data = df)")))
 summary(mod) %>% log_print()
 
-## ricontrolliamo la correlazione ####
- 
+# correlazione ####
 
 # df %>% select( names(mod$var.summary) ) %>% correlation() %>% cor_lower()
 

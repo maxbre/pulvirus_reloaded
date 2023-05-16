@@ -18,8 +18,9 @@ sceltaVar <- function() {
   
   aicVar <- bestMod(models) # AIC del modello migliore
   
-  log_print(unlist(w), hide_notes = TRUE)
-  log_print(unlist(aicVar[[3]]) , hide_notes = TRUE)
+  # log_print(unlist(w), hide_notes = TRUE)
+  # log_print(unlist(aicVar[[3]]) , hide_notes = TRUE)
+  log_print(cbind(unlist(w), unlist(aicVar[[3]])) , hide_notes = TRUE)
   
   # una lista di appoggio da concatenare in AICS
   tmp <- list()
@@ -51,8 +52,10 @@ sceltaVar <- function() {
       
       log_print(sprintf("Dati backward:  %s - %s", last(aicBack[[2]]), aicBack[[1]]), hide_notes = TRUE)
       
-      log_print(unlist(w), hide_notes = TRUE)
-      log_print(unlist(aicBack[[3]]), hide_notes = TRUE)
+      # log_print(unlist(w), hide_notes = TRUE)
+      # log_print(unlist(aicBack[[3]]), hide_notes = TRUE)
+      # log_print( cbind(unlist(w), unlist(aicBack[[3]])), hide_notes = TRUE )
+      log_print( data.frame(unlist(w), unlist(aicBack[[3]])), hide_notes = TRUE )
       
       if(is.null(aicBack)) {
         return(NA)
