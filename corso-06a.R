@@ -62,6 +62,7 @@ log_print((pltnt))
 log_print( sprintf("Stazioni totali: %s", length(rdatas)) , hide_notes = TRUE)
 log_print( sprintf("Stazioni valide: %s", nrow(s_valide)), hide_notes = TRUE)
 
+nrun <- 30
 run <- 1
 for (i in rdatas) {
   load(i)
@@ -124,7 +125,7 @@ for (i in rdatas) {
   dfapp <- data.frame(vars)
   
   # run per l'incertezza ####
-  for (k in 1:30) {
+  for (k in 1:nrun) {
     log_print( paste("run ", k, collapse = " "), hide_notes = TRUE )
     
     d <- floor(nrow(dfc) * 0.8)
