@@ -23,13 +23,15 @@ outdir <- "~/R/pulvirus_reloaded/validazione/"
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if(is.na(args[1])) {
-  pltnt <- "o3"
+if(is.na(args[1]) & is.na(args[2]) ) {
+  region_id <- "12"
+  pltnt <- "pm10"
 }else{
   pltnt <- args[1]
+  region_id <- args[2]
 }
 
-rdatas <- list.files(path = glue("./rdatas"),
+rdatas <- list.files(path = glue("./rdatas/{region_id}"),
                      pattern = paste0("^", pltnt, "_(.*).RData"),
                      recursive = TRUE,
                      full.names = TRUE)
@@ -43,6 +45,8 @@ lf <- log_open(glue::glue("validazione/{pltnt}.log"))
 log_print((pltnt))
 set.seed(1974)
 
+log_print( sprintf("Stazioni totali: %s", length(rdatas)) , hide_notes = TRUE)
+
 run <- 1
 for (i in rdatas) {
   load(i)
@@ -54,6 +58,7 @@ for (i in rdatas) {
   eu_code <- file_path_sans_ext(  str_split(basename(i), "_")[[1]][code_idx] )
   
   log_print(sprintf("%s %d", eu_code, run), hide_notes = TRUE)
+  log_print(sprintf("%s ", as.character( formula.gam(mod_B)))[3], hide_notes = TRUE)
   
   # mettiamo insieme il data frame ####
   {
@@ -163,8 +168,18 @@ my_df <- data.frame(id = names(my_list), my_mat)
 
 colnames(my_df) <- c("station_eu_code", "rmse_20", "rmse_80", "mse_20", "mse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE")
 
+# salvataggio dati ####
+
+# creiamo una directory per regione
+stazioniAria %>% 
+  filter(station_eu_code == eu_code) %>% 
+  select(region_id) %>% 
+  as.numeric() -> region_id
+
+dir.create(glue("validazione/{region_id}"), recursive=TRUE)
+
 sapply(my_df, function(x) { as.vector(x) }) %>% 
-  write.table(file = glue::glue("{outdir}/validazione_{pltnt}.csv"), sep = ";", row.names = FALSE)
+  write.table(file = glue::glue("validazione/{region_id}/validazione_{pltnt}.csv"), sep = ";", row.names = FALSE)
 
 # Criteri di validazione modelli ####
 # Rsq(80) > 0.5
@@ -173,5 +188,3 @@ sapply(my_df, function(x) { as.vector(x) }) %>%
 # NMSE <= 0.5
 # FB <= 0.5
 # FA2 >= 0.80
-
-

@@ -157,5 +157,15 @@ log_close()
 # mgcViz::check.gamViz(mod_viz)
 # mgcViz::plot.gamViz(mod_viz)
 
-save.image(file = glue::glue("rdatas/{pltnt}_{eu_code}_all.RData"))
+# salvataggio dati ####
+
+# creiamo una directory per regione
+stazioniAria %>% 
+  filter(station_eu_code == eu_code) %>% 
+  select(region_id) %>% 
+  as.numeric() -> region_id
+
+dir.create(glue("rdatas/{region_id}"), recursive=TRUE)
+
+save.image(file = glue::glue("rdatas/{region_id}/{pltnt}_{eu_code}_all.RData"))
 

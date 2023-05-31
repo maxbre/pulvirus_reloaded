@@ -26,20 +26,22 @@ outdir <- "~/R/pulvirus_reloaded/validazione/"
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if(is.na(args[1])) {
+if(is.na(args[1]) & is.na(args[2]) ) {
+  region_id <- "3"
   pltnt <- "pm25"
 }else{
   pltnt <- args[1]
+  region_id <- args[2]
 }
 
-rdatas <- list.files(path = glue("./rdatas"),
+rdatas <- list.files(path = glue("./rdatas/{region_id}"),
                      pattern = paste0("^", pltnt, "_(.*).RData"),
                      recursive = TRUE,
                      full.names = TRUE)
 
-# filtro sulle sole stazioni che hanno superato il processo di validazione ####
+# stazioni che hanno superato la validazione ####
 {
-  df <- read_delim(glue::glue("validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+  df <- read_delim(glue::glue("validazione/{region_id}/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
   df[(df[["FAC2"]] >= 0.8 & 
         df[["rsq_80"]] >= 0.5 &
@@ -54,9 +56,11 @@ my_list <- list()
 my_list_tdf <- list()
 my_mat <- matrix()
 
-lf <- log_open(glue::glue("validazione/{pltnt}.log"))
+lf <- log_open(glue::glue("incertezza/{region_id}/{pltnt}.log"))
 
 log_print((pltnt))
+log_print( sprintf("Stazioni totali: %s", length(rdatas)) , hide_notes = TRUE)
+log_print( sprintf("Stazioni valide: %s", nrow(s_valide)), hide_notes = TRUE)
 
 run <- 1
 for (i in rdatas) {
@@ -69,6 +73,7 @@ for (i in rdatas) {
   eu_code <- file_path_sans_ext(  str_split(basename(i), "_")[[1]][code_idx] )
   
   log_print(sprintf("%s %d", eu_code, run), hide_notes = TRUE)
+  log_print(sprintf("%s ", as.character( formula.gam(mod_B)))[3], hide_notes = TRUE)
   
   # mettiamo insieme il data frame ####
   {
@@ -169,10 +174,15 @@ for (i in rdatas) {
 
 log_close()
 
+# creiamo una directory per regione
+stazioniAria %>% 
+  filter(station_eu_code == eu_code) %>% 
+  select(region_id) %>% 
+  as.numeric() -> region_id
 
-# my_mat <- do.call(rbind, my_list)
-# my_df <- data.frame(id = names(my_list), my_mat)
-save( my_list, file = glue("incertezza/ic_{pltnt}.RData") )
+dir.create(glue("incertezza/{region_id}"), recursive=TRUE)
+
+save( my_list, file = glue("incertezza/{region_id}/ic_{pltnt}.RData") )
 log_close()
 
 # colnames(my_df) <- c("station_eu_code", "rmse_20", "rmse_80", "mse_20", "mse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE")
