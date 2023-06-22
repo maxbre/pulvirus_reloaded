@@ -1,2376 +1,251 @@
 ========================================================================= 
 Log Path: validazione/log/pm10.log 
+Program Path: /home/rmorelli/R/pulvirus_reloaded/corso-06.R 
 Working Directory: /home/rmorelli/R/pulvirus_reloaded 
 User Name: rmorelli 
 R Version: 4.2.2 Patched (2022-11-10 r83330) 
 Machine: asiispra x86_64 
 Operating System: Linux 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) 
-Base Packages: tools stats graphics grDevices utils datasets methods base Other Packages: tibble_3.2.1 readr_2.1.4 logr_1.3.3 stringr_1.5.0 FSMUMI_1.0 glue_1.6.2 Metrics_0.1.4 mgcViz_0.1.9 ggplot2_3.4.2 qgam_1.3.4 mgcv_1.8-42 nlme_3.1-162 lubridate_1.9.2 dplyr_1.1.2 datiMeteo_0.0.6 datiInquinanti_0.0.8 
-Log Start Time: 2023-05-15 12:31:16 
+Base Packages: tools stats graphics grDevices utils datasets methods base Other Packages: logr_1.3.3 stringr_1.5.0 FSMUMI_1.0 glue_1.6.2 Metrics_0.1.4 mgcViz_0.1.9 ggplot2_3.4.2 qgam_1.3.4 mgcv_1.8-42 nlme_3.1-162 lubridate_1.9.2 dplyr_1.1.2 datiMeteo_0.0.6 datiInquinanti_0.0.8 
+Log Start Time: 2023-05-17 09:53:02 
 ========================================================================= 
 
 pm10 
 
-NOTE: Log Print Time:  2023-05-15 12:31:16 
-NOTE: Elapsed Time: 0.00084996223449707 secs 
+NOTE: Log Print Time:  2023-05-17 09:53:02 
+NOTE: Elapsed Time: 0.000772476196289062 secs 
 
-IT0825A 1 
+Stazioni totali: 57 
 
-run 1 
+IT0267A 1 
 
-run 2 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(rh) + s(t2m) + s(sp) + s(tp) + s(u10m) 
 
-run 3 
+IT0594A 2 
 
-run 4 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(rh) + s(tp) + s(ptp) + s(t2m) + s(u10m) + s(v10m) + s(sp) 
 
-run 5 
+IT0692A 3 
 
-run 6 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(t2m) + s(rh) + s(ptp) + s(sp) + s(tp) + s(wdir) + s(pwspeed) 
 
-run 7 
+IT0705A 4 
 
-run 8 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(sp) + s(rh) + s(ptp) + s(tp) + s(pwspeed) 
 
-run 9 
+IT0706A 5 
 
-run 10 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(sp) + s(v10m) + s(ptp) + s(rh) + s(tp) + s(t2m) 
 
-run 11 
+IT0707A 6 
 
-run 12 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(wspeed) + s(sp) + s(pwspeed) 
 
-run 13 
+IT0709A 7 
 
-run 14 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(v10m) + s(sp) + s(rh) + s(t2m) + s(tp) + s(pbl00) + s(pwspeed) 
 
-run 15 
+IT0740A 8 
 
-run 16 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(wspeed) + s(sp) + s(u10m) 
 
-run 17 
+IT0742A 9 
 
-run 18 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(t2m) + s(tp) + s(wspeed_max) 
 
-run 19 
+IT0771A 10 
 
-run 20 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(wspeed) + s(ptp) + s(rh) + s(sp) + s(t2m) + s(tp) + s(pwspeed) 
 
-run 21 
+IT0776A 11 
 
-run 22 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(sp) + s(rh) + s(tp) + s(v10m) + s(t2m) 
 
-run 23 
+IT0777A 12 
 
-run 24 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(v10m) + s(pbl00) 
 
-run 25 
+IT0778A 13 
 
-run 26 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(t2m) + s(rh) + s(tp) + s(sp) + s(pwspeed) 
 
-run 27 
+IT0839A 14 
 
-run 28 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(sp) + s(rh) + s(ptp) + s(t2m) + s(tp) + s(wspeed) + s(pwspeed) 
 
-run 29 
+IT0840A 15 
 
-run 30 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(rh) + s(t2m) + s(tp) + s(sp) + s(wspeed) + s(pwspeed) 
 
-IT0828A 2 
+IT0846A 16 
 
-run 1 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(pbl00) + s(wspeed) + s(t2m) + s(rh) + s(tp) + s(sp) 
 
-run 2 
+IT0906A 17 
 
-run 3 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(sp) + s(v10m) + s(tp) + s(rh) + s(pbl00) 
 
-run 4 
+IT0908A 18 
 
-run 5 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(v10m) + s(sp) + s(t2m) + s(u10m) + s(tp) + s(wspeed) 
 
-run 6 
+IT0912A 19 
 
-run 7 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(pbl00) + s(t2m) + s(u10m) + s(tp) + s(wspeed) 
 
-run 8 
+IT0997A 20 
 
-run 9 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(sp) + s(pwspeed) + s(t2m) + s(pblmin) + s(wspeed_max) 
 
-run 10 
+IT1010A 21 
 
-run 11 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(sp) + s(ptp) + s(v10m) + s(t2m) + s(rh) 
 
-run 12 
+IT1016A 22 
 
-run 13 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(sp) + s(rh) + s(t2m) + s(tp) + s(pwspeed) 
 
-run 14 
+IT1034A 23 
 
-run 15 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(sp) + s(rh) + s(t2m) + s(tp) + s(pblmin) + s(u10m) + s(pwspeed) + s(wdir) 
 
-run 16 
+IT1104A 24 
 
-run 17 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(t2m) + s(sp) + s(rh) + s(tp) + s(pwspeed) 
 
-run 18 
+IT1153A 25 
 
-run 19 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(t2m) + s(rh) + s(tp) + s(pwspeed) + s(pblmin) + s(v10m) + s(sp) 
 
-run 20 
+IT1190A 26 
 
-run 21 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(sp) + s(rh) + s(t2m) + s(wspeed) + s(tp) + s(pbl00) 
 
-run 22 
+IT1286A 27 
 
-run 23 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(rh) + s(t2m) + s(sp) + s(tp) 
 
-run 24 
+IT1287A 28 
 
-run 25 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(pwspeed) + s(sp) 
 
-run 26 
+IT1294A 29 
 
-run 27 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(v10m) + s(rh) + s(t2m) + s(sp) + s(tp) + s(u10m) + s(pbl00) 
 
-run 28 
+IT1385A 30 
 
-run 29 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(t2m) + s(pbl12) + s(tp) + s(v10m) + s(pwspeed) 
 
-run 30 
+IT1388A 31 
 
-IT0863A 3 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pblmin) + s(pwspeed) 
 
-run 1 
+IT1392A 32 
 
-run 2 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(t2m) + s(rh) + s(ptp) + s(tp) + s(sp) + s(wspeed) 
 
-run 3 
+IT1459A 33 
 
-run 4 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(v10m) + s(ptp) + s(pwspeed) + s(sp) + s(t2m) + s(rh) + s(tp) + s(pbl00) + s(wdir) 
 
-run 5 
+IT1463A 34 
 
-run 6 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(pwspeed) + s(sp) + s(t2m) + s(rh) + s(tp) + s(wspeed) 
 
-run 7 
+IT1464A 35 
 
-run 8 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pbl00) 
 
-run 9 
+IT1588A 36 
 
-run 10 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(v10m) + s(t2m) + s(sp) + s(pwspeed) + s(tp) 
 
-run 11 
+IT1646A 37 
 
-run 12 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(u10m) + s(sp) + s(rh) + s(tp) + s(t2m) + s(pwspeed) 
 
-run 13 
+IT1650A 38 
 
-run 14 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(v10m) + s(ptp) + s(pbl00) + s(t2m) + s(sp) + s(rh) + s(tp) + s(wdir) 
 
-run 15 
+IT1692A 39 
 
-run 16 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(wspeed) + s(sp) + s(rh) + s(t2m) + s(tp) + s(pbl00) 
 
-run 17 
+IT1734A 40 
 
-run 18 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(t2m) + s(sp) + s(pwspeed) + s(wspeed) 
 
-run 19 
+IT1735A 41 
 
-run 20 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(t2m) + s(tp) + s(v10m) + s(pbl00) 
 
-run 21 
+IT1737A 42 
 
-run 22 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(u10m) + s(t2m) + s(pwspeed) + s(sp) + s(wspeed) 
 
-run 23 
+IT1739A 43 
 
-run 24 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(t2m) + s(rh) + s(tp) + s(v10m) + s(sp) + s(pwspeed) 
 
-run 25 
+IT1743A 44 
 
-run 26 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pbl00) + s(wspeed) 
 
-run 27 
+IT1812A 45 
 
-run 28 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(v10m) + s(ptp) + s(rh) + s(t2m) + s(sp) + s(pwspeed) 
 
-run 29 
+IT1865A 46 
 
-run 30 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(t2m) + s(rh) + s(tp) + s(v10m) + s(sp) 
 
-IT0865A 4 
+IT1868A 47 
 
-run 1 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(t2m) + s(rh) + s(tp) + s(pwspeed) + s(sp) + s(u10m) 
 
-run 2 
+IT1869A 48 
 
-run 3 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(rh) + s(t2m) + s(tp) + s(u10m) + s(sp) 
 
-run 4 
+IT1873A 49 
 
-run 5 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(sp) + s(v10m) + s(ptp) + s(t2m) + s(rh) + s(pbl00) + s(tp) 
 
-run 6 
+IT1874A 50 
 
-run 7 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(t2m) + s(sp) + s(pbl00) + s(tp) + s(u10m) + s(pwspeed) 
 
-run 8 
+IT1876A 51 
 
-run 9 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pwspeed) + s(wspeed) 
 
-run 10 
+IT1964A 52 
 
-run 11 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pbl00) + s(u10m) 
 
-run 12 
+IT1965A 53 
 
-run 13 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(pbl00) + s(ptp) + s(rh) + s(t2m) + s(tp) + s(sp) 
 
-run 14 
+IT1967A 54 
 
-run 15 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(t2m) + s(ptp) + s(rh) + s(tp) + s(sp) + s(pblmin) + s(v10m) 
 
-run 16 
+IT2007A 55 
 
-run 17 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(t2m) + s(v10m) + s(pwspeed) + s(sp) + s(tp) 
 
-run 18 
+IT2062A 56 
 
-run 19 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pwspeed) + s(v10m) + s(pbl00) 
 
-run 20 
+IT2063A 57 
 
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0867A 5 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0869A 6 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0870A 7 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0871A 8 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0884A 9 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0885A 10 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0887A 11 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0888A 12 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0889A 13 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0952A 14 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0953A 15 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0957A 16 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0989A 17 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0991A 18 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT0992A 19 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1176A 20 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1183A 21 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1184A 22 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1200A 23 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1834A 24 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1835A 25 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1836A 26 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1837A 27 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1841A 28 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT1906A 29 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2012A 30 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2013A 31 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2023A 32 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2172A 33 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2173A 34 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2174A 35 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2175A 36 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2246A 37 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
-
-IT2264A 38 
-
-run 1 
-
-run 2 
-
-run 3 
-
-run 4 
-
-run 5 
-
-run 6 
-
-run 7 
-
-run 8 
-
-run 9 
-
-run 10 
-
-run 11 
-
-run 12 
-
-run 13 
-
-run 14 
-
-run 15 
-
-run 16 
-
-run 17 
-
-run 18 
-
-run 19 
-
-run 20 
-
-run 21 
-
-run 22 
-
-run 23 
-
-run 24 
-
-run 25 
-
-run 26 
-
-run 27 
-
-run 28 
-
-run 29 
-
-run 30 
+weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) + s(ptp) + s(rh) + s(tp) + s(t2m) + s(sp) + s(pwspeed) 
 
 ========================================================================= 
-Log End Time: 2023-05-15 16:01:22 
-Log Elapsed Time: 0 03:30:05 
+Log End Time: 2023-05-17 09:55:59 
+Log Elapsed Time: 0 00:02:57 
 ========================================================================= 
