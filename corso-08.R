@@ -11,6 +11,7 @@
   rm(list = ls())
 }
 
+
 datiInquinanti::stazioniAria %>%
   mutate(tipo_s = case_when(
     zona_tipo == "FU" ~ "Fondo urbano/suburbano",
