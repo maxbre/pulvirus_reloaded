@@ -16,7 +16,7 @@ setwd("~/R/pulvirus_reloaded")
 
 
 ## list.files ####
-list.files(path = ".", pattern = "*.csv")
+list.files(path = ".", pattern = "*.csv") # bla bla bla b
 
 list.files(path = ".", pattern = "*.csv", recursive = TRUE)
 
