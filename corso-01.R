@@ -22,9 +22,9 @@ list.files(path = ".", pattern = "*.csv", recursive = TRUE)
 
 list.files(path = ".", pattern = "^2020_Dati_Lazio.*", recursive = TRUE)
 
-list.files(path = "~/R/pulvirus/presentazione/dati-lazio", pattern = "*.csv")
+list.files(path = "~/R/pulvirus_reloaded/dati-lazio", pattern = "*.csv")
 
-setwd("~/R/pulvirus/presentazione/dati-lazio")
+setwd("~/R/pulvirus_reloaded/dati-lazio")
 
 list.files(pattern = "*.csv")
 
