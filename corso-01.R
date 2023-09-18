@@ -16,7 +16,7 @@ setwd("~/R/pulvirus_reloaded")
 
 
 ## list.files ####
-list.files(path = ".", pattern = "*.csv") # bla bla bla b
+list.files(path = ".", pattern = "*.csv") # 
 
 list.files(path = ".", pattern = "*.csv", recursive = TRUE)
 
@@ -33,12 +33,6 @@ file.dati <- list.files(pattern = "*.csv")
 file.dati[1]
 
 ## read_csv ####
-tryCatch({
-  read_csv(file.dati[1])
-},
-error = function(cond) {
-  print("Attenzione...")
-})
 
 # f <- read_csv(file.dati[1])
 f <- read_csv(file.dati[1], locale = locale(encoding = "ISO-8859-1"), show_col_types = FALSE)
@@ -75,7 +69,7 @@ data <- lapply(file.dati, function(x)
              trim_ws = TRUE, skip = 2)
   )
 
-## oggetti nel global ennv con purrr ####
+## oggetti nel global env con purrr ####
 file.dati %>%
   map(function(fname){ # iterate through each sheet name
     assign(x = fname,
@@ -111,8 +105,6 @@ m.data <- map(data, function(df) {
 
 
 names(m.data)
-
-setwd("~/R/pulvirus/presentazione")
 
 m.data %>%
   names(.) %>%
