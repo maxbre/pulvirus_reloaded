@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-# stazioniAria %>% filter(region_id == 12) %>% select(station_eu_code) %>% write_csv2(file = "staz_lazio.txt")
-# Rscript --vanilla corso-05a.R staz_lazio.txt "no2"
+# datiInquinanti::stazioniAria %>% filter(region_id == 6) %>% select(station_eu_code) %>% write_csv2(file = "staz_fvg.txt")
+# Rscript --vanilla corso-05a.R staz_lombardia.txt "no2"
 
 ## init ####
 {
@@ -86,7 +86,7 @@ scelta_modello <- function(eu_code, pltnt) {
   
   select(df, all_of(v_meteo)) %>%
     correlation() %>%
-    filter(r >= 0.7) %>%
+    filter(r >= 0.7, r <= 0.7) %>%
     select(Parameter2) %>%
     unique() %>% unlist() %>% as.character() -> v_elevata_correlazione
   
@@ -194,7 +194,6 @@ scelta_modello <- function(eu_code, pltnt) {
   log_close()
   # save(mod_B, mod_A, file = glue::glue("{pltnt}_{eu_code}_B.RData"))
   
-  
   # salvataggio dati ####
   
   # creiamo una directory per regione
@@ -203,13 +202,13 @@ scelta_modello <- function(eu_code, pltnt) {
     select(region_id) %>% 
     as.numeric() -> region_id
   
-  dir.create(glue("rdatas/{region_id}"), recursive=TRUE)
+  dir.create(glue("rdatas/{region_id}"), recursive = TRUE, showWarnings = FALSE)
   
   save.image(file = glue::glue("rdatas/{region_id}/{pltnt}_{eu_code}_all.RData"))
 
 }
 
-# mi assicuro che ci siano un numero massimo di stazioni ####
+# mi assicuro che ci sia un numero massimo di stazioni ####
 for (eu_code in codici$station_eu_code) {
   f <- glue::glue("rdatas/{pltnt}_{eu_code}_all.RData")
   
@@ -220,8 +219,5 @@ for (eu_code in codici$station_eu_code) {
   
   N_stazioni <- get("N_stazioni", envir = .GlobalEnv)
   
-  # if(length(N_stazioni) > 9) {
-  #   stop("Basta!")
-  # }
 }
 

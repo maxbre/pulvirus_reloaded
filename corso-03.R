@@ -14,8 +14,10 @@
   library(mgcv)
   library(stringr)
   library(correlation)
+  
   library(datiInquinanti)
   library(datiMeteo)
+  
   setwd("~/R/pulvirus_reloaded")
 }
 
@@ -60,6 +62,7 @@ buildMods <- function(backward = FALSE) {
     
     # le variabili non scelte (v_fixed) e non scartate (v_dead)
     v_left <- v_meteo[!v_meteo %in% c(names(AICS), v_dead)]
+    
     if(length(v_left) == 0) {
       return(NULL)
     }
@@ -85,14 +88,14 @@ buildMods <- function(backward = FALSE) {
   # log_print(w %>% unlist())
   return(w)
 }
-# buildMods()
+buildMods()
 
 # models <- map(w, \(y) eval(parse(text = y)))
 
 
 # function: bestMod ####
 bestMod <- function(mod.res) {
-  aics <- map(mod.res, \(m) AIC({m}) )
+  aics <- map(mod.res, function(m) AIC({m}) )
   aics %>% which.min() %>% as.numeric() -> min.aic
 
   log_print("Modello migliore: ", hide_notes = TRUE)
@@ -256,10 +259,10 @@ sceltaVar <- function(cappa) {
 
 ## Test A -> Z #####
 
-datiInquinanti::stazioniAria %>% filter(station_eu_code == "IT0470A")
+datiInquinanti::stazioniAria %>% filter(station_eu_code == "IT0825A")
 
-eu_code <- "IT0470A"
-pltnt <- "pm10"
+eu_code <- "IT0825A"
+pltnt <- "no2"
 
 # dati sull'inquinante ####
 get(pltnt) %>% 
@@ -334,7 +337,9 @@ get(pltnt) %>%
 # select(df, all_of(v_meteo)) %>% correlation() %>% filter(r >= 0.7)
 df %>% select( names(AICS) ) %>% correlation() %>% cor_lower() %>% log_print()
 
-mod_fin <- lapply(names(AICS), function(x) paste0("s(", x, ")") ) %>% paste(collapse = " + ")
+mod_fin <- lapply(names(AICS), 
+                  function(x) paste0("s(", x, ")") ) %>% 
+  paste(collapse = " + ")
 
 mod <- eval(parse(text = glue::glue("gam(value ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k={v_cappa}) + {mod_fin}, gamma=1.4, family=gaussian(link=log), data = df)")))
 
@@ -345,7 +350,7 @@ summary(mod) %>% log_print()
 v_sign <- summary(mod)$s.table %>% 
   as.data.frame() %>% 
   filter(`p-value` < 0.01) %>% 
-  rownames() %>% tail(n = -2) 
+  rownames() %>% tail(n = -2)
 
 log_print(v_sign)
 

@@ -1,0 +1,90 @@
+---
+title: "Untitled"
+author: "Dr. Raffaele Morelli"
+date: "2023-09-27"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
+  pdf_document: 
+      toc: yes
+  word_document:
+    toc: yes
+    toc_depth: '2'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      fig.path = "figure_output/", 
+                      dpi = 96, 
+                      message = FALSE, warning = FALSE)
+
+source("corso-09.R")
+```
+
+# Introduzione
+
+> https://bookdown.org/
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse blandit a metus ut pellentesque. Mauris et tincidunt lectus, vel ornare orci. Ut non elit at metus lacinia lobortis. Vestibulum sem magna, lacinia ac augue vel, auctor commodo ex. Mauris dui nibh, suscipit nec feugiat ac, mollis nec elit. Maecenas mi mi, viverra sed erat sit amet, aliquet rhoncus leo. Sed lectus sapien, tincidunt a mattis nec, lobortis quis orci. Nam consectetur laoreet vulputate. In hac habitasse platea dictumst. Nulla tristique leo ac metus iaculis fringilla.
+
+
+## Descrittive Lazio
+
+```{r}
+getdesc("no2", 12)
+getdesc("pm10", 12)
+getdesc("pm25", 12)
+```
+
+## Descrittive Lombardia
+
+```{r}
+getdesc("no2", 3)
+getdesc("pm10", 3)
+getdesc("pm25", 3)
+```
+
+# boxplot validazione
+
+## lazio
+
+```{r lazio_val}
+getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+```
+
+## lombardia
+
+```{r lom_val}
+getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 3, TRUE)
+```
+
+# valutazione incertezza
+
+## lazio
+```{r incertezza_bxplt_laz, fig.width=4, fig.height=4}
+bootstrapmodelli("no2", 12)
+
+```
+
+
+## lombardia
+```{r incertezza_bxplt_lom, fig.width=4, fig.height=4}
+bootstrapmodelli("no2", 3)
+
+```
+
+#  lazio
+
+```{r}
+riassumi("no2", "Traffico", 12)
+riassumi("no2", "Fondo urbano/suburbano", 12)
+```
+
+#  lombardia
+
+```{r}
+riassumi("no2", "Traffico", 3)
+riassumi("no2", "Fondo urbano/suburbano", 3)
+
+```

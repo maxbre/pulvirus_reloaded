@@ -13,18 +13,19 @@
 
 
 datiInquinanti::stazioniAria %>%
-  mutate(tipo_s = case_when(
-    zona_tipo == "FU" ~ "Fondo urbano/suburbano",
-    zona_tipo == "FS" ~ "Fondo urbano/suburbano",
-    zona_tipo == "TU" ~ "Traffico",
-    zona_tipo == "TS" ~ "Traffico",
-    tipo_zona == "R" ~ "Rurale",
-    tipo_zona == "R-nearcity" ~ "Rurale",
-    tipo_zona == "R-regional" ~ "Rurale",
-    tipo_zona == "R-remote" ~ "Rurale",
-    tipo_stazione == "I" ~ "Industriale",
-    tipo_stazione == "F/I" ~ "Industriale",
-  )) -> stazioni
+  mutate(
+    tipo_s = case_when(
+      zona_tipo == "FU" ~ "Fondo urbano/suburbano",
+      zona_tipo == "FS" ~ "Fondo urbano/suburbano",
+      zona_tipo == "TU" ~ "Traffico",
+      zona_tipo == "TS" ~ "Traffico",
+      tipo_zona == "R" ~ "Rurale",
+      tipo_zona == "R-nearcity" ~ "Rurale",
+      tipo_zona == "R-regional" ~ "Rurale",
+      tipo_zona == "R-remote" ~ "Rurale",
+      tipo_stazione == "I" ~ "Industriale",
+      tipo_stazione == "F/I" ~ "Industriale",
+    )) -> stazioni
 
 theme_pulvirus <- function() {
   theme_grey() %+replace%    #replace elements we want to change
@@ -69,10 +70,11 @@ inner_join(df, stazioni, by = c("station_eu_code") ) %>%
   theme_pulvirus()
 
 
-melt(df) %>% ggplot(aes(y = value, fill = variable)) + 
+melt(df) %>% 
+  ggplot(aes(y = value, fill = variable)) + 
   geom_histogram(binwidth = 0.2) + 
   coord_flip() + 
   facet_grid(~variable) + 
   theme_pulvirus() +
-  theme(legend.position  = "none")
+  theme(legend.position = "none")
 

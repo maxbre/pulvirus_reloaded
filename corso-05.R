@@ -20,7 +20,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 
 
-if(is.na(args[1])) {
+if(is.na(args[1]) | is.na(args[2])) {
   pltnt <- "pm25"
   eu_code <- "IT1176A"
 }else{

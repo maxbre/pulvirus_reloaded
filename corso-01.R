@@ -30,14 +30,14 @@ list.files(pattern = "*.csv")
 
 file.dati <- list.files(pattern = "*.csv")
 
-file.dati[1]
+file.dati[4]
 
 ## read_csv ####
 
 # f <- read_csv(file.dati[1])
 f <- read_csv(file.dati[1], locale = locale(encoding = "ISO-8859-1"), show_col_types = FALSE)
 
-head(f, n = 1)
+head(f, n = 10)
 
 ## read_delim ####
 f <- read_csv(file.dati[1], locale = locale(encoding = "ISO-8859-1"))
@@ -70,10 +70,11 @@ data <- lapply(file.dati, function(x)
   )
 
 ## oggetti nel global env con purrr ####
-file.dati %>%
-  map(function(fname){ # iterate through each sheet name
+file.dati %>% 
+  map(function(fname) {
+    # iterate through each sheet name
     assign(x = fname,
-           value = read_delim(fname, locale = locale(encoding = "ISO-8859-1", decimal_mark = ",")),
+           value = read_delim(fname, delim = ";", locale = locale(encoding = "ISO-8859-1", decimal_mark = ",")),
            envir = .GlobalEnv)
   })
 
@@ -95,28 +96,31 @@ pltnt <- map(file.dati,
 
 names(data) <- c(pltnt)
 
-m.data <- map(data, function(df) {
-  df %>% 
-    group_by(data) %>% 
-    summarise(
-      across(where(is.numeric), ~ mean(.x, na.rm = TRUE))
-    )
-})
+m.data <- map(data, 
+              function(df) {
+                df %>% 
+                  group_by(data) %>% 
+                  summarise(
+                    across(where(is.numeric), ~ mean(.x, na.rm = TRUE))
+                  )
+              })
 
 
 names(m.data)
 
 m.data %>%
   names(.) %>%
-  walk(~write_csv(m.data[[.]], glue::glue("tmp/{.}.csv")))
+  walk(~write_csv(m.data[[.]], glue::glue("/home/rmorelli/R/pulvirus_reloaded/tmp/{.}.csv")))
 
 ## imap ####
 imap(m.data, ~write.csv(melt(.x, id.vars = c("data")), 
-                        file = glue::glue("tmp/{.y}.csv"), row.names = FALSE))
+                        file = glue::glue("/home/rmorelli/R/pulvirus_reloaded/tmp/{.y}.csv"), row.names = FALSE))
 
 imap(m.data, ~write.csv( 
-  melt(.x, id.vars = c("data")) %>% setNames(c("data", "station_eu_code", "value")),  
-  file = glue::glue("dati-lazio/per-inquinante/{.y}.csv"), row.names = FALSE))
+  melt(.x, id.vars = c("data")) %>% 
+    setNames(c("data", "station_eu_code", "value")),  
+  file = glue::glue("/home/rmorelli/R/pulvirus_reloaded/dati-lazio/per-inquinante/{.y}.csv"), row.names = FALSE)
+  )
 
 ## pgsql ####
 # tryCatch({
@@ -135,9 +139,10 @@ imap(m.data, ~write.csv(
 # })
 
 ## storico ####
-no2_2013_2019 <- read_csv("storico/NO2_2013-2019.csv")
-no2_2020 <- read_csv("dati-lazio/per-inquinante/NO2.csv")
+no2_2013_2019 <- read_csv("/home/rmorelli/R/pulvirus_reloaded/storico/NO2_2013-2019.csv")
+no2_2020 <- read_csv("/home/rmorelli/R/pulvirus_reloaded/dati-lazio/per-inquinante/NO2.csv")
 
+setwd("/home/rmorelli/R/pulvirus_reloaded/")
 ## stazioni ####
 stazioni <- read_csv("stazioni/stazioni-metadati.csv")
 
@@ -148,8 +153,8 @@ no2Lazio <- no2_2013_2019 %>% filter(station_eu_code %in% staz_lazio$station_eu_
 no2_2020 <- no2_2020 %>% mutate(reporting_year = format(data, "%Y"))
 no2_2020 <- no2_2020 %>% mutate(reporting_year = lubridate::year(data))
 
-names(no2Lazio)
-names(no2_2020)
+names(no2Lazio) # storico
+names(no2_2020) # primo semestre
 
 select(no2Lazio, c("reporting_year", "date", "station_eu_code", "value"))
 select(no2_2020, c("reporting_year", "data", "station_eu_code", "value"))
@@ -168,9 +173,12 @@ rm(f, file.dati, no2_2020, no2Lazio, no2_2013_2019, data, stazioni)
 # - un anno e' valido se contiene tutte le stagioni valide (almeno due mesi validi per stagione)
 # - le serie devono avere tutti i mesi validi nel 2020
                             
-serie <- as_tibble_col( seq(lubridate::ymd('2016-01-01'), lubridate::ymd('2020-06-30'), by = 'days'), column_name = "date" )
+serie <- as_tibble_col( 
+  seq(lubridate::ymd('2016-01-01'), 
+      lubridate::ymd('2020-06-30'), by = 'days'), column_name = "date" )
 
 no2_2013_2020 %>% 
+  filter( !is.na(value), value != -999 ) %>% 
   mutate(
     mese = lubridate::month(date),
     stagione =
@@ -193,7 +201,7 @@ no2 %>%
 
 no2 %>% 
   split(.$station_eu_code) %>% 
-  map(\(df) {
+  map(function(df) {
     df %>% 
       group_by(reporting_year, mese, stagione) %>%
       miss_var_summary() %>% 
@@ -242,13 +250,14 @@ do.call(cbind, list(l1, l2)) %>%
   setNames(c("v1519", "v20")) %>% 
   rownames_to_column(var = "station_eu_code") -> df_valide
 
+df_valide %>% mutate(valida = v1519 & v20) ->  df_valide
 
 rm(l1, l2, no2_2013_2020)
 
 # associazione dati meteo ####
 datiMeteo::dati_meteo %>% 
   filter(station_eu_code %in% staz_lazio$station_eu_code) %>% 
-  mutate(jd = as.numeric( date - lubridate::ymd(20130101) ) ) -> meteo_lazio
+  mutate(jd = as.numeric( date - lubridate::ymd(20130101) )) -> meteo_lazio
 
 meteo_lazio %>%
   dplyr::group_split(station_eu_code) -> dfs
@@ -279,5 +288,10 @@ dfs %>%
   map(\(df) {
     if( nrow(na.omit(df)) > 0 )
       lm(value ~ jd + t2m + pblmax + wspeed + rh, data = df)
-  })
+  }) -> tmp
 
+
+# salvataggio di oggetti dell'environment ####
+save(m.data, dfs, data, file = "test.RData")
+load(file = "test.RData")
+save.image()

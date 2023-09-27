@@ -1,20 +1,24 @@
-library(dplyr)
-library(glue)
-library(logr)
-library(mgcv)
-library(readr)
-library(modelr)
-library(tidyverse)
+{
+  library(dplyr)
+  library(glue)
+  library(logr)
+  library(mgcv)
+  library(readr)
+  library(modelr)
+  library(tidyverse)
+}
 
-setwd("~/R/pulvirus_reloaded")
+setwd("/home/rmorelli/R/pulvirus_reloaded")
 
 ## importazione dati ####
 file.dati <- list.files(path = "~/R/pulvirus_reloaded/dati-lazio/per-stazione/valide", full.names = TRUE, pattern = "*.csv")
 
 file.dati %>%
-  purrr::map(function(file_name){ 
-    read_csv(file_name)
-  }) -> dfs
+  purrr::map(
+    function(file_name) { 
+      read_csv(file_name)
+    }
+  ) -> dfs
 
 names(dfs) <- basename(file.dati) %>% str_remove(pattern = ".csv")
 
@@ -29,9 +33,12 @@ names(dfs) <- basename(file.dati) %>% str_remove(pattern = ".csv")
 
 vars <- c("x0", "x1", "x2", "x3", "x4")
 
-c0 <- combn(vars, 1) 
+c0 <- combn(vars, 1)
 
-w <- c0 %>% imap_chr(~glue::glue("gam(value ~ s({.x}), data = df)"))
+w <- c0 %>% 
+  imap_chr(
+    ~glue::glue("gam(value ~ s({.x}), data = df)")
+  )
 
 w <- c0 %>% map(~glue::glue("gam(value ~ s({.x}))"))
 
@@ -56,18 +63,38 @@ dfs <- dfs[names(dfs) %in% valide]
 length(dfs)
 
 # applichiamo tutti modelli per ogni elemento della lista
+s <- Sys.time()
 dfs %>% 
   map(\(df) {
-    map(w, \(y) eval(parse(text = y)))
+    map(w,
+        function(y) {
+          eval(parse(text = y))
+        }
+    )
   }) -> mod.res
+
+e <- Sys.time()
+e - s
+
+# con ciclo for nidificato ####
+s <- Sys.time()
+appoggio <- list()
+for(i in names(dfs)) {
+  df <- dfs[[i]]
+  for(j in w) {
+    appoggio[[i]][j] <- eval(parse(text = j))
+  }
+}
+e <- Sys.time()
+e - s
 
 # calcoliamo l'indice di Akaike sui risultati
 mod.res %>% 
-  map(~ map_dbl(.x, AIC)) 
+  map(~ map_dbl(.x, AIC))
 
 # il BIC
 mod.res %>% 
-  map(~ map_dbl(.x, BIC)) 
+  map(~ map_dbl(.x, BIC))
 
 
 ## applichiamo i modelli adeguati ####
@@ -80,10 +107,16 @@ enframe(m1)
 
 
 # andiamo ad applicare i modelli
+s <- Sys.time()
+
 dfs %>% 
   map(\(df) {
     map(m1, \(y) eval(parse(text = y)))
   }) -> mod1.res
+e <- Sys.time()
+e - s
+
+saveRDS(mod1.res, file = "mod1.res.RDS")
 
 # AIC dei modelli
 mod1.res %>% 
@@ -103,14 +136,14 @@ m1[mins1]
 
 # guardiamo dentro l'oggetto che ci restituisce mgcv e intercettiamo l'ultima 
 # variabile entrata nel modello migliore oltre al julian day
-mod1.res[["IT2173A"]][[17]][["var.summary"]]
+mod1.res[["IT2173A"]][[17]][["var.summary"]] %>% names()
 
 #  .fun  function
-ex_fun <- function(arg1, arg2){
+ex_fun <- function(arg1, arg2) {
   arg1[[arg2]][["var.summary"]] %>% names() %>% last()
 }
 
-map2(mod1.res, mins1, ex_fun) %>% unlist(use.names = FALSE) 
+map2(mod1.res, mins1, ex_fun) %>% unlist(use.names = FALSE)
 
 # utilizziamo una lista
 v1 <- map2(mod1.res, mins1, ex_fun) 
@@ -165,11 +198,11 @@ v_fixed <- rbind(v_fixed, v1) %>% as.data.frame()
 }
 
 imap(v_fixed, \(x, idx) {
-  # paste0(x, ":", idx)
+  paste0(x, ":", idx)
   res <- v_meteo[!v_meteo %in% v_fixed[[idx]] ]
-  
+
   a <- stringi::stri_join("s(", v_fixed[[idx]], ")", collapse = " + ")
-  
+
   stringi::stri_join(a, " + s(", res, ")")
   
 })
@@ -252,7 +285,7 @@ map(mod3.res, ~ map_dbl(.x, AIC)) %>%
 
 # mod1.res[["IT2173A"]][[17]][["var.summary"]]
 #  .fun  function
-ex_fun <- function(arg1, arg2){
+ex_fun <- function(arg1, arg2) {
   arg1[[arg2]][["var.summary"]] %>% names() %>% last()
 }
 

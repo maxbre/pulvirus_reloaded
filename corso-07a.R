@@ -16,12 +16,16 @@
 args <- commandArgs(trailingOnly = TRUE)
 
 if(is.na(args[1])) {
-  pltnt <- "o3"
+  pltnt <- "no2"
+  cod_reg <- "3"
 }else{
   pltnt <- args[1]
+  cod_reg <- args[2]
 }
 
-rdatas <- list.files(path = glue("./rdatas"),
+reg <- FALSE
+
+rdatas <- list.files(path = glue("./rdatas/{cod_reg}"),
                      pattern = glue("^{pltnt}_(.*).RData"),
                      recursive = TRUE,
                      full.names = TRUE)
@@ -31,7 +35,7 @@ my_list_tdf <- list()
 my_mat <- matrix()
 
 vars <- sort( c("lockL3", "lockL4", "lockL5", "lockL6") )
-enframe(name = "mese",vars) # tibble
+enframe(name = "mese", vars) # tibble
 
 df_app <- data.frame("mese" = vars) # conterrà le stime delle concentrazioni
 
@@ -64,12 +68,13 @@ run <- 1
     run <- run + 1
   }
   
-  tdata <- data.table::transpose(df_app[,-c(1)])
+  tdata <- data.table::transpose(df_app[, -c(1)])
   
   rownames(tdata) <- colnames(df_app[,-c(1)])
   colnames(tdata) <- vars
 
   tdata$station_eu_code <- rownames(tdata)
   
-  write_csv(tdata, file = glue("contributo/contributo_lock_{pltnt}.csv"))
+  dir.create(glue("contributo/{cod_reg}"), showWarnings = FALSE)
+  write_csv(tdata, file = glue("contributo/{cod_reg}/contributo_lock_{pltnt}.csv"))
 }

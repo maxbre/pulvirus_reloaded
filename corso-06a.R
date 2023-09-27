@@ -27,8 +27,8 @@ outdir <- "~/R/pulvirus_reloaded/validazione/"
 args <- commandArgs(trailingOnly = TRUE)
 
 if(is.na(args[1]) & is.na(args[2]) ) {
-  region_id <- "3"
-  pltnt <- "pm25"
+  region_id <- "5"
+  pltnt <- "pm10"
 }else{
   pltnt <- args[1]
   region_id <- args[2]
@@ -41,14 +41,16 @@ rdatas <- list.files(path = glue("./rdatas/{region_id}"),
 
 # stazioni che hanno superato la validazione ####
 {
-  df <- read_delim(glue::glue("validazione/{region_id}/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+  df <- read_delim(glue::glue("validazione/{region_id}/validazione_{pltnt}.csv"), 
+                   delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-  df[(df[["FAC2"]] >= 0.8 & 
+  df[ (df[["FAC2"]] >= 0.8 & 
         df[["rsq_80"]] >= 0.5 &
         between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
         between( df[["rmse_20"]] / df[["rmse_80"]], 0.5, 1.5) & 
         df[["FB"]] <= 0.5 & 
-        df[["NMSE"]] <= 0.5),] %>% select(station_eu_code) -> s_valide
+        df[["NMSE"]] <= 0.5), ] %>% 
+    select(station_eu_code) -> s_valide
 
 }
 
@@ -129,7 +131,7 @@ for (i in rdatas) {
     log_print( paste("run ", k, collapse = " "), hide_notes = TRUE )
     
     d <- floor(nrow(dfc) * 0.8)
-    s <- sample(dfc$jd, size = d) 
+    s <- sample(dfc$jd, size = d)
     
     # dataset ####
     pdf <- dfc[which( !(dfc$jd %in% s)),] # predict

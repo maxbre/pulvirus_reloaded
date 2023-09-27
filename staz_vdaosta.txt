@@ -1,0 +1,5 @@
+station_eu_code
+IT0977A
+IT0983A
+IT0988A
+IT2233A

@@ -3,14 +3,14 @@
 # init ####
 {
   library(RColorBrewer)
-  library(RPostgreSQL)
+  # library(RPostgreSQL)
   library(datiInquinanti)
   library(dplyr)
   library(ggplot2)
   library(ggthemes)
   library(glue)
   library(janitor)
-  library(kableExtra)
+  # library(kableExtra)
   library(knitr)
   library(pander)
   library(psych)
@@ -41,7 +41,8 @@ stazioniAria <- stazioniAria %>%
 
 
 if(!exists("ita_reg")) {
-  ita_reg <- st_read("~/R/pulvirus_reloaded/report/Limiti01012023_g/Reg01012023_g/Reg01012023_g_WGS84.shp", quiet = TRUE) 
+  ita_reg <- st_read("~/R/corso/dati-istat/Limiti01012019_g/Reg01012019_g/Reg01012019_g_WGS84.shp", 
+                     quiet = TRUE)
 }
 
 pulvirus_names <- list(
@@ -58,13 +59,26 @@ pulvirus_labeller <- function(variable, value){
   return(pulvirus_names[value])
 }
 
-getdesc <- function(pltnt) {
-  df <- read_delim(glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
+serievalide <- function(pltnt) {
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+  df[(df[["FAC2"]] >= 0.8 & 
+        df[["rsq_80"]] >= 0.5 &
+        between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
+        between( df[["rmse_20"]] / df[["rmse_80"]], 0.5, 1.5) & 
+        df[["FB"]] <= 0.5 & 
+        df[["NMSE"]] <= 0.5),] %>% select(station_eu_code) -> ss
   
-  
-  if(pltnt == "nox") {
-    df %>% filter(station_eu_code != "IT1378A") -> df
-  }
+  return(ss)
+}
+# serievalide("no2")
+
+getdesc <- function(pltnt, cod_reg, formato_out = "markdown") {
+  df <- read_delim(glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
+                   ";", 
+                   escape_double = FALSE, 
+                   trim_ws = TRUE, 
+                   show_col_types = FALSE
+                   )
   
   tit <- case_when(
     pltnt == "pm25" ~ "PM~25~",
@@ -73,7 +87,7 @@ getdesc <- function(pltnt) {
     pltnt == "o3" ~ "O~3~",
     pltnt == "nox" ~ "NOx",
     pltnt == "no2" ~ "NO~2~"
-  )  
+  ) 
   
   pulvirus_names <- list(
     'rmse_20' = 'RMSE 20',
@@ -83,31 +97,39 @@ getdesc <- function(pltnt) {
     'FAC2' = 'FAC2'
   )
   
-  df %>% select(-c(station_eu_code, modello)) %>%
-    describe(skew = FALSE) -> stats
+  df %>% 
+    select(-c(station_eu_code)) %>%
+    psych::describe(skew = FALSE) -> stats
   
   rownames(stats) <- c('RMSE 20', 'RMSE 80', 'MSE 20', 'MSE 80', 'RSQ 20', 'RSQ 80',  'FAC2', 'FB', 'NMSE')
   colnames(stats) <- c("vars", "n", "Media", "Std. dev", "Min", "Max", "Range", "Std. err")
   
   stats %>% select(-c(vars, n)) %>%
-    knitr::kable(format = "markdown", digits = 3, caption = glue("Indici statistici di validazione e prestazioni {tit}")
+    kable(format = formato_out, 
+                 digits = 3, 
+                 caption = glue("Indici statistici di validazione e prestazioni {tit}")
     )
 }
+getdesc("no2", "3")
 
-riassumi <- function(pltnt, tipo, perc = FALSE) {
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
-  if(perc == TRUE) {
-    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
-  }else{
-    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"))
-  }
+riassumi <- function(pltnt, tipo, cod_reg, perc = FALSE) {
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
+                   delim = ";", 
+                   escape_double = FALSE, trim_ws = TRUE, 
+                   show_col_types = FALSE)
+  
+  # if(perc == TRUE) {
+  #   cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
+  # }else{
+    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"), 
+                   show_col_types = FALSE)
+  # }
   
   ss <- serievalide(pltnt)
   
-  cl[cl[["station_eu_code"]] %in% ss[["station_eu_code"]],] %>% 
+  cl[ cl[["station_eu_code"]] %in% ss[["station_eu_code"]], ] %>% 
     inner_join(stazioniAria, by = c("station_eu_code")) -> wdf
   
-  # wdf[,1:4] <- apply(wdf[,1:4], 2, function(x) {ifelse(is.na(x), 0, x)})
   names(wdf)[1:4] <- c("Marzo","Aprile", "Maggio", "Giugno")
   
   tipo_new <- gsub("/", "", tipo)
@@ -122,7 +144,7 @@ riassumi <- function(pltnt, tipo, perc = FALSE) {
     select(c(station_eu_code, st_x, st_y, tipoS, "Marzo","Aprile", "Maggio", "Giugno")) %>% 
     reshape2::melt(id.vars = c("station_eu_code", "st_x", "st_y", "tipoS")) -> t
   
-  tdf <- mutate(t, Contributo = cut(value, breaks = c(-20, -10, -5, 0, 10, 11)))
+  tdf <- mutate(t, Contributo = cut(value, breaks = c(-20,-10,-5, 0, 10, 11)))
   
   tdf %>%
     select(tipoS, variable, value) %>%
@@ -134,14 +156,15 @@ riassumi <- function(pltnt, tipo, perc = FALSE) {
                  col.names = c("Mese", "Media", "25th", "Mediana", "75th", "Std. dev") 
     )
 }
+# riassumi("no2", "Traffico", 3)
 
-riassumiBoxplot <- function(pltnt, tipo, perc = FALSE) {
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
-  if(perc == TRUE) {
-    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
-  }else{
-    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"))
-  }
+riassumiBoxplot <- function(pltnt, tipo, cod_reg, perc = FALSE) {
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+  # if(perc == TRUE) {
+  #   cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
+  # }else{
+    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"))
+  # }
   
   ss <- serievalide(pltnt)
   cl[cl[["station_eu_code"]] %in% ss[["station_eu_code"]],] %>% 
@@ -173,22 +196,20 @@ riassumiBoxplot <- function(pltnt, tipo, perc = FALSE) {
     ggtitle(tit, subtitle = tipo)
   # return(tdf)
 }
+# riassumiBoxplot("no2", "Fondo urbano/suburbano", "12")
 
+getbxplt <- function(pltnt, vars, cod_reg, val = TRUE) {
+  df <- read_delim(glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
+                   ";", 
+                   escape_double = FALSE, trim_ws = TRUE)
 
-getbxplt <- function(pltnt, vars, val = FALSE) {
-  df <- read_delim(glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), ";", escape_double = FALSE, trim_ws = TRUE)
-  
-  if(pltnt == "nox") {
-    df %>% filter(station_eu_code != "IT1378A") -> df
-  }
-  
   if(val == TRUE) {
-    df[(df[["FAC2"]] >= 0.8 & 
-          df[["rsq_80"]] >= 0.5 &
-          between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
-          between( df[["rmse_20"]] / df[["rmse_80"]], 0.5, 1.5) & 
-          df[["FB"]] <= 0.5 & 
-          df[["NMSE"]] <= 0.5),] -> df
+    df[ (df[["FAC2"]] >= 0.8 & 
+           df[["rsq_80"]] >= 0.5 &
+           between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
+           between( df[["rmse_20"]] / df[["rmse_80"]], 0.5, 1.5) & 
+           df[["FB"]] <= 0.5 & 
+           df[["NMSE"]] <= 0.5), ] -> df
   }
   
   df %>% 
@@ -214,26 +235,16 @@ getbxplt <- function(pltnt, vars, val = FALSE) {
     g <- g + xlab(("Validazione modelli" )) 
   }
   
+  # ggsave(g, 
+  #        filename = glue("{pltnt}_{cod_reg}_validazione.png"), 
+  #        width = 15, height = 8, 
+  #        units = "cm", dpi = 300)
   return(g)
-  ggsave(g, 
-         filename = glue("analisi/GAM/relazione/{pltnt}_validazione.png"), width = 15, height = 8, 
-         units = "cm", dpi = 300)
+  
 }
-# getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
+# getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
 # getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
 
-
-serievalide <- function(pltnt) {
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
-  df[(df[["FAC2"]] >= 0.8 & 
-        df[["rsq_80"]] >= 0.5 &
-        between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
-        between( df[["rmse_20"]] / df[["rmse_80"]], 0.5, 1.5) & 
-        df[["FB"]] <= 0.5 & 
-        df[["NMSE"]] <= 0.5),] %>% select(station_eu_code) -> ss
-  
-  return(ss)
-}
 
 mappe <- function(pltnt, tipo = FALSE) {
   cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"))
@@ -325,7 +336,6 @@ mappe <- function(pltnt, tipo = FALSE) {
 # mappe("no2", TRUE)
 
 
-
 contributoLock <- function(pltnt, perc = FALSE) {
   stazioniAria -> stazioni
   
@@ -377,9 +387,10 @@ contributoLock <- function(pltnt, perc = FALSE) {
     ylab("n. stazioni") + 
     xlab("") + ggtitle(tit)
 }
+# contributoLock("no2")
 
-bootstrapmodelli <- function(pltnt) {
-  load(glue("~/R/pulvirus_reloaded/incertezza/ic_{pltnt}.RData"))
+bootstrapmodelli <- function(pltnt, cod_reg) {
+  load(glue("~/R/pulvirus_reloaded/incertezza/{cod_reg}/ic_{pltnt}.RData"))
   
   stats <- function(x) {
     # Mean <- mean(x, na.rm = TRUE)
@@ -387,8 +398,12 @@ bootstrapmodelli <- function(pltnt) {
     MAD <- mad(x, na.rm = TRUE)
     return(c(SD = SD, MAD = MAD))
   }
+  
   my_list %>%
-    map( ~ t(apply(.x[, 2:30], 1, stats)) %>% as.data.frame() ) -> out_list
+    map( ~ t( 
+      apply(.x[, 2:30], 1, stats) ) %>% 
+        as.data.frame() 
+    ) -> out_list
   
   do.call(rbind, out_list %>% map(~.x[,1])) %>% 
     as.data.frame() %>% 
@@ -398,6 +413,7 @@ bootstrapmodelli <- function(pltnt) {
     geom_boxplot() + 
     theme(legend.position = "none") + xlab("") + ylab("Standard deviation")
 }
+# bootstrapmodelli("no2", 3)
 
 scarto <- function(perc = FALSE) {
   pltnts <- c("no2", "pm10", "pm25", "co", "o3", "nox")
@@ -425,3 +441,4 @@ scarto <- function(perc = FALSE) {
   # scarto()[1,] / scarto()[2,]*100
   return(df)
 }
+# scarto()

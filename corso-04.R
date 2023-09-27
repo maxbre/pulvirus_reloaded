@@ -16,8 +16,8 @@
   rm(list = ls())
 }
 
-eu_code <- "IT0828A"
-pltnt <- "pm10"
+eu_code <- "IT0825A"
+pltnt <- "no2"
 
 assign("eu_code", eu_code, envir = .GlobalEnv)
 assign("pltnt", pltnt, envir = .GlobalEnv)
@@ -47,17 +47,17 @@ assign("df", df, envir = .GlobalEnv)
 
 v_meteo <- names(datiMeteo::dati_meteo)[4:21]
 
-select(df, all_of(v_meteo)) %>% 
-  correlation() %>% 
-  filter(r >= 0.7) %>% 
-  select(Parameter2) %>% 
-  unique() %>% 
-  unlist() %>% 
-  as.character() -> v_elevata_correlazione
+# select(df, all_of(v_meteo)) %>% 
+#   correlation() %>% 
+#   filter(r >= 0.7) %>% 
+#   select(Parameter2) %>% 
+#   unique() %>% 
+#   unlist() %>% 
+#   as.character() -> v_elevata_correlazione
+# 
+# assign("v_elevata_correlazione", v_elevata_correlazione, envir = .GlobalEnv)
 
-assign("v_elevata_correlazione", v_elevata_correlazione, envir = .GlobalEnv)
-
-v_meteo <- v_meteo[!v_meteo %in% c(v_elevata_correlazione)]
+# v_meteo <- v_meteo[!v_meteo %in% c(v_elevata_correlazione)]
 
 assign("v_meteo", v_meteo, envir = .GlobalEnv)
 v_cappa <- length(unique(df$reporting_year))
