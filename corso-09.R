@@ -3,14 +3,12 @@
 # init ####
 {
   library(RColorBrewer)
-  # library(RPostgreSQL)
   library(datiInquinanti)
   library(dplyr)
   library(ggplot2)
   library(ggthemes)
   library(glue)
   library(janitor)
-  # library(kableExtra)
   library(knitr)
   library(pander)
   library(psych)
@@ -26,18 +24,20 @@
 
 # aggiungo la classificazione 
 stazioniAria <- stazioniAria %>%
-  mutate(tipoS = case_when(
-    zona_tipo == "FU" ~ "Fondo urbano/suburbano",
-    zona_tipo == "FS" ~ "Fondo urbano/suburbano",
-    zona_tipo == "TU" ~ "Traffico",
-    zona_tipo == "TS" ~ "Traffico",
-    tipo_zona == "R" ~ "Rurale",
-    tipo_zona == "R-nearcity" ~ "Rurale",
-    tipo_zona == "R-regional" ~ "Rurale",
-    tipo_zona == "R-remote" ~ "Rurale",
-    tipo_stazione == "I" ~ "Industriale",
-    tipo_stazione == "F/I" ~ "Industriale",
-  ))
+  mutate(
+    tipoS = case_when(
+      zona_tipo == "FU" ~ "Fondo urbano/suburbano",
+      zona_tipo == "FS" ~ "Fondo urbano/suburbano",
+      zona_tipo == "TU" ~ "Traffico",
+      zona_tipo == "TS" ~ "Traffico",
+      tipo_zona == "R" ~ "Rurale",
+      tipo_zona == "R-nearcity" ~ "Rurale",
+      tipo_zona == "R-regional" ~ "Rurale",
+      tipo_zona == "R-remote" ~ "Rurale",
+      tipo_stazione == "I" ~ "Industriale",
+      tipo_stazione == "F/I" ~ "Industriale",
+    )
+  )
 
 
 if(!exists("ita_reg")) {
@@ -55,12 +55,27 @@ pulvirus_names <- list(
   'NMSE' = 'NMSE'
 )
 
+theme_pulvirus <- function() {
+  theme_grey() %+replace%    #replace elements we want to change
+    theme(
+      plot.title = element_text(size = 20, face = 'bold', hjust = 0, vjust = 2),
+      plot.subtitle = element_text(size = 14), 
+      plot.caption = element_text(size = 9, hjust = 1),
+      axis.title = element_blank(),
+      axis.text = element_text(size = 9),
+      legend.position = "right",
+      legend.title = element_blank()
+    )
+}
+
 pulvirus_labeller <- function(variable, value){
   return(pulvirus_names[value])
 }
 
 serievalide <- function(pltnt) {
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", 
+                   escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
+  
   df[(df[["FAC2"]] >= 0.8 & 
         df[["rsq_80"]] >= 0.5 &
         between( df[["rsq_20"]] / df[["rsq_80"]], 0.8, 1.2) &  
@@ -110,20 +125,17 @@ getdesc <- function(pltnt, cod_reg, formato_out = "markdown") {
                  caption = glue("Indici statistici di validazione e prestazioni {tit}")
     )
 }
-getdesc("no2", "3")
+# getdesc("no2", "3")
 
-riassumi <- function(pltnt, tipo, cod_reg, perc = FALSE) {
+riassumi <- function(pltnt, tipo, cod_reg) {
   df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
                    delim = ";", 
                    escape_double = FALSE, trim_ws = TRUE, 
                    show_col_types = FALSE)
   
-  # if(perc == TRUE) {
-  #   cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
-  # }else{
-    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"), 
-                   show_col_types = FALSE)
-  # }
+  
+  cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"), 
+                 show_col_types = FALSE)
   
   ss <- serievalide(pltnt)
   
@@ -133,13 +145,7 @@ riassumi <- function(pltnt, tipo, cod_reg, perc = FALSE) {
   names(wdf)[1:4] <- c("Marzo","Aprile", "Maggio", "Giugno")
   
   tipo_new <- gsub("/", "", tipo)
-  fout <- glue("~/R/pulvirus/{pltnt}_{tipo_new}.csv")
-  
-  wdf %>% 
-    filter(tipoS == tipo) %>% 
-    select(c(station_eu_code, tipoS, "Marzo","Aprile", "Maggio", "Giugno")) %>% 
-    readr::write_csv(fout)
-  
+
   wdf %>% 
     select(c(station_eu_code, st_x, st_y, tipoS, "Marzo","Aprile", "Maggio", "Giugno")) %>% 
     reshape2::melt(id.vars = c("station_eu_code", "st_x", "st_y", "tipoS")) -> t
@@ -158,13 +164,13 @@ riassumi <- function(pltnt, tipo, cod_reg, perc = FALSE) {
 }
 # riassumi("no2", "Traffico", 3)
 
-riassumiBoxplot <- function(pltnt, tipo, cod_reg, perc = FALSE) {
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
-  # if(perc == TRUE) {
-  #   cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
-  # }else{
-    cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"))
-  # }
+riassumiBoxplot <- function(pltnt, tipo, cod_reg) {
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
+                   delim = ";", escape_double = FALSE, trim_ws = TRUE, 
+                   show_col_types = FALSE)
+  
+  cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"), 
+                 show_col_types = FALSE)
   
   ss <- serievalide(pltnt)
   cl[cl[["station_eu_code"]] %in% ss[["station_eu_code"]],] %>% 
@@ -179,29 +185,25 @@ riassumiBoxplot <- function(pltnt, tipo, cod_reg, perc = FALSE) {
     reshape2::melt(id.vars = c("station_eu_code")) -> t
   
   tdf <- mutate(t, Contributo = cut(value, breaks = c(-20, -10, -5, 0, 10, 11)))
-  # tit <- case_when(
-  #   pltnt == "pm25" ~ bquote("Contributo lockdown" ~ PM[25]),
-  #   pltnt == "pm10" ~ bquote("Contributo lockdown" ~ PM[10]),
-  #   pltnt == "co" ~ bquote("Contributo lockdown" ~ CO),
-  #   pltnt == "o3" ~ bquote("Contributo lockdown" ~ O[3]),
-  #   pltnt == "nox" ~ bquote("Contributo lockdown" ~ NO[x]),
-  #   pltnt == "no2" ~ bquote("Contributo lockdown" ~ NO[2]),
-  # )
-  tit <- " Contributo lockdown "
+  
+  titoli <- list("pm25" = bquote("Contributo lockdown" ~ PM[25]), 
+                 "pm10" = bquote("Contributo lockdown" ~ PM[10]), 
+                 "no2" = bquote("Contributo lockdown" ~ NO[2]),
+                 "o3" = bquote("Contributo lockdown" ~ O[3])
+  )
   
   ggplot(tdf) +
     geom_boxplot(aes(y = value, group = variable, fill = variable)) + 
     facet_wrap(~variable, nrow = 1) + ylab("Concentrazione") +
     theme(axis.text.x = element_blank(), axis.ticks = element_blank(), legend.position = "none") +
-    ggtitle(tit, subtitle = tipo)
-  # return(tdf)
+    ggtitle(titoli[[pltnt]], subtitle = tipo)
 }
 # riassumiBoxplot("no2", "Fondo urbano/suburbano", "12")
 
 getbxplt <- function(pltnt, vars, cod_reg, val = TRUE) {
   df <- read_delim(glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
                    ";", 
-                   escape_double = FALSE, trim_ws = TRUE)
+                   escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
 
   if(val == TRUE) {
     df[ (df[["FAC2"]] >= 0.8 & 
@@ -235,34 +237,25 @@ getbxplt <- function(pltnt, vars, cod_reg, val = TRUE) {
     g <- g + xlab(("Validazione modelli" )) 
   }
   
-  # ggsave(g, 
-  #        filename = glue("{pltnt}_{cod_reg}_validazione.png"), 
-  #        width = 15, height = 8, 
-  #        units = "cm", dpi = 300)
   return(g)
-  
 }
 # getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
 # getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
 
-
 mappe <- function(pltnt, tipo = FALSE) {
-  cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"))
+  cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"), 
+                 show_col_types = FALSE)
   
   ss <- serievalide(pltnt)
   
   cl[cl[["station_eu_code"]] %in% ss[["station_eu_code"]],] %>% 
     inner_join(stazioniAria, by = c("station_eu_code")) -> wdf
   
-  # tit <- case_when(
-  #   pltnt == "pm25" ~ bquote("Contributo lockdown - concentrazione" ~ PM[25]),
-  #   pltnt == "pm10" ~ bquote("Contributo lockdown - concentrazione" ~ PM[10]),
-  #   pltnt == "co" ~ bquote("Contributo lockdown - concentrazione" ~ CO),
-  #   pltnt == "o3" ~ bquote("Contributo lockdown - concentrazione" ~ O[3]),
-  #   pltnt == "nox" ~ bquote("Contributo lockdown - concentrazione" ~ NO[x]),
-  #   pltnt == "no2" ~ bquote("Contributo lockdown - concentrazione" ~ NO[2]),
-  # )
-  tit <- "Contributo lockdown - concentrazione"
+  titoli <- list("pm25" = bquote("Contributo lockdown - concentrazione" ~ PM[25]), 
+                 "pm10" = bquote("Contributo lockdown - concentrazione" ~ PM[10]), 
+                 "no2" = bquote("Contributo lockdown - concentrazione" ~ NO[2]),
+                 "o3" = bquote("Contributo lockdown - concentrazione" ~ O[3])
+  )
   
   names(wdf)[1:4] <- c("Marzo","Aprile", "Maggio", "Giugno")
   
@@ -273,8 +266,7 @@ mappe <- function(pltnt, tipo = FALSE) {
   brks <- classIntervals(t$value, dataPrecision = 1, n = 6, style = "pretty")$brks
   wdf <- mutate(t, Contributo = cut(value, breaks = brks))
   lng <- length(brks)
-  # return(classInt::classIntervals(t$value, dataPrecision = 1))
-  
+
   if(tipo == FALSE) {
     pts <- 1
   }else{
@@ -284,11 +276,6 @@ mappe <- function(pltnt, tipo = FALSE) {
   ggplot(data = ita_reg) +
     geom_sf(fill = "grey60", size = 0.1, color = "grey99") +
     geom_point(data = wdf, aes(x = st_x, y = st_y, color = factor(Contributo)), na.rm = FALSE, size = 0.5) +
-    # geom_point(data = filter(wdf, tipoS == "Traffico" | tipoS == "Fondo urbano/suburbano"), aes(x = st_x, y = st_y, color = factor(Contributo)), na.rm = FALSE, size = 1) +
-    # geom_point(data = filter(wdf, tipoS == "Industriale" | tipoS == "Rurale"), aes(x = st_x, y = st_y, color = factor(Contributo)), na.rm = FALSE, size = 1) +
-    # geom_point(data = wdf, aes(x = st_x, y = st_y, color = factor(Contributo)), na.rm = FALSE, size = 0.5) +
-    # geom_point(data = filter(tdf, !is.na(Contributo)), aes(x = st_x, y = st_y, color = factor(Contributo)), size = 1, na.rm = TRUE) +
-    # geom_point(data = filter(tdf, is.na(Contributo)), aes(x = st_x, y = st_y, color = Contributo), size = 0.5, na.rm = FALSE) +
     coord_sf(crs = "+init=epsg:4326") -> g
   
   if(pltnt == "co") {
@@ -299,9 +286,9 @@ mappe <- function(pltnt, tipo = FALSE) {
   g <- g + scale_colour_brewer(na.value = "grey35", palette = "RdYlGn",
                                guide = "legend", direction = -1,
                                name = lgnd) 
+  
   g <- g + scale_shape_manual(values = rep(19, lng), na.value = 1.5, guide = "none") +
     scale_size_manual(values = rep(1, lng), na.value = 0.1, guide = "none")
-  
   
   g + 
     theme(
@@ -328,39 +315,36 @@ mappe <- function(pltnt, tipo = FALSE) {
   }else{
     g <- g + facet_wrap(vars(variable), nrow = 2)     
   }
-  g <- g + ggtitle(tit)
-  ggsave(g, filename = glue("mappa_{pltnt}.png"), width = 29, height = 19, units = "cm", dpi = 150)
+  g <- g + ggtitle(titoli[[pltnt]])
   return(g)
-  
 }
 # mappe("no2", TRUE)
-
 
 contributoLock <- function(pltnt, perc = FALSE) {
   stazioniAria -> stazioni
   
   if(perc == TRUE) {
-    cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"))
+    cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"), 
+                   show_col_types = FALSE)
   }else{
-    cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"))
+    cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"), 
+                   show_col_types = FALSE)
   }
   
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), delim = ";", escape_double = FALSE, trim_ws = TRUE)
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), 
+                   delim = ";", escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
   
   ss <- serievalide(pltnt)
   
   names(cl)[1:4] <- c("Marzo", "Aprile", "Maggio", "Giugno")
   sub <- "Contributo lockdown - concentrazione"
   
-  # tit <- case_when(
-  #   pltnt == "pm25" ~ bquote("Contributo lockdown - concentrazione" ~ PM[25]),
-  #   pltnt == "pm10" ~ bquote("Contributo lockdown - concentrazione" ~ PM[10]),
-  #   pltnt == "co" ~ bquote("Contributo lockdown - concentrazione" ~ CO),
-  #   pltnt == "o3" ~ bquote("Contributo lockdown - concentrazione" ~ O[3]),
-  #   pltnt == "nox" ~ bquote("Contributo lockdown - concentrazione" ~ NO[x]),
-  #   pltnt == "no2" ~ bquote("Contributo lockdown - concentrazione" ~ NO[2]),
-  # )
-  tit <- "Contributo lockdown - concentrazione"
+
+  titoli <- list("pm25" = bquote("Contributo lockdown - concentrazione" ~ PM[25]), 
+                 "pm10" = bquote("Contributo lockdown - concentrazione" ~ PM[10]), 
+                 "no2" = bquote("Contributo lockdown - concentrazione" ~ NO[2]),
+                 "o3" = bquote("Contributo lockdown - concentrazione" ~ O[3])
+  )
   
   if(pltnt == "co") {
     cl <- filter(cl, station_eu_code != "IT2146A")
@@ -371,7 +355,6 @@ contributoLock <- function(pltnt, perc = FALSE) {
     select(c(station_eu_code, tipoS, "Marzo", "Aprile", "Maggio", "Giugno")) %>% 
     melt(id.vars = c("station_eu_code", "tipoS")) %>% 
     ggplot(aes(value, group = variable, fill = variable)) +
-    # geom_bar(stat = "count") +
     geom_histogram(alpha = 0.6, bins = 30, size = 0.5) +
     scale_fill_brewer(palette = "RdYlGn") -> g
   
@@ -385,7 +368,7 @@ contributoLock <- function(pltnt, perc = FALSE) {
           legend.title = element_blank(), 
           plot.title = element_text(size = 11)) + 
     ylab("n. stazioni") + 
-    xlab("") + ggtitle(tit)
+    xlab("") + ggtitle(titoli[[pltnt]])
 }
 # contributoLock("no2")
 
@@ -423,7 +406,8 @@ scarto <- function(perc = FALSE) {
     cat(pltnt, "\n\n")
     df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), 
                      delim = ";", 
-                     escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE )
+                     escape_double = FALSE, trim_ws = TRUE, 
+                     show_col_types = FALSE )
     if(perc == TRUE) {
       cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"), 
                      show_col_types = FALSE)

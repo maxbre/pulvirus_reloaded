@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 Introduzione
 ========================================================
 author: Dr. Raffaele Morelli
@@ -13,6 +18,17 @@ L'Obiettivo 1 intende quantificare, al netto della variabilità indotta dalle co
 
 Per ulteriori dettagli visitare la pagina <https://www.pulvirus.it/index.php/obiettivi/obiettivo-1/>.
 
+|        |  Media| Std. dev|    Min|     Max|   Range| Std. err|
+|:-------|------:|--------:|------:|-------:|-------:|--------:|
+|RMSE 20 |  7.291|    1.991|  4.461|  14.280|   9.819|    0.279|
+|RMSE 80 |  6.816|    1.887|  4.399|  13.596|   9.197|    0.264|
+|MSE 20  | 57.044|   36.023| 19.900| 203.912| 184.013|    5.044|
+|MSE 80  | 49.945|   31.771| 19.353| 184.861| 165.508|    4.449|
+|RSQ 20  |  0.736|    0.065|  0.581|   0.859|   0.278|    0.009|
+|RSQ 80  |  0.763|    0.057|  0.597|   0.847|   0.250|    0.008|
+|FAC2    |  0.979|    0.014|  0.947|   1.000|   0.053|    0.002|
+|FB      |  0.012|    0.010|  0.000|   0.044|   0.044|    0.001|
+|NMSE    |  0.057|    0.017|  0.024|   0.094|   0.070|    0.002|
 
 
 ========================================================

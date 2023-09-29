@@ -62,16 +62,14 @@ getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 3, TRUE)
 # valutazione incertezza
 
 ## lazio
-```{r incertezza_bxplt_laz, fig.width=4, fig.height=4}
+```{r incertezza_bxplt_laz, fig.width=4, fig.height=5}
 bootstrapmodelli("no2", 12)
-
 ```
 
 
 ## lombardia
-```{r incertezza_bxplt_lom, fig.width=4, fig.height=4}
+```{r incertezza_bxplt_lom, fig.width=4, fig.height=5}
 bootstrapmodelli("no2", 3)
-
 ```
 
 #  lazio

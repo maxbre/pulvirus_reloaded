@@ -1,13 +1,12 @@
 ========================================================================= 
 Log Path: ./log/no2_IT0828A.log 
-Program Path: /home/rmorelli/R/pulvirus_reloaded/corso-05a.R 
 Working Directory: /home/rmorelli/R/pulvirus_reloaded 
 User Name: rmorelli 
-R Version: 4.2.2 Patched (2022-11-10 r83330) 
-Machine: asiispra x86_64 
-Operating System: Linux 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) 
-Base Packages: stats graphics grDevices utils datasets methods base Other Packages: datiMeteo_0.0.6 datiInquinanti_0.0.8 stringr_1.5.0 readr_2.1.4 purrr_1.0.1 mgcv_1.8-42 nlme_3.1-162 logr_1.3.3 dplyr_1.1.2 correlation_0.8.4 
-Log Start Time: 2023-05-15 10:27:03 
+R Version: 4.3.1 (2023-06-16) 
+Machine: annuario x86_64 
+Operating System: Linux 5.10.0-8-amd64 #1 SMP Debian 5.10.46-5 (2021-09-23) 
+Base Packages: stats graphics grDevices utils datasets methods base Other Packages: datiMeteo_0.0.6 datiInquinanti_0.0.7 glue_1.6.2 stringr_1.5.0 readr_2.1.4 purrr_1.0.2 mgcv_1.9-0 nlme_3.1-163 logr_1.3.4 dplyr_1.1.3 correlation_0.8.4 
+Log Start Time: 2023-09-25 10:00:20.713719 
 ========================================================================= 
 
 # A tibble: 1 × 4
@@ -17,8 +16,8 @@ Log Start Time: 2023-05-15 10:27:03
 
 NOTE: Data frame has 1 rows and 4 columns. 
 
-NOTE: Log Print Time:  2023-05-15 10:27:03 
-NOTE: Elapsed Time: 0.0308413505554199 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:20.751169 
+NOTE: Elapsed Time: 0.0368516445159912 secs 
 
 Modelli NON backward: 
 
@@ -49,20 +48,20 @@ Indice: 14
 [13,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pbl12), data = df)"     
 [14,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin), data = df)"    
       [,2]               
- [1,] "-230.977220877094"
- [2,] "-241.259773425741"
- [3,] "-234.174464197972"
- [4,] "-165.569641309299"
- [5,] "-450.325065272913"
- [6,] "-466.716581463973"
- [7,] "-521.431308884415"
- [8,] "-316.62235650384" 
- [9,] "-283.150969065584"
-[10,] "-445.312644275353"
-[11,] "-341.060022366193"
-[12,] "-570.316756977817"
-[13,] "-327.579927641925"
-[14,] "-574.474077100722"
+ [1,] "-230.977220877097"
+ [2,] "-241.259773425742"
+ [3,] "-234.17446419798" 
+ [4,] "-165.569641309442"
+ [5,] "-450.325065272947"
+ [6,] "-466.716581463979"
+ [7,] "-521.431308884403"
+ [8,] "-316.622356503855"
+ [9,] "-283.150969065585"
+[10,] "-445.31264427535" 
+[11,] "-341.060022366194"
+[12,] "-570.316756977815"
+[13,] "-327.579927641929"
+[14,] "-574.474077100733"
 
 Variabile scelta: pblmin - AIC -574.47 
 
@@ -96,18 +95,18 @@ Indice: 5
 [12,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(pbl00), data = df)"     
 [13,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(pbl12), data = df)"     
       [,2]               
- [1,] "-592.121239614587"
- [2,] "-571.086267072085"
- [3,] "-571.331670415169"
- [4,] "-585.239959901821"
- [5,] "-872.295823783597"
- [6,] "-581.946423910002"
- [7,] "-594.631639608593"
- [8,] "-576.954809362981"
- [9,] "-569.444223644075"
-[10,] "-830.326693633901"
-[11,] "-583.392577229257"
-[12,] "-639.703217777414"
+ [1,] "-592.121239614595"
+ [2,] "-571.086267072015"
+ [3,] "-571.33167041516" 
+ [4,] "-585.23995990182" 
+ [5,] "-872.295823783663"
+ [6,] "-581.946423910045"
+ [7,] "-594.631639608569"
+ [8,] "-576.954809362971"
+ [9,] "-569.444223644071"
+[10,] "-830.326693633891"
+[11,] "-583.392577229261"
+[12,] "-639.703217777412"
 [13,] "-647.243091005976"
 
 Variabile scelta: u10m - AIC -872.3 
@@ -116,8 +115,8 @@ Variabili in ICS: 2
 
 Gli ICS 2 ----- 1 
 
-NOTE: Log Print Time:  2023-05-15 10:27:06 
-NOTE: Elapsed Time: 3.48453807830811 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:25.899611 
+NOTE: Elapsed Time: 5.148442029953 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -132,7 +131,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 6 
 
-Dati backward: wspeed - -866.354397360619 
+Dati backward: wspeed - -866.35439736078 
 
                                                                                                      unlist.w.
 1         gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(u10m) + s(t2m), data = df)
@@ -194,18 +193,18 @@ Indice: 6
 [11,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(pbl00), data = df)"     
 [12,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(pbl12), data = df)"     
       [,2]               
- [1,] "-902.993996189335"
- [2,] "-861.985251126942"
- [3,] "-856.799923521345"
- [4,] "-884.206503522831"
- [5,] "-904.711567432687"
- [6,] "-929.324404656346"
- [7,] "-899.788498679461"
- [8,] "-860.93516156765" 
- [9,] "-880.074649067828"
-[10,] "-860.490899649554"
-[11,] "-880.259484875098"
-[12,] "-898.349764930135"
+ [1,] "-902.993996189443"
+ [2,] "-861.985251127056"
+ [3,] "-856.79992352144" 
+ [4,] "-884.206503522895"
+ [5,] "-904.711567432711"
+ [6,] "-929.324404656686"
+ [7,] "-899.78849867954" 
+ [8,] "-860.935161567742"
+ [9,] "-880.074649068002"
+[10,] "-860.490899649726"
+[11,] "-880.259484875168"
+[12,] "-898.349764930252"
 
 Variabile scelta: wspeed - AIC -929.32 
 
@@ -213,8 +212,8 @@ Variabili in ICS: 3
 
 Gli ICS 3 ----- 2 
 
-NOTE: Log Print Time:  2023-05-15 10:27:10 
-NOTE: Elapsed Time: 3.57070183753967 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:31.009917 
+NOTE: Elapsed Time: 5.11030578613281 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -229,7 +228,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 8 
 
-Dati backward: wdir - -865.990246494083 
+Dati backward: wdir - -865.990246494023 
 
                                                                                                                    unlist.w.
 1         gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(wspeed) + s(t2m), data = df)
@@ -288,17 +287,17 @@ Indice: 1
 [10,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(pbl00), data = df)"     
 [11,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(pbl12), data = df)"     
       [,2]               
- [1,] "-981.894171942412"
- [2,] "-908.929261914421"
- [3,] "-908.280707379556"
- [4,] "-953.949757369988"
- [5,] "-923.474537973916"
- [6,] "-942.576804904385"
- [7,] "-910.133919327"   
- [8,] "-937.10307985515" 
- [9,] "-918.726533542822"
-[10,] "-934.439272106488"
-[11,] "-948.355373664959"
+ [1,] "-981.894171942532"
+ [2,] "-908.929261914566"
+ [3,] "-908.28070737899" 
+ [4,] "-953.949757370217"
+ [5,] "-923.474537974188"
+ [6,] "-942.576804904577"
+ [7,] "-910.133919327457"
+ [8,] "-937.103079855383"
+ [9,] "-918.726533543015"
+[10,] "-934.439272106669"
+[11,] "-948.35537366557" 
 
 Variabile scelta: t2m - AIC -981.89 
 
@@ -306,8 +305,8 @@ Variabili in ICS: 4
 
 Gli ICS 4 ----- 3 
 
-NOTE: Log Print Time:  2023-05-15 10:27:14 
-NOTE: Elapsed Time: 4.07485055923462 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:36.762685 
+NOTE: Elapsed Time: 5.75276827812195 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -322,7 +321,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 4 
 
-Dati backward: v10m - -962.416165609287 
+Dati backward: v10m - -962.416165609367 
 
                                                                                                                           unlist.w.
 1          gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(t2m) + s(tp), data = df)
@@ -378,16 +377,16 @@ Indice: 10
  [9,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl00), data = df)"     
 [10,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12), data = df)"     
       [,2]               
- [1,] "-967.3714276542"  
- [2,] "-963.6018052332"  
- [3,] "-968.95385865291" 
- [4,] "-971.385623450808"
- [5,] "-996.446989799628"
- [6,] "-965.596277469016"
- [7,] "-991.526083021222"
- [8,] "-969.071408961666"
- [9,] "-977.581871545043"
-[10,] "-996.447923073273"
+ [1,] "-967.371427654557"
+ [2,] "-963.601805233438"
+ [3,] "-968.953858656243"
+ [4,] "-971.385623451002"
+ [5,] "-996.446989798798"
+ [6,] "-965.596277469277"
+ [7,] "-991.526083021452"
+ [8,] "-969.071408961825"
+ [9,] "-977.581871545232"
+[10,] "-996.447923073538"
 
 Variabile scelta: pbl12 - AIC -996.45 
 
@@ -395,8 +394,8 @@ Variabili in ICS: 5
 
 Gli ICS 5 ----- 4 
 
-NOTE: Log Print Time:  2023-05-15 10:27:19 
-NOTE: Elapsed Time: 4.47549223899841 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:42.753612 
+NOTE: Elapsed Time: 5.99092698097229 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -411,7 +410,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 3 
 
-Dati backward: rh - -981.802727346324 
+Dati backward: rh - -981.80272734653 
 
                                                                                                                                        unlist.w.
 1         gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(pbl12) + s(tp), data = df)
@@ -465,15 +464,15 @@ Indice: 7
  [8,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(sp), data = df)"        
  [9,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(pbl00), data = df)"     
       [,2]               
- [1,] "-988.791265856761"
- [2,] "-979.230817073995"
- [3,] "-1001.06435801687"
- [4,] "-981.753932214212"
- [5,] "-1004.89038144312"
- [6,] "-981.369551381546"
- [7,] "-1006.02753436943"
- [8,] "-976.752097938316"
- [9,] "-994.142028369221"
+ [1,] "-988.791265857026"
+ [2,] "-979.230817074293"
+ [3,] "-1001.06435801723"
+ [4,] "-981.753932214578"
+ [5,] "-1004.89038144342"
+ [6,] "-981.369551381773"
+ [7,] "-1006.02753436971"
+ [8,] "-976.752097938576"
+ [9,] "-994.142028369404"
 
 Variabile scelta: wdir - AIC -1006.03 
 
@@ -481,8 +480,8 @@ Variabili in ICS: 6
 
 Gli ICS 6 ----- 5 
 
-NOTE: Log Print Time:  2023-05-15 10:27:24 
-NOTE: Elapsed Time: 5.48478007316589 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:49.608789 
+NOTE: Elapsed Time: 6.8551766872406 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -498,7 +497,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 5 
 
-Dati backward: wspeed_max - -1001.6473475496 
+Dati backward: wspeed_max - -1001.64734754715 
 
                                                                                                                                                unlist.w.
 1         gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(wdir) + s(tp), data = df)
@@ -549,14 +548,14 @@ Indice: 3
 [7,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(sp), data = df)"        
 [8,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(pbl00), data = df)"     
      [,2]               
-[1,] "-995.848194859047"
-[2,] "-989.92955069496" 
-[3,] "-1021.75259753552"
-[4,] "-1007.28069368784"
-[5,] "-1009.34230344538"
-[6,] "-991.17869668606" 
-[7,] "-984.16582970412" 
-[8,] "-1004.1567122705" 
+[1,] "-995.84819485932" 
+[2,] "-989.929550695252"
+[3,] "-1021.75259753589"
+[4,] "-1007.28069368808"
+[5,] "-1009.3423034458" 
+[6,] "-991.178696686479"
+[7,] "-984.16582970432" 
+[8,] "-1004.15671227074"
 
 Variabile scelta: rh - AIC -1021.75 
 
@@ -564,8 +563,8 @@ Variabili in ICS: 7
 
 Gli ICS 7 ----- 6 
 
-NOTE: Log Print Time:  2023-05-15 10:27:30 
-NOTE: Elapsed Time: 5.50309085845947 secs 
+NOTE: Log Print Time:  2023-09-25 10:00:57.003857 
+NOTE: Elapsed Time: 7.39506816864014 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -581,7 +580,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 4 
 
-Dati backward: wspeed_max - -1013.75769518516 
+Dati backward: wspeed_max - -1013.7576951857 
 
                                                                                                                                                         unlist.w.
 1         gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(rh) + s(tp), data = df)
@@ -629,13 +628,13 @@ Indice: 3
 [6,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(rh) + s(sp), data = df)"        
 [7,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(rh) + s(pbl00), data = df)"     
      [,2]               
-[1,] "-1014.40222241395"
-[2,] "-1004.37829046196"
-[3,] "-1038.38254921447"
-[4,] "-1027.56722741646"
-[5,] "-991.933653708425"
-[6,] "-980.922826221441"
-[7,] "-1006.07354184528"
+[1,] "-1014.40222241445"
+[2,] "-1004.37829046227"
+[3,] "-1038.38254921457"
+[4,] "-1027.56722741687"
+[5,] "-991.933653708813"
+[6,] "-980.922826222444"
+[7,] "-1006.07354184563"
 
 Variabile scelta: v10m - AIC -1038.38 
 
@@ -643,8 +642,8 @@ Variabili in ICS: 8
 
 Gli ICS 8 ----- 7 
 
-NOTE: Log Print Time:  2023-05-15 10:27:36 
-NOTE: Elapsed Time: 5.97713232040405 secs 
+NOTE: Log Print Time:  2023-09-25 10:01:04.851758 
+NOTE: Elapsed Time: 7.84790134429932 secs 
 
 Il modello N è migliore del precedente, verifica del backward 
 
@@ -660,7 +659,7 @@ log(value) ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd,
 
 Indice: 6 
 
-Dati backward: pbl00 - -1008.02163772307 
+Dati backward: pbl00 - -1008.02163772335 
 
                                                                                                                                                                     unlist.w.
 1         gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(v10m) + s(tp), data = df)
@@ -705,12 +704,12 @@ Indice: 6
 [5,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(rh) + s(v10m) + s(sp), data = df)"        
 [6,] "gam(log(value) ~ weekday + lock + s(mese, bs='cc', k=12) + s(jd, k=5) + s(pblmin) + s(u10m) + s(wspeed) + s(t2m) + s(pbl12) + s(wdir) + s(rh) + s(v10m) + s(pbl00), data = df)"     
      [,2]               
-[1,] "-1029.82596062767"
-[2,] "-1022.180502353"  
-[3,] "-1036.35866662303"
-[4,] "-1025.22216130582"
-[5,] "-1010.2076938476" 
-[6,] "-1037.97890634565"
+[1,] "-1029.82596062804"
+[2,] "-1022.18050235344"
+[3,] "-1036.35866662331"
+[4,] "-1025.2221613063" 
+[5,] "-1010.20769384769"
+[6,] "-1037.97890634582"
 
 Variabile scelta: pbl00 - AIC -1037.98 
 
@@ -718,8 +717,8 @@ Variabili in ICS: 9
 
 Gli ICS 9 ----- 8 
 
-NOTE: Log Print Time:  2023-05-15 10:27:42 
-NOTE: Elapsed Time: 6.64601802825928 secs 
+NOTE: Log Print Time:  2023-09-25 10:01:13.897919 
+NOTE: Elapsed Time: 9.04616045951843 secs 
 
 Fine per scelta MODELLO 
 
@@ -760,13 +759,13 @@ value ~ weekday + lock + s(mese, bs = "cc", k = 12) + s(jd, k = 5) +
 
 Parametric coefficients:
                   Estimate Std. Error t value Pr(>|t|)    
-(Intercept)       4.096738   0.007021 583.527  < 2e-16 ***
-weekdayMonday    -0.049483   0.009968  -4.964 7.32e-07 ***
-weekdaySaturday  -0.088836   0.010089  -8.805  < 2e-16 ***
-weekdaySunday    -0.214491   0.010803 -19.855  < 2e-16 ***
-weekdayThursday  -0.006809   0.009695  -0.702  0.48254    
-weekdayTuesday   -0.016452   0.009723  -1.692  0.09073 .  
-weekdayWednesday -0.012324   0.009722  -1.268  0.20504    
+(Intercept)       3.882247   0.008469 458.405  < 2e-16 ***
+weekdaygiovedì    0.207682   0.010785  19.256  < 2e-16 ***
+weekdaylunedì     0.165008   0.011013  14.983  < 2e-16 ***
+weekdaymartedì    0.198039   0.010796  18.343  < 2e-16 ***
+weekdaymercoledì  0.202167   0.010806  18.709  < 2e-16 ***
+weekdaysabato     0.125655   0.011127  11.293  < 2e-16 ***
+weekdayvenerdì    0.214491   0.010803  19.855  < 2e-16 ***
 lockL3           -0.481896   0.052984  -9.095  < 2e-16 ***
 lockL4           -0.669204   0.068878  -9.716  < 2e-16 ***
 lockL5           -0.327411   0.056618  -5.783 8.18e-09 ***
@@ -793,6 +792,6 @@ R-sq.(adj) =  0.764   Deviance explained = 76.9%
 GCV = 76.001  Scale est. = 73.215    n = 2807
 
 ========================================================================= 
-Log End Time: 2023-05-15 10:27:48 
-Log Elapsed Time: 0 00:00:44 
+Log End Time: 2023-09-25 10:01:41.081403 
+Log Elapsed Time: 0 00:01:20 
 ========================================================================= 
