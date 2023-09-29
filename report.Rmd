@@ -16,18 +16,18 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
                       fig.path = "figure_output/", 
-                      dpi = 96, 
-                      message = FALSE, warning = FALSE)
+                      # dpi = 96,
+                      message = FALSE, 
+                      warning = FALSE)
 
 source("corso-09.R")
 ```
 
 # Introduzione
 
-> https://bookdown.org/
+<https://bookdown.org/>
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse blandit a metus ut pellentesque. Mauris et tincidunt lectus, vel ornare orci. Ut non elit at metus lacinia lobortis. Vestibulum sem magna, lacinia ac augue vel, auctor commodo ex. Mauris dui nibh, suscipit nec feugiat ac, mollis nec elit. Maecenas mi mi, viverra sed erat sit amet, aliquet rhoncus leo. Sed lectus sapien, tincidunt a mattis nec, lobortis quis orci. Nam consectetur laoreet vulputate. In hac habitasse platea dictumst. Nulla tristique leo ac metus iaculis fringilla.
-
 
 ## Descrittive Lazio
 
@@ -51,38 +51,103 @@ getdesc("pm25", 3)
 
 ```{r lazio_val}
 getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+getbxplt("pm25", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+
 ```
 
 ## lombardia
 
 ```{r lom_val}
 getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 3, TRUE)
+getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 3, TRUE)
+getbxplt("pm25", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 3, TRUE)
 ```
 
 # valutazione incertezza
 
 ## lazio
+
 ```{r incertezza_bxplt_laz, fig.width=4, fig.height=5}
 bootstrapmodelli("no2", 12)
-```
+bootstrapmodelli("pm10", 12)
+bootstrapmodelli("pm25", 12)
 
+```
 
 ## lombardia
+
 ```{r incertezza_bxplt_lom, fig.width=4, fig.height=5}
 bootstrapmodelli("no2", 3)
+bootstrapmodelli("pm10", 3)
+bootstrapmodelli("pm25", 3)
 ```
 
-#  lazio
+# lazio
 
 ```{r}
 riassumi("no2", "Traffico", 12)
 riassumi("no2", "Fondo urbano/suburbano", 12)
 ```
 
-#  lombardia
+# lombardia
 
 ```{r}
 riassumi("no2", "Traffico", 3)
 riassumi("no2", "Fondo urbano/suburbano", 3)
 
 ```
+
+# mappe 
+
+## lazio
+
+```{r contr_tipo_laz}
+mappe("no2", 12, TRUE)
+mappe("pm10", 12, TRUE)
+mappe("pm25", 12, TRUE)
+```
+
+## lombardia
+
+```{r contr_tipo_lom}
+mappe("no2", 3, TRUE)
+mappe("pm10", 3, TRUE)
+mappe("pm25", 3, TRUE)
+```
+
+## lazio
+
+```{r contr_laz}
+mappe("no2", 12)
+mappe("pm10", 12)
+mappe("pm25", 12)
+```
+
+## lombardia
+
+```{r contr_lom}
+mappe("no2", 3)
+mappe("pm10", 3)
+mappe("pm25", 3)
+```
+
+
+# contributo del lockdown
+
+## lazio
+
+```{r}
+contributoLock("no2", 12) 
+contributoLock("pm10", 12) 
+contributoLock("pm25", 12)
+```
+
+## lombardia
+
+```{r}
+contributoLock("no2", 3)
+contributoLock("pm10", 3)
+contributoLock("pm25", 3)
+```
+

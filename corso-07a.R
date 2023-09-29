@@ -16,7 +16,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 
 if(is.na(args[1])) {
-  pltnt <- "no2"
+  pltnt <- "o3"
   cod_reg <- "3"
 }else{
   pltnt <- args[1]

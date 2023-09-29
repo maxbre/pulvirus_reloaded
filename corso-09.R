@@ -41,7 +41,7 @@ stazioniAria <- stazioniAria %>%
 
 
 if(!exists("ita_reg")) {
-  ita_reg <- st_read("~/R/corso/dati-istat/Limiti01012019_g/Reg01012019_g/Reg01012019_g_WGS84.shp", 
+  ita_reg <- st_read("/home/rmorelli/R/corso/dati-istat/Limiti01012019_g/Reg01012019_g/Reg01012019_g_WGS84.shp", 
                      quiet = TRUE)
 }
 
@@ -242,8 +242,8 @@ getbxplt <- function(pltnt, vars, cod_reg, val = TRUE) {
 # getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
 # getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80", "FAC2", "FB", "NMSE"))
 
-mappe <- function(pltnt, tipo = FALSE) {
-  cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"), 
+mappe <- function(pltnt, cod_reg, tipo = FALSE) {
+  cl <- read_csv(glue::glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"),
                  show_col_types = FALSE)
   
   ss <- serievalide(pltnt)
@@ -256,15 +256,21 @@ mappe <- function(pltnt, tipo = FALSE) {
                  "no2" = bquote("Contributo lockdown - concentrazione" ~ NO[2]),
                  "o3" = bquote("Contributo lockdown - concentrazione" ~ O[3])
   )
+  # titoli[["no2"]]
   
   names(wdf)[1:4] <- c("Marzo","Aprile", "Maggio", "Giugno")
   
   wdf %>% 
-    select(c(station_eu_code, st_x, st_y, tipoS, "Marzo","Aprile", "Maggio", "Giugno")) %>% 
+    select(
+      c(station_eu_code, st_x, st_y, tipoS, "Marzo","Aprile", "Maggio", "Giugno")
+    ) %>% 
     reshape2::melt(id.vars = c("station_eu_code", "st_x", "st_y", "tipoS")) -> t
   
+  brks <- classIntervals(t$value, dataPrecision = 1, n = 6, style = "pretty")
+  
   brks <- classIntervals(t$value, dataPrecision = 1, n = 6, style = "pretty")$brks
-  wdf <- mutate(t, Contributo = cut(value, breaks = brks))
+  
+  wdf <- mutate(t, Contributo = cut(value, breaks = brks) )
   lng <- length(brks)
 
   if(tipo == FALSE) {
@@ -273,9 +279,11 @@ mappe <- function(pltnt, tipo = FALSE) {
     pts <- 0.7
   }
   
-  ggplot(data = ita_reg) +
-    geom_sf(fill = "grey60", size = 0.1, color = "grey99") +
-    geom_point(data = wdf, aes(x = st_x, y = st_y, color = factor(Contributo)), na.rm = FALSE, size = 0.5) +
+  filter(ita_reg, COD_REG == cod_reg) %>% 
+    ggplot() +
+    geom_sf(fill = "grey70", size = 0.1, color = "grey99") +
+    geom_point(data = wdf, 
+               aes(x = st_x, y = st_y, color = factor(Contributo)), na.rm = FALSE, size = 2) +
     coord_sf(crs = "+init=epsg:4326") -> g
   
   if(pltnt == "co") {
@@ -285,7 +293,7 @@ mappe <- function(pltnt, tipo = FALSE) {
   }
   g <- g + scale_colour_brewer(na.value = "grey35", palette = "RdYlGn",
                                guide = "legend", direction = -1,
-                               name = lgnd) 
+                               name = lgnd)
   
   g <- g + scale_shape_manual(values = rep(19, lng), na.value = 1.5, guide = "none") +
     scale_size_manual(values = rep(1, lng), na.value = 0.1, guide = "none")
@@ -315,23 +323,20 @@ mappe <- function(pltnt, tipo = FALSE) {
   }else{
     g <- g + facet_wrap(vars(variable), nrow = 2)     
   }
+  
   g <- g + ggtitle(titoli[[pltnt]])
   return(g)
 }
-# mappe("no2", TRUE)
+# mappe("no2", 3, TRUE)
+# mappe("no2", 12)
 
-contributoLock <- function(pltnt, perc = FALSE) {
+contributoLock <- function(pltnt, cod_reg, perc = FALSE) {
   stazioniAria -> stazioni
-  
-  if(perc == TRUE) {
-    cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}_perc.csv"), 
+
+  cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/{cod_reg}/contributo_lock_{pltnt}.csv"), 
                    show_col_types = FALSE)
-  }else{
-    cl <- read_csv(glue("~/R/pulvirus_reloaded/contributo/contributo_lock_{pltnt}.csv"), 
-                   show_col_types = FALSE)
-  }
   
-  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/validazione_{pltnt}.csv"), 
+  df <- read_delim(glue::glue("~/R/pulvirus_reloaded/validazione/{cod_reg}/validazione_{pltnt}.csv"), 
                    delim = ";", escape_double = FALSE, trim_ws = TRUE, show_col_types = FALSE)
   
   ss <- serievalide(pltnt)
@@ -350,10 +355,10 @@ contributoLock <- function(pltnt, perc = FALSE) {
     cl <- filter(cl, station_eu_code != "IT2146A")
   }
   
-  cl[cl[["station_eu_code"]] %in% ss[["station_eu_code"]],] %>% 
-    inner_join(stazioni, by = c("station_eu_code")) %>% 
-    select(c(station_eu_code, tipoS, "Marzo", "Aprile", "Maggio", "Giugno")) %>% 
-    melt(id.vars = c("station_eu_code", "tipoS")) %>% 
+  cl[cl[["station_eu_code"]] %in% ss[["station_eu_code"]],] %>%
+    inner_join(stazioni, by = c("station_eu_code")) %>%
+    select(c(station_eu_code, tipoS, "Marzo", "Aprile", "Maggio", "Giugno")) %>%
+    melt(id.vars = c("station_eu_code", "tipoS")) %>%
     ggplot(aes(value, group = variable, fill = variable)) +
     geom_histogram(alpha = 0.6, bins = 30, size = 0.5) +
     scale_fill_brewer(palette = "RdYlGn") -> g
@@ -369,8 +374,10 @@ contributoLock <- function(pltnt, perc = FALSE) {
           plot.title = element_text(size = 11)) + 
     ylab("n. stazioni") + 
     xlab("") + ggtitle(titoli[[pltnt]])
+  
+  return(g)
 }
-# contributoLock("no2")
+# contributoLock("no2", 3)
 
 bootstrapmodelli <- function(pltnt, cod_reg) {
   load(glue("~/R/pulvirus_reloaded/incertezza/{cod_reg}/ic_{pltnt}.RData"))
