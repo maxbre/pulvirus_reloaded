@@ -1,0 +1,73 @@
+---
+title: "Lazio"
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+source("/home/rmorelli/R/pulvirus_reloaded/corso-09.R")
+
+```
+
+# Serie valide NO2
+
+```{r}
+validazioneSerie("no2", 12) %>% 
+  filter(v1519 & v20) %>% 
+  nrow()
+```
+
+
+## Descrittive 
+
+```{r}
+getdesc("no2", 12)
+getdesc("pm10", 12)
+getdesc("pm25", 12)
+```
+
+```{r lazio_val}
+getbxplt("no2", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+getbxplt("pm10", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+getbxplt("pm25", c("rmse_20", "rmse_80", "rsq_20", "rsq_80"), 12, TRUE)
+```
+
+
+# valutazione incertezza
+
+```{r incertezza_bxplt_laz, fig.width=4, fig.height=5}
+bootstrapmodelli("no2", 12)
+bootstrapmodelli("pm10", 12)
+bootstrapmodelli("pm25", 12)
+
+```
+
+# lazio
+
+```{r}
+riassumi("no2", "Traffico", 12)
+riassumi("no2", "Fondo urbano/suburbano", 12)
+riassumi("no2", "Rurale", 12)
+riassumi("no2", "Industriale", 12)
+```
+
+```{r contr_tipo_laz}
+mappe("no2", 12, TRUE)
+mappe("pm10", 12, TRUE)
+mappe("pm25", 12, TRUE)
+```
+
+```{r contr_laz}
+mappe("no2", 12)
+mappe("pm10", 12)
+mappe("pm25", 12)
+```
+
+
+## Contributo
+
+```{r}
+contributoLock("no2", 12) 
+contributoLock("pm10", 12) 
+contributoLock("pm25", 12)
+```

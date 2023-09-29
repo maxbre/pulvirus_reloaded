@@ -19,7 +19,6 @@
   library(skimr)
   library(classInt)
   library(tibble)
-  library(naniar)
 }
 
 # setwd("~/R/pulvirus_reloaded/report")
@@ -435,81 +434,3 @@ scarto <- function(perc = FALSE) {
   return(df)
 }
 # scarto()
-
-validazioneSerie <- function(pltnt, cod_reg) {
-  serie <- as_tibble_col( 
-    seq(lubridate::ymd('2016-01-01'), 
-        lubridate::ymd('2020-06-30'), by = 'days'), column_name = "date")
-  
-  filter(datiInquinanti::stazioniAria, region_id == cod_reg) -> stazioni_reg
-  
-  get(pltnt) %>% 
-    filter( !is.na(value), value != -999, station_eu_code %in% stazioni_reg$station_eu_code ) %>% 
-    mutate(
-      mese = lubridate::month(date),
-      stagione =
-        case_when(
-          format(date, "%m") %in% c("01", "02", "12") ~ "inverno",
-          format(date, "%m") %in% c("03", "04", "05") ~ "primavera",
-          format(date, "%m") %in% c("06", "07", "08") ~ "estate",
-          TRUE ~ "autunno"
-        ) 
-    ) -> df
-  
-  df <- left_join(serie, df, by = "date")
-  
-  df %>%
-    split(.$station_eu_code) %>%
-    map(function(df) {
-      df %>%
-        group_by(reporting_year, mese, stagione) %>%
-        miss_var_summary() %>%
-        filter(variable == "value" ) %>%
-        mutate(flag_mese = ifelse(pct_miss > 25, 0, 1) )
-    }) -> mc.mesi
-  
-  # calcolo stagioni valide ####
-  mc.mesi %>% 
-    map(\(df) {
-      df %>% 
-        group_by(reporting_year, stagione) %>% 
-        summarise(n = sum(flag_mese), .groups = 'drop') %>% 
-        mutate(flag_stagione = ifelse(n > 1, 1, 0))    
-    }) -> mc.stagioni
-  
-  # calcolo anni validi ####
-  mc.stagioni %>% 
-    map(\(df) {
-      df %>% 
-        select(reporting_year, flag_stagione) %>% 
-        group_by(reporting_year) %>% 
-        summarise(n = sum(flag_stagione),  .groups = 'drop') %>% 
-        mutate(flag_anno = ifelse(n != 4, 0, 1) )    
-    }) -> mc.anni
-  
-  # stazioni che superano i criteri ####
-  mc.anni %>% 
-    map(\(df) {
-      df %>% 
-        filter(reporting_year > 2015 & 
-                 reporting_year < 2020 & 
-                 flag_anno == 1
-        ) %>% 
-        nrow() == 4
-    }) %>% unlist() -> l1
-  
-  mc.mesi %>% 
-    map(\(df) {
-      df %>% 
-        filter(reporting_year == 2020 & mese < 7 & flag_mese == 1) %>% 
-        nrow() == 6
-    }) %>% unlist() -> l2
-  
-  do.call(cbind, list(l1, l2)) %>% 
-    as.data.frame() %>% 
-    setNames( c("v1519", "v20") ) %>% 
-    rownames_to_column(var = "station_eu_code") -> df_valide
-  
-  # return( list(mc.mesi, mc.stagioni, mc.anni, l1, l2) )
-  return( df_valide )
-}

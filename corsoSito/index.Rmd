@@ -1,0 +1,20 @@
+---
+title: "My Website"
+description: |
+  Welcome to the website. I hope you enjoy it!
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+# Learn more about publishing to GitHub Pages at:
+# https://rstudio.github.io/distill/publish_website.html#github-pages
+
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et maximus tellus. Vestibulum varius quam a mi elementum, non lobortis ligula laoreet. Vivamus sodales tempus porta. Cras semper ex in maximus mattis. Maecenas pharetra velit purus. Mauris nec leo tempus, volutpat nunc in, fermentum augue. Aenean sed sodales sem. Morbi eu metus id risus lobortis venenatis. Pellentesque dapibus quis libero nec eleifend. Mauris orci nulla, convallis non augue in, elementum pretium nunc. Mauris eget ex non mauris interdum convallis. Aenean consectetur rutrum augue, sed pharetra tortor convallis at.
+

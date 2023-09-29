@@ -1,0 +1,15 @@
+name: "corsoSito"
+title: "My Website"
+description: |
+  My Website
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "Lazio"
+      href: 12-lazio.html
+    - text: "Lombardia"
+      href: 03-lombardia.html      
+    - text: "About"
+      href: about.html
+output: distill::distill_article
